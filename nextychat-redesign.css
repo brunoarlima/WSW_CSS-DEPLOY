@@ -976,35 +976,58 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
 .custom-css-ticket-header.MuiCard-root {
   background-color: var(--surface-bg) !important;
   border-bottom: 1px solid var(--divider-subtle) !important;
-  padding: 16px 16px 8px 16px !important;
+  padding: 10px 16px !important;
   min-height: 52px !important;
   display: flex !important;
   align-items: center !important;
+  justify-content: space-between !important;
   box-sizing: border-box !important;
   border-radius: 0 !important;
   box-shadow: none !important;
+  width: 100% !important;
 }
 
 .custom-css-ticket-header .MuiCardHeader-root {
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
+  justify-content: space-between !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
 }
 
 .custom-css-ticket-header .MuiCardHeader-avatar {
-  margin-right: 10px !important;
+  margin-right: 12px !important;
+  flex-shrink: 0 !important;
 }
 
 .custom-css-ticket-header .MuiAvatar-root {
-  width: 34px !important;
-  height: 34px !important;
+  width: 36px !important;
+  height: 36px !important;
   border-radius: 50% !important;
   border: none !important;
   box-shadow: none !important;
 }
 
+.custom-css-ticket-header .MuiCardHeader-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.custom-css-ticket-header .MuiCardHeader-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 8px !important;
+}
+
 .custom-css-ticket-header .ticket-title-name {
-  font-size: 0.9rem !important;
+  font-size: 0.92rem !important;
   font-weight: 700 !important;
   color: var(--text-primary) !important;
   line-height: 1.2 !important;
@@ -1028,9 +1051,21 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   font-weight: 600 !important;
   color: var(--brand-primary) !important;
   background: var(--brand-subtle) !important;
-  padding: 1px 6px !important;
+  padding: 2px 7px !important;
   border-radius: 4px !important;
-  font-size: 0.7rem !important;
+  font-size: 0.72rem !important;
+  display: inline-block !important;
+  width: fit-content !important;
+}
+
+/* Força qualquer botão de menu/ações ou gaveta lateral no Header do Ticket para o canto direito */
+.custom-css-ticket-header .MuiCardHeader-action,
+.custom-css-ticket-header button.MuiIconButton-root,
+.custom-css-ticket-header .MuiCardHeader-title button,
+.custom-css-ticket-header .MuiCardHeader-content button {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 /* Ações do Cabeçalho do Atendimento (Ticket) */
@@ -1157,24 +1192,41 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 8px 16px !important;
+  padding: 10px 16px !important;
 }
 
 .custom-css-ticket-header .MuiCardHeader-root {
   display: flex !important;
   align-items: center !important;
+  justify-content: space-between !important;
   flex: 1 1 auto !important;
   width: 100% !important;
   padding: 0 !important;
 }
 
+.custom-css-ticket-header .MuiCardHeader-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.custom-css-ticket-header .MuiCardHeader-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
 /* Botão de Ações do Ticket (Alinhado Perfeitamente no Canto Direito) */
-.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]),
 .custom-css-ticket-header .MuiCardHeader-action,
+.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]),
 .custom-css-ticket-header button[title="Ações"],
 .custom-css-ticket-header button[aria-label="Ações"],
-.custom-css-ticket-header button:has(svg[title="Ações"]) {
+.custom-css-ticket-header button:has(svg[title="Ações"]),
+.custom-css-ticket-header button:has(svg[data-testid*="Menu"]),
+.custom-css-ticket-header button:has(svg[data-testid*="Dehaze"]),
+.custom-css-ticket-header .custom-ticket-header-menu-btn {
   margin-left: auto !important;
+  margin-right: 0 !important;
   flex-shrink: 0 !important;
   border-radius: 8px !important;
   width: 36px !important;
@@ -1188,8 +1240,7 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   transition: all 0.18s ease !important;
 }
 
-.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]):hover,
-.custom-css-ticket-header button:has(svg[title="Ações"]):hover {
+.custom-css-ticket-header button:hover {
   background-color: var(--surface-hover) !important;
   color: var(--brand-primary) !important;
 }
@@ -1253,7 +1304,7 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
 }
 
 /* ==========================================================================
-   6.3 TAGS DO TICKET - PILLS ULTRA COMPACTAS & CONDENSADAS
+   6.3 TAGS DO TICKET - ESPAÇAMENTO HARMONIOSO & DESIGN MODERNO
    ========================================================================== */
 .custom-css-ticket-tags,
 .custom-css-ticket-tags.MuiPaper-root {
@@ -1263,9 +1314,9 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   background-color: var(--surface-bg) !important;
   border: none !important;
   border-bottom: 1px solid var(--divider-subtle) !important;
-  padding: 3px 8px !important;
-  min-height: 24px !important;
-  gap: 4px !important;
+  padding: 6px 12px !important;
+  min-height: 32px !important;
+  gap: 6px 8px !important;
   box-sizing: border-box !important;
 }
 
@@ -1275,49 +1326,52 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
 }
 
 .custom-css-ticket-tags input {
-  font-size: 0.65rem !important;
+  font-size: 0.72rem !important;
   color: var(--text-secondary) !important;
-  padding: 1px 3px !important;
+  padding: 3px 6px !important;
+  min-width: 60px !important;
 }
 
 .custom-css-ticket-tags .MuiChip-root {
-  height: 18px !important;
-  font-size: 0.60rem !important;
+  height: 22px !important;
+  font-size: 0.65rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.02em !important;
-  border-radius: 4px !important;
-  padding: 0 4px !important;
+  border-radius: 6px !important;
+  padding: 0 6px 0 8px !important;
   border: none !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 2px !important;
-  margin: 1px 0 !important;
-  transition: transform 0.15s ease !important;
+  gap: 4px !important;
+  margin: 2px 3px !important;
+  transition: all 0.15s ease !important;
 }
 
 .custom-css-ticket-tags .MuiChip-root:hover {
   transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12) !important;
 }
 
 .custom-css-ticket-tags .MuiChip-label {
   padding-left: 2px !important;
-  padding-right: 2px !important;
+  padding-right: 4px !important;
   text-transform: uppercase !important;
-  font-size: 0.60rem !important;
+  font-size: 0.64rem !important;
   line-height: 1 !important;
 }
 
 .custom-css-ticket-tags .MuiChip-deleteIcon {
-  width: 11px !important;
-  height: 11px !important;
-  margin: 0 !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 0 0 2px !important;
   color: rgba(255, 255, 255, 0.85) !important;
-  transition: opacity 0.15s ease !important;
+  transition: all 0.15s ease !important;
 }
 
 .custom-css-ticket-tags .MuiChip-deleteIcon:hover {
   color: #ffffff !important;
+  transform: scale(1.15);
   opacity: 1 !important;
 }
 
@@ -1476,11 +1530,12 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
   background-color: var(--composer-bg) !important;
   border-top: 1px solid var(--divider-subtle) !important;
   padding: 8px 14px !important;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   margin-top: auto !important;
   margin-bottom: 0 !important;
-  position: sticky !important;
+  position: relative !important;
   bottom: 0 !important;
   z-index: 10 !important;
   width: 100% !important;
@@ -1528,4 +1583,55 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
   box-shadow: var(--shadow-md) !important;
   padding: 6px 10px !important;
   bottom: 64px !important;
+}
+
+/* ==========================================================================
+   7. MOBILE & PWA OPTIMIZATIONS (100% ALTURA / ZERO ESPAÇO DE 56PX)
+   ========================================================================== */
+@media (max-width: 960px) {
+  /* Anula o desconto residual de 56px da BottomNavigation legado do WhaTicket */
+  #custom-css-atendimentos,
+  .custom-css-tickets,
+  .custom-css-ticket,
+  #drawer-container,
+  #drawer-container > .MuiPaper-root,
+  .custom-css-ticket > .MuiPaper-root,
+  .custom-css-ticket.MuiPaper-root,
+  div[class*="mainPaper"],
+  div[class*="chatContainer"],
+  div[class*="mainContainer"],
+  div[class*="messagesListWrapper"],
+  .MuiGrid-root.MuiGrid-item:has(.custom-css-ticket),
+  .MuiGrid-root.MuiGrid-item:has(#drawer-container) {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    bottom: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  /* Garante que o container de mensagens preencha toda a área restante e role suavemente */
+  .custom-css-messages,
+  #messagesList {
+    flex: 1 1 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 8px !important;
+  }
+
+  /* Composer colado no final absoluto do container, sem vão cinza */
+  .custom-css-composer,
+  .custom-css-composer.MuiPaper-root {
+    position: relative !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }

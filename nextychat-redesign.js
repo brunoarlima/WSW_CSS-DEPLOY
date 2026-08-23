@@ -288,11 +288,57 @@
   }
 
   // ----------------------------------------------------------------------------
+  // 3. CABEÇALHO DO TICKET - Alinhamento do Botão de Menu/Ações à Direita
+  // ----------------------------------------------------------------------------
+  function alignTicketHeaderMenuButton() {
+    const header = document.querySelector('.custom-css-ticket-header');
+    if (!header) return;
+
+    const cardHeader = header.querySelector('.MuiCardHeader-root');
+    if (!cardHeader) return;
+
+    let actionContainer = header.querySelector('.MuiCardHeader-action');
+    const menuBtn = header.querySelector('button:has(svg path[d*="M3 18"]), button:has(svg[data-testid*="Menu"]), button:has(svg[data-testid*="Dehaze"]), button[title="Ações"], button[aria-label="Ações"]');
+
+    if (menuBtn) {
+      menuBtn.classList.add('custom-ticket-header-menu-btn');
+      if (actionContainer && menuBtn.parentElement !== actionContainer) {
+        actionContainer.appendChild(menuBtn);
+      }
+    }
+  }
+
+  // ----------------------------------------------------------------------------
+  // 4. MOBILE & PWA FIX - Elimina espaço de 56px inline do Material-UI
+  // ----------------------------------------------------------------------------
+  function fixMobileChatHeight() {
+    if (window.innerWidth > 960) return;
+
+    const ticketContainers = document.querySelectorAll(
+      '#drawer-container, .custom-css-ticket, div[class*="mainPaper"], div[class*="chatContainer"]'
+    );
+
+    ticketContainers.forEach(function (el) {
+      if (el.style.paddingBottom && el.style.paddingBottom.indexOf('56') !== -1) {
+        el.style.paddingBottom = '0px';
+      }
+      if (el.style.marginBottom && el.style.marginBottom.indexOf('56') !== -1) {
+        el.style.marginBottom = '0px';
+      }
+      if (el.style.height && el.style.height.indexOf('56') !== -1) {
+        el.style.height = '100%';
+      }
+    });
+  }
+
+  // ----------------------------------------------------------------------------
   // EVENTOS GLOBAIS E INICIALIZAÇÃO
   // ----------------------------------------------------------------------------
   function runAllInits() {
     initCustomTopbar();
     initCustomTicketActions();
+    alignTicketHeaderMenuButton();
+    fixMobileChatHeight();
   }
 
   // Fecha as gavetas ao clicar fora
@@ -315,6 +361,8 @@
       if (ticketToggle) ticketToggle.classList.remove('is-active');
     }
   });
+
+  window.addEventListener('resize', fixMobileChatHeight);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', runAllInits);
