@@ -24,9 +24,10 @@ src/
 │   ├── 04-tickets-list.css    # Toolbar, abas, busca e cards de atendimento
 │   ├── 05-ticket-header.css   # Cabeçalho do chat, ações rápidas e gaveta do ticket
 │   ├── 06-ticket-tags.css     # Abas mobile (segmented) e tags do atendimento
-│   ├── 07-chat.css            # Área de mensagens, balões in/out e notas internas
-│   ├── 08-composer.css        # Barra de digitação (input, botões, anexo)
-│   └── 09-mobile.css          # Otimizações mobile/PWA (100% altura, sem vão de 56px)
+│   ├── 07-contact-drawer.css  # Sidebar lateral do contato (docked no desktop, overlay no mobile)
+│   ├── 08-chat.css            # Área de mensagens, balões in/out e notas internas
+│   ├── 09-composer.css        # Barra de digitação (input, botões, anexo)
+│   └── 10-mobile.css          # Otimizações mobile/PWA (100% altura, sem vão de 56px)
 └── js/
     ├── 00-brand-logo.js       # SVG em alta resolução e injeção da logo
     ├── 01-topbar.js           # Organização dos ícones do topo e gaveta retrátil

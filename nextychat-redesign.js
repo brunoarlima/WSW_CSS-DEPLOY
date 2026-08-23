@@ -295,7 +295,7 @@
 
   // --- [Módulo: 03-ticket-header.js] ---
   // ============================================================================
-  // CABEÇALHO DO TICKET - Alinhamento & Limpeza de Nós Irmãos Vazios
+  // CABEÇALHO DO TICKET - Alinhamento, Limpeza & Toggle de Contato
   // ============================================================================
   
   function alignTicketHeaderMenuButton() {
@@ -324,6 +324,32 @@
           }
         });
       }
+    }
+  
+    // Toggle do Drawer de Contato ao clicar no Avatar/Cabeçalho do Ticket
+    const cardHeader = header.querySelector('.MuiCardHeader-root');
+    if (cardHeader && !cardHeader.dataset.hasToggleAttached) {
+      cardHeader.dataset.hasToggleAttached = 'true';
+      cardHeader.addEventListener('click', function () {
+        const drawer = document.querySelector('.custom-css-contact-drawer');
+        if (!drawer) return;
+  
+        const style = drawer.getAttribute('style') || '';
+        const isCurrentlyOpen = (style.indexOf('transform: none') !== -1 || style.indexOf('translateX(0') !== -1) &&
+                                style.indexOf('visibility: hidden') === -1 &&
+                                style.indexOf('translateX(440px)') === -1 &&
+                                style.indexOf('translateX(320px)') === -1;
+  
+        // Se já estiver aberto, fecha clicando no botão de fechar do drawer
+        if (isCurrentlyOpen) {
+          const closeBtn = document.querySelector('.contact-drawer-header button');
+          if (closeBtn) {
+            setTimeout(function () {
+              closeBtn.click();
+            }, 10);
+          }
+        }
+      });
     }
   }
 
@@ -382,12 +408,32 @@
   // EVENTOS GLOBAIS E INICIALIZAÇÃO
   // ============================================================================
   
+  function syncContactDrawerDesktop() {
+    if (window.innerWidth <= 960) return;
+    const drawerContainer = document.getElementById('drawer-container');
+    const contactDrawer = document.querySelector('.custom-css-contact-drawer');
+    if (!drawerContainer || !contactDrawer) return;
+  
+    const style = contactDrawer.getAttribute('style') || '';
+    const isClosed = style.indexOf('visibility: hidden') !== -1 ||
+                     style.indexOf('translateX(440px)') !== -1 ||
+                     style.indexOf('translateX(320px)') !== -1;
+  
+    if (!isClosed) {
+      drawerContainer.classList.add('contact-drawer-open');
+    } else {
+      drawerContainer.classList.remove('contact-drawer-open');
+    }
+  }
+  
   function runAllInits() {
     initCustomTopbar();
     initCustomTicketActions();
     alignTicketHeaderMenuButton();
     fixMobileChatHeight();
+    syncContactDrawerDesktop();
   }
+  
   
   // Fecha as gavetas ao clicar fora
   document.addEventListener('click', function (e) {

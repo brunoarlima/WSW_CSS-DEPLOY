@@ -128,6 +128,35 @@ Este documento registra o histórico de desafios, causas-raiz, erros enfrentados
 
 ---
 
+### 🛑 Caso 10: Sidebar de Contato (Drawer) encobrindo ou espremendo o chat no Desktop
+- **Sintoma Visual / Usabilidade**: Ao abrir as informações do contato no Desktop, a área do chat sumia/ficava em branco ou o drawer sobrepunha a conversa.
+- **O que deu errado**:
+  - O Material-UI v4 implementa o drawer persistente através de transição de margem negativa (`marginRight: -320px` fechado / `marginRight: 0` aberto) em conjunto com `position: absolute; right: 0; width: 320px;` dentro de um container com `position: relative; overflow: hidden;`.
+  - Ao forçar `#drawer-container` com `flex-direction: row` e o drawer como item flexível estático, a margem nativa do MUI foi duplicada, espremendo o chat para fora da tela.
+- **Solução Definitiva**:
+  - **Desktop (`>= 961px` - Persistent Docked)**:
+    - `#drawer-container` com `position: relative !important; overflow: hidden !important;`.
+    - Deixar a classe nativa do Material-UI controlar o `contentShift` do Paper do chat suavemente.
+    - O drawer posicionado como `position: absolute !important; top: 0; right: 0; bottom: 0; width: 320px; border-left: 1px solid var(--divider-subtle);`.
+    - Desta forma, quando o drawer abre, o chat encolhe exatamente 320px para a esquerda e o drawer surge na direita, exibindo as **3 colunas simultâneas** (Lista de Tickets | Chat | Informações do Contato).
+  - **Mobile (`<= 960px` - Overlay Modal)**:
+    - O drawer assume `position: fixed !important; width: 100%; height: 100%; z-index: 1300;` para cobrir a viewport.
+
+---
+
+### 🛑 Caso 11: Desperdício de área útil vertical na sidebar de contato e falta de toggle no Avatar
+- **Sintoma Visual / Usabilidade**:
+  - A sidebar continha uma barra superior fixa de `52px` apenas para abrigar um botão `✕` e o título redundante "Informações", empurrando cards, campos e iframes embedados para baixo.
+  - O operador conseguia abrir a sidebar clicando no avatar do contato no cabeçalho do chat, mas um segundo clique não fechava a sidebar.
+- **Solução Definitiva**:
+  - **Botão Flutuante Compacto ([src/css/07-contact-drawer.css](file:///home/adminbruno/Projetos/css_wsw/src/css/07-contact-drawer.css))**:
+    - Ocultado o título redundante e transformado o botão de fechar em um botão flutuante discreto de `28x28px` no canto superior direito (`position: absolute; top: 6px; right: 6px;`).
+    - Ganho imediato de ~50px de área útil vertical no topo da sidebar.
+  - **Toggle Inteligente no Avatar ([src/js/03-ticket-header.js](file:///home/adminbruno/Projetos/css_wsw/src/js/03-ticket-header.js))**:
+    - O clique no Avatar/Nome do contato no cabeçalho agora opera como toggle: se a sidebar estiver aberta, um novo clique no avatar fecha a sidebar automaticamente.
+
+---
+
 ## 3. 💡 Armadilhas & Gotchas do Material-UI (React)
 
 1. **Classes Hash Dinâmicas (`.jss123`, `.jss849`)**:
