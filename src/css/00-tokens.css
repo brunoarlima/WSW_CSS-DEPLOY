@@ -1,0 +1,111 @@
+/**
+ * ============================================================================
+ * NEXTYCHAT - REDESIGN SAAS (DESIGN TOKENS & CORES)
+ * ============================================================================
+ */
+
+:root {
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
+
+  /* Brand */
+  --brand-primary: #1f93ff;
+  --brand-hover: #1671c6;
+  --brand-gradient: linear-gradient(135deg, #1f93ff 0%, #177de0 100%);
+  --brand-subtle: #edf5ff;
+  --brand-subtle-hover: #e2efff;
+
+  /* Superfícies */
+  --app-bg: #f4f6fb;
+  --surface-bg: #ffffff;
+  --surface-hover: #f8fafc;
+  --surface-selected: #edf5ff;
+  --divider-subtle: #eaedf2;
+
+  /* Tipografia */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-on-brand: #ffffff;
+
+  /* Badges */
+  --badge-conn-bg: #e0f2fe;
+  --badge-conn-text: #0369a1;
+  --badge-queue-bg: #f1f5f9;
+  --badge-queue-text: #334155;
+
+  /* Status */
+  --status-online: #10b981;
+  --status-danger: #ef4444;
+
+  /* Balões de Conversa */
+  --bubble-in-bg: #ffffff;
+  --bubble-in-text: #0f172a;
+  --bubble-in-border: #eaedf2;
+
+  --bubble-out-bg: #1f93ff;
+  --bubble-out-gradient: linear-gradient(135deg, #1f93ff 0%, #157fed 100%);
+  --bubble-out-text: #ffffff;
+  --bubble-out-meta: rgba(255, 255, 255, 0.88);
+
+  /* Notas Internas */
+  --note-bg: #fefce8;
+  --note-border: #fef08a;
+  --note-text: #713f12;
+
+  /* Composer (Barra de Digitação) */
+  --composer-bg: #ffffff;
+  --composer-input-bg: #f1f5f9;
+  --composer-input-focus-bg: #ffffff;
+  --composer-border: #e2e8f0;
+  --composer-text: #0f172a;
+}
+
+body[data-theme="dark"] {
+  /* Brand Dark */
+  --brand-primary: #1f93ff;
+  --brand-hover: #38a9ff;
+  --brand-gradient: linear-gradient(135deg, #1f93ff 0%, #2563eb 100%);
+  --brand-subtle: rgba(31, 147, 255, 0.15);
+  --brand-subtle-hover: rgba(31, 147, 255, 0.22);
+
+  /* Superfícies Dark */
+  --app-bg: #090e15;
+  --surface-bg: #111923;
+  --surface-hover: rgba(255, 255, 255, 0.05);
+  --surface-selected: #18283d;
+  --divider-subtle: #1e2c3d;
+
+  /* Tipografia Dark */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-on-brand: #ffffff;
+
+  /* Badges Dark */
+  --badge-conn-bg: rgba(31, 147, 255, 0.2);
+  --badge-conn-text: #38bdf8;
+  --badge-queue-bg: rgba(255, 255, 255, 0.08);
+  --badge-queue-text: #cbd5e1;
+
+  /* Balões Dark */
+  --bubble-in-bg: #192433;
+  --bubble-in-text: #f8fafc;
+  --bubble-in-border: #1e2c3d;
+
+  --bubble-out-bg: #1f93ff;
+  --bubble-out-gradient: linear-gradient(135deg, #1f93ff 0%, #2563eb 100%);
+  --bubble-out-text: #ffffff;
+  --bubble-out-meta: rgba(255, 255, 255, 0.85);
+
+  /* Notas Internas Dark */
+  --note-bg: rgba(245, 158, 11, 0.12);
+  --note-border: rgba(245, 158, 11, 0.3);
+  --note-text: #fef08a;
+
+  /* Composer Dark */
+  --composer-bg: #111923;
+  --composer-input-bg: #090e15;
+  --composer-input-focus-bg: #15202d;
+  --composer-border: #1e2c3d;
+  --composer-text: #f8fafc;
+}

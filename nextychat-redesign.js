@@ -1,13 +1,15 @@
 /**
- * NextyChat / WSW - Custom Topbar & Ticket Actions JS
- * 1. Organização e agrupamento dos ícones da Topbar (com gaveta retrátil).
- * 2. Substituição do ícone do Menu Lateral pela Logo da Marca (quando a sidebar estiver recolhida).
- * 3. Organização e agrupamento das Ações do Ticket (Resolver, Devolver, Transferir, Permitir Áudio + Gaveta Retrátil).
+ * ============================================================================
+ * NEXTYCHAT / WSW - CUSTOM JS (TOPBAR, TICKET ACTIONS & MOBILE FIXES)
+ * ARQUIVO GERADO AUTOMATICAMENTE VIA BUILD - NÃO EDITE DIRETAMENTE
+ * Edite os módulos individuais em src/js/
+ * ============================================================================
  */
 
 (function () {
   'use strict';
 
+  // --- [Módulo: 00-brand-logo.js] ---
   // ============================================================================
   // LOGO DA MARCA (SVG Completo em Alta Resolução)
   // ============================================================================
@@ -43,48 +45,14 @@
       </g>
     </svg>
   `;
-
-  // Verifica com precisão se existe um badge de notificação visível e ativo
-  function hasActiveBadge(container) {
-    if (!container) return false;
-
-    const badges = container.querySelectorAll('.MuiBadge-badge, [class*="MuiBadge-badge"]');
-    for (let i = 0; i < badges.length; i++) {
-      const badge = badges[i];
-
-      if (
-        badge.classList.contains('MuiBadge-invisible') ||
-        badge.className.indexOf('invisible') !== -1 ||
-        badge.getAttribute('aria-hidden') === 'true'
-      ) {
-        continue;
-      }
-
-      const style = window.getComputedStyle(badge);
-      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
-        continue;
-      }
-
-      const text = badge.textContent.trim();
-      if (text !== '' && text !== '0') {
-        return true;
-      }
-
-      if (badge.classList.contains('MuiBadge-dot') && style.display !== 'none') {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
+  
   // Substitui o ícone do hambúrguer pela Logo da Marca
   function setupBrandMenuLogo(appbar) {
     const menuBtn = appbar.querySelector('button[data-appbar="menu"], button[aria-label="open drawer"]');
     if (!menuBtn) return;
-
+  
     menuBtn.setAttribute('title', 'Expandir menu lateral');
-
+  
     if (!menuBtn.classList.contains('custom-brand-logo-btn')) {
       menuBtn.classList.add('custom-brand-logo-btn');
       const iconLabel = menuBtn.querySelector('.MuiIconButton-label') || menuBtn;
@@ -92,25 +60,61 @@
     }
   }
 
-  // ----------------------------------------------------------------------------
-  // 1. TOPBAR (APPBAR) - Organização de Ícones & Gaveta
-  // ----------------------------------------------------------------------------
+  // --- [Módulo: 01-topbar.js] ---
+  // ============================================================================
+  // TOPBAR (APPBAR) - Organização de Ícones & Gaveta Retrátil
+  // ============================================================================
+  
+  // Verifica com precisão se existe um badge de notificação visível e ativo
+  function hasActiveBadge(container) {
+    if (!container) return false;
+  
+    const badges = container.querySelectorAll('.MuiBadge-badge, [class*="MuiBadge-badge"]');
+    for (let i = 0; i < badges.length; i++) {
+      const badge = badges[i];
+  
+      if (
+        badge.classList.contains('MuiBadge-invisible') ||
+        badge.className.indexOf('invisible') !== -1 ||
+        badge.getAttribute('aria-hidden') === 'true'
+      ) {
+        continue;
+      }
+  
+      const style = window.getComputedStyle(badge);
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+        continue;
+      }
+  
+      const text = badge.textContent.trim();
+      if (text !== '' && text !== '0') {
+        return true;
+      }
+  
+      if (badge.classList.contains('MuiBadge-dot') && style.display !== 'none') {
+        return true;
+      }
+    }
+  
+    return false;
+  }
+  
   function initCustomTopbar() {
     const appbar = document.getElementById('custom-css-appbar') || document.querySelector('header.MuiAppBar-root');
     if (!appbar) return;
-
+  
     const toolbar = appbar.querySelector('.MuiToolbar-root') || appbar;
-
+  
     // Atualiza o botão do menu lateral para a Logo da Marca
     setupBrandMenuLogo(appbar);
-
+  
     let wrapper = document.getElementById('custom-topbar-wrapper');
     if (!wrapper) {
       wrapper = document.createElement('div');
       wrapper.id = 'custom-topbar-wrapper';
       toolbar.appendChild(wrapper);
     }
-
+  
     const ping = appbar.querySelector('[data-appbar="ping"]');
     const notifications = appbar.querySelector('button[data-appbar="notifications"]') ||
                           appbar.querySelector('button:has(svg[data-testid*="Notification"])') ||
@@ -118,13 +122,13 @@
     const user = appbar.querySelector('button[data-appbar="user"]');
     const status = appbar.querySelector('[data-icon="status"], [data-appbar="status"]') ||
                    appbar.querySelector('.custom-css-topbar-actions > :last-child');
-
+  
     let drawer = document.getElementById('custom-topbar-secondary-drawer');
     if (!drawer) {
       drawer = document.createElement('div');
       drawer.id = 'custom-topbar-secondary-drawer';
     }
-
+  
     let toggleBtn = document.getElementById('custom-topbar-toggle-btn');
     if (!toggleBtn) {
       toggleBtn = document.createElement('button');
@@ -137,30 +141,30 @@
           <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
       `;
-
+  
       toggleBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         drawer.classList.toggle('is-open');
         toggleBtn.classList.toggle('is-active');
       });
     }
-
+  
     let quickGroup = document.getElementById('custom-topbar-quick-actions');
     if (!quickGroup) {
       quickGroup = document.createElement('div');
       quickGroup.id = 'custom-topbar-quick-actions';
     }
-
+  
     // Move itens principais
     if (ping && ping.parentElement !== wrapper) wrapper.appendChild(ping);
     if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
     if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
     if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
-
+  
     if (notifications && notifications.parentElement !== quickGroup) quickGroup.appendChild(notifications);
     if (user && user.parentElement !== quickGroup) quickGroup.appendChild(user);
     if (status && status.parentElement !== quickGroup) quickGroup.appendChild(status);
-
+  
     // Move secundários da topbar para a gaveta
     const allButtons = appbar.querySelectorAll('button.MuiIconButton-root, button[data-appbar]');
     allButtons.forEach(function (btn) {
@@ -175,12 +179,12 @@
       ) {
         return;
       }
-
+  
       if (btn.parentElement !== drawer) {
         drawer.appendChild(btn);
       }
     });
-
+  
     if (hasActiveBadge(drawer)) {
       toggleBtn.classList.add('has-badge');
     } else {
@@ -188,10 +192,12 @@
     }
   }
 
-  // ----------------------------------------------------------------------------
-  // 2. AÇÕES DO ATENDIMENTO / TICKET (Grade Condensada & Gaveta Retrátil)
+  // --- [Módulo: 02-ticket-actions.js] ---
+  // ============================================================================
+  // AÇÕES DO ATENDIMENTO / TICKET (Grade Condensada & Gaveta Retrátil)
   // Ordem: Resolver (X) -> Devolver à Fila -> Transferir -> Permitir Áudio -> [···] -> Gaveta
-  // ----------------------------------------------------------------------------
+  // ============================================================================
+  
   function getActionNodeToMove(el, actionsContainer) {
     if (!el) return null;
     let node = el;
@@ -200,33 +206,33 @@
     }
     return node && node.parentElement === actionsContainer ? node : el;
   }
-
+  
   function initCustomTicketActions() {
     const actionsContainer = document.querySelector('.custom-css-ticket-actions');
     if (!actionsContainer) return;
-
+  
     let wrapper = document.getElementById('custom-ticket-actions-wrapper');
     if (!wrapper) {
       wrapper = document.createElement('div');
       wrapper.id = 'custom-ticket-actions-wrapper';
       actionsContainer.appendChild(wrapper);
     }
-
+  
     let quickGroup = document.getElementById('custom-ticket-actions-quick');
     if (!quickGroup) {
       quickGroup = document.createElement('div');
       quickGroup.id = 'custom-ticket-actions-quick';
       wrapper.appendChild(quickGroup);
     }
-
+  
     let toggleBtn = document.getElementById('custom-ticket-actions-toggle-btn');
     let drawer = document.getElementById('custom-ticket-actions-drawer');
-
+  
     if (!drawer) {
       drawer = document.createElement('div');
       drawer.id = 'custom-ticket-actions-drawer';
     }
-
+  
     if (!toggleBtn) {
       toggleBtn = document.createElement('button');
       toggleBtn.id = 'custom-ticket-actions-toggle-btn';
@@ -238,35 +244,35 @@
           <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
       `;
-
+  
       toggleBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         drawer.classList.toggle('is-open');
         toggleBtn.classList.toggle('is-active');
       });
     }
-
+  
     if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
     if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
     if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
-
+  
     // 1. Identifica os 4 botões de Acesso Rápido na ordem solicitada:
     // 1º Resolver (X) -> 2º Devolver à Fila -> 3º Transferir -> 4º Permitir Áudio
     const resolveBtn = actionsContainer.querySelector('[data-action="resolve"]');
     const returnBtn = actionsContainer.querySelector('[data-action="return"]');
     const transferBtn = actionsContainer.querySelector('[data-action="transfer"]');
     const acceptAudioBtn = actionsContainer.querySelector('[data-action="accept-audio"]');
-
+  
     const resolveNode = getActionNodeToMove(resolveBtn, actionsContainer);
     const returnNode = getActionNodeToMove(returnBtn, actionsContainer);
     const transferNode = getActionNodeToMove(transferBtn, actionsContainer);
     const acceptAudioNode = getActionNodeToMove(acceptAudioBtn, actionsContainer);
-
+  
     if (resolveNode && resolveNode.parentElement !== quickGroup) quickGroup.appendChild(resolveNode);
     if (returnNode && returnNode.parentElement !== quickGroup) quickGroup.appendChild(returnNode);
     if (transferNode && transferNode.parentElement !== quickGroup) quickGroup.appendChild(transferNode);
     if (acceptAudioNode && acceptAudioNode.parentElement !== quickGroup) quickGroup.appendChild(acceptAudioNode);
-
+  
     // 2. Move os demais botões secundários para a gaveta do ticket
     const allActionElements = actionsContainer.querySelectorAll('[data-action]');
     allActionElements.forEach(function (el) {
@@ -279,7 +285,7 @@
       ) {
         return;
       }
-
+  
       const nodeToMove = getActionNodeToMove(el, actionsContainer);
       if (nodeToMove && nodeToMove !== wrapper && nodeToMove.parentElement !== drawer) {
         drawer.appendChild(nodeToMove);
@@ -287,19 +293,21 @@
     });
   }
 
-  // ----------------------------------------------------------------------------
-  // 3. CABEÇALHO DO TICKET - Alinhamento do Botão de Menu/Ações à Direita
-  // ----------------------------------------------------------------------------
+  // --- [Módulo: 03-ticket-header.js] ---
+  // ============================================================================
+  // CABEÇALHO DO TICKET - Alinhamento do Botão de Menu/Ações à Direita
+  // ============================================================================
+  
   function alignTicketHeaderMenuButton() {
     const header = document.querySelector('.custom-css-ticket-header');
     if (!header) return;
-
+  
     const cardHeader = header.querySelector('.MuiCardHeader-root');
     if (!cardHeader) return;
-
+  
     let actionContainer = header.querySelector('.MuiCardHeader-action');
     const menuBtn = header.querySelector('button:has(svg path[d*="M3 18"]), button:has(svg[data-testid*="Menu"]), button:has(svg[data-testid*="Dehaze"]), button[title="Ações"], button[aria-label="Ações"]');
-
+  
     if (menuBtn) {
       menuBtn.classList.add('custom-ticket-header-menu-btn');
       if (actionContainer && menuBtn.parentElement !== actionContainer) {
@@ -308,17 +316,37 @@
     }
   }
 
-  // ----------------------------------------------------------------------------
-  // 4. MOBILE & PWA FIX - Elimina espaço de 56px inline do Material-UI
-  // ----------------------------------------------------------------------------
+  // --- [Módulo: 04-mobile-fixes.js] ---
+  // ============================================================================
+  // MOBILE & PWA FIX - Elimina espaços indevidos e calcula altura 100%
+  // ============================================================================
+  
   function fixMobileChatHeight() {
     if (window.innerWidth > 960) return;
-
-    const ticketContainers = document.querySelectorAll(
-      '#drawer-container, .custom-css-ticket, div[class*="mainPaper"], div[class*="chatContainer"]'
-    );
-
-    ticketContainers.forEach(function (el) {
+  
+    // 1. Garante que o espaçador do topo fique travado em 48px
+    const mainEl = document.getElementById('custom-css-content');
+    if (mainEl && mainEl.firstElementChild) {
+      mainEl.firstElementChild.style.maxHeight = '48px';
+      mainEl.firstElementChild.style.minHeight = '48px';
+      mainEl.firstElementChild.style.height = '48px';
+      mainEl.firstElementChild.style.flex = '0 0 48px';
+    }
+  
+    // 2. Zera padding/margin de 56px em todos os containers pais e wrappers do chat
+    const selectors = [
+      '#custom-css-content',
+      '#custom-css-content > div',
+      '#custom-css-content > .MuiPaper-root',
+      '#drawer-container',
+      '.custom-css-ticket',
+      '#drawer-container > .MuiPaper-root',
+      'div[class*="mainPaper"]',
+      'div[class*="chatContainer"]',
+      'div[class*="mainContainer"]'
+    ];
+  
+    document.querySelectorAll(selectors.join(', ')).forEach(function (el) {
       if (el.style.paddingBottom && el.style.paddingBottom.indexOf('56') !== -1) {
         el.style.paddingBottom = '0px';
       }
@@ -329,18 +357,27 @@
         el.style.height = '100%';
       }
     });
+  
+    // 3. Garante que o wrapper de mensagens ocupe o espaço restante
+    const messagesWrapper = document.querySelector('#messagesList');
+    if (messagesWrapper && messagesWrapper.parentElement) {
+      messagesWrapper.parentElement.style.flex = '1 1 auto';
+      messagesWrapper.parentElement.style.minHeight = '0';
+    }
   }
 
-  // ----------------------------------------------------------------------------
+  // --- [Módulo: 05-main.js] ---
+  // ============================================================================
   // EVENTOS GLOBAIS E INICIALIZAÇÃO
-  // ----------------------------------------------------------------------------
+  // ============================================================================
+  
   function runAllInits() {
     initCustomTopbar();
     initCustomTicketActions();
     alignTicketHeaderMenuButton();
     fixMobileChatHeight();
   }
-
+  
   // Fecha as gavetas ao clicar fora
   document.addEventListener('click', function (e) {
     // Topbar
@@ -351,7 +388,7 @@
       topDrawer.classList.remove('is-open');
       if (topToggle) topToggle.classList.remove('is-active');
     }
-
+  
     // Ticket Actions
     const ticketWrapper = document.getElementById('custom-ticket-actions-wrapper');
     const ticketDrawer = document.getElementById('custom-ticket-actions-drawer');
@@ -361,20 +398,21 @@
       if (ticketToggle) ticketToggle.classList.remove('is-active');
     }
   });
-
+  
   window.addEventListener('resize', fixMobileChatHeight);
-
+  
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', runAllInits);
   } else {
     runAllInits();
   }
-
+  
   let debounceTimeout = null;
   const observer = new MutationObserver(function () {
     if (debounceTimeout) clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(runAllInits, 50);
   });
-
+  
   observer.observe(document.body, { childList: true, subtree: true });
+
 })();

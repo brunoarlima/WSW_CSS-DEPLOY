@@ -1,19 +1,18 @@
 /**
  * ============================================================================
- * NEXTYCHAT - REDESIGN SAAS (100% SEGURO & COMPATÍVEL COM MATERIAL-UI)
- * ============================================================================
- * - NUNCA altera posições estruturais (position: relative/fixed) do layout base
- * - NUNCA altera o grid nativo do Material-UI (evita quebrar telas e modais)
- * - Transforma as cores para a paleta oficial Chatwoot (Light e Dark)
- * - Balões de mensagem modernos, orgânicos e sem glow
- * - Cartões de atendimento sem bordas laterais antigas
- * - Cabeçalho do chat compacto e integrado
+ * NEXTYCHAT - REDESIGN SAAS (COMPATÍVEL COM MATERIAL-UI)
+ * ARQUIVO GERADO AUTOMATICAMENTE VIA BUILD - NÃO EDITE DIRETAMENTE
+ * Edite os módulos individuais em src/css/
  * ============================================================================
  */
 
-/* ==========================================================================
-   1. DESIGN TOKENS (SISTEMA DE CORES CHATWOOT)
-   ========================================================================== */
+/* --- [Módulo: 00-tokens.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - REDESIGN SAAS (DESIGN TOKENS & CORES)
+ * ============================================================================
+ */
+
 :root {
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
 
@@ -120,9 +119,13 @@ body[data-theme="dark"] {
   --composer-text: #f8fafc;
 }
 
-/* ==========================================================================
-   2. SCROLLBAR MINIMALISTA (SEGURA)
-   ========================================================================== */
+/* --- [Módulo: 01-base.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - SCROLLBAR & BASE
+ * ============================================================================
+ */
+
 * {
   scrollbar-width: thin !important;
   scrollbar-color: rgba(0, 0, 0, 0.1) transparent !important;
@@ -150,9 +153,13 @@ body[data-theme="dark"] *::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* ==========================================================================
-   3. TOPBAR (APPBAR) - CONDENSADA, MINIMALISTA & EXPANSÍVEL NO HOVER
-   ========================================================================== */
+/* --- [Módulo: 02-appbar.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - TOPBAR (APPBAR) & GAVETA RETRÁTIL
+ * ============================================================================
+ */
+
 #custom-css-appbar,
 header.MuiAppBar-root {
   background: var(--surface-bg) !important;
@@ -432,9 +439,12 @@ button[data-appbar="lang"] img {
   padding: 0 !important;
 }
 
-/* ==========================================================================
-   4. SIDEBAR - MENU LATERAL ESQUERDO (LARGURA EXCLUSIVA NO DESKTOP)
-   ========================================================================== */
+/* --- [Módulo: 03-sidebar.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - SIDEBAR & MENU LATERAL (EXPANDIDA & RECOLHIDA)
+ * ============================================================================
+ */
 
 /* Regras de Estrutura e Larguras (EXCLUSIVAS PARA DESKTOP) */
 @media (min-width: 961px) {
@@ -725,9 +735,13 @@ button[data-appbar="lang"] img {
   box-shadow: none !important;
 }
 
-/* ==========================================================================
-   5. PAINEL DE TICKETS & AJUSTE DE RESPIRO (CONTAINER PAI)
-   ========================================================================== */
+/* --- [Módulo: 04-tickets-list.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - PAINEL DE TICKETS & LISTAGEM (TOOLBAR, TABS, CARDS)
+ * ============================================================================
+ */
+
 /* Zera padding top, right e bottom do wrapper do Grid de forma dinâmica */
 div:has(> .MuiGrid-container),
 div:has(> div > .MuiGrid-container),
@@ -959,9 +973,13 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   display: none !important;
 }
 
-/* ==========================================================================
-   6. CONTAINER DO CHAT
-   ========================================================================== */
+/* --- [Módulo: 05-ticket-header.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - CABEÇALHO DO TICKET & AÇÕES
+ * ============================================================================
+ */
+
 .custom-css-ticket,
 #drawer-container,
 .custom-css-ticket .MuiPaper-root {
@@ -1060,12 +1078,31 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
 
 /* Força qualquer botão de menu/ações ou gaveta lateral no Header do Ticket para o canto direito */
 .custom-css-ticket-header .MuiCardHeader-action,
-.custom-css-ticket-header button.MuiIconButton-root,
-.custom-css-ticket-header .MuiCardHeader-title button,
-.custom-css-ticket-header .MuiCardHeader-content button {
+.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]),
+.custom-css-ticket-header button[title="Ações"],
+.custom-css-ticket-header button[aria-label="Ações"],
+.custom-css-ticket-header button:has(svg[title="Ações"]),
+.custom-css-ticket-header button:has(svg[data-testid*="Menu"]),
+.custom-css-ticket-header button:has(svg[data-testid*="Dehaze"]),
+.custom-css-ticket-header .custom-ticket-header-menu-btn {
   margin-left: auto !important;
   margin-right: 0 !important;
   flex-shrink: 0 !important;
+  border-radius: 8px !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-ticket-header button:hover {
+  background-color: var(--surface-hover) !important;
+  color: var(--brand-primary) !important;
 }
 
 /* Ações do Cabeçalho do Atendimento (Ticket) */
@@ -1184,70 +1221,14 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   margin: 0 !important;
 }
 
-/* ==========================================================================
-   6.1 CABEÇALHO DO TICKET & AÇÕES
-   ========================================================================== */
-.custom-css-ticket-header,
-.custom-css-ticket-header.MuiCard-root {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 10px 16px !important;
-}
+/* --- [Módulo: 06-ticket-tags.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - ABAS MOBILE & TAGS DO TICKET
+ * ============================================================================
+ */
 
-.custom-css-ticket-header .MuiCardHeader-root {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  flex: 1 1 auto !important;
-  width: 100% !important;
-  padding: 0 !important;
-}
-
-.custom-css-ticket-header .MuiCardHeader-content {
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-}
-
-.custom-css-ticket-header .MuiCardHeader-title {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  width: 100% !important;
-}
-
-/* Botão de Ações do Ticket (Alinhado Perfeitamente no Canto Direito) */
-.custom-css-ticket-header .MuiCardHeader-action,
-.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]),
-.custom-css-ticket-header button[title="Ações"],
-.custom-css-ticket-header button[aria-label="Ações"],
-.custom-css-ticket-header button:has(svg[title="Ações"]),
-.custom-css-ticket-header button:has(svg[data-testid*="Menu"]),
-.custom-css-ticket-header button:has(svg[data-testid*="Dehaze"]),
-.custom-css-ticket-header .custom-ticket-header-menu-btn {
-  margin-left: auto !important;
-  margin-right: 0 !important;
-  flex-shrink: 0 !important;
-  border-radius: 8px !important;
-  width: 36px !important;
-  height: 36px !important;
-  padding: 6px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: var(--text-secondary) !important;
-  background: transparent !important;
-  transition: all 0.18s ease !important;
-}
-
-.custom-css-ticket-header button:hover {
-  background-color: var(--surface-hover) !important;
-  color: var(--brand-primary) !important;
-}
-
-/* ==========================================================================
-   6.2 ABAS MOBILE (TICKET / ATENDIMENTOS) - SEGMENTED CONTROL MODERNO
-   ========================================================================== */
+/* 6.2 ABAS MOBILE (TICKET / ATENDIMENTOS) - SEGMENTED CONTROL MODERNO */
 .MuiBottomNavigation-root {
   background: var(--surface-hover) !important;
   border-radius: 12px !important;
@@ -1303,9 +1284,7 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* ==========================================================================
-   6.3 TAGS DO TICKET - ESPAÇAMENTO HARMONIOSO & DESIGN MODERNO
-   ========================================================================== */
+/* 6.3 TAGS DO TICKET - ESPAÇAMENTO HARMONIOSO & DESIGN MODERNO */
 .custom-css-ticket-tags,
 .custom-css-ticket-tags.MuiPaper-root {
   display: flex !important;
@@ -1375,9 +1354,13 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   opacity: 1 !important;
 }
 
-/* ==========================================================================
-   6.4 CHAT & COMPOSER (ESTRUTURA ISOLADA DO TICKET)
-   ========================================================================== */
+/* --- [Módulo: 07-chat.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - ESTRUTURA DO CHAT, BALÕES & MENSAGENS
+ * ============================================================================
+ */
+
 .custom-css-ticket,
 #drawer-container {
   display: flex !important;
@@ -1524,7 +1507,13 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
   gap: 4px !important;
 }
 
-/* Composer (Barra de Digitação Fixada no Fundo Absoluto) */
+/* --- [Módulo: 08-composer.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - COMPOSER (BARRA DE DIGITAÇÃO)
+ * ============================================================================
+ */
+
 .custom-css-composer,
 .custom-css-composer.MuiPaper-root {
   background-color: var(--composer-bg) !important;
@@ -1585,53 +1574,151 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
   bottom: 64px !important;
 }
 
-/* ==========================================================================
-   7. MOBILE & PWA OPTIMIZATIONS (100% ALTURA / ZERO ESPAÇO DE 56PX)
-   ========================================================================== */
+/* --- [Módulo: 09-mobile.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - MOBILE & PWA OPTIMIZATIONS (100% ALTURA / ZERO VÃOS)
+ * ============================================================================
+ */
+
 @media (max-width: 960px) {
-  /* Anula o desconto residual de 56px da BottomNavigation legado do WhaTicket */
-  #custom-css-atendimentos,
-  .custom-css-tickets,
-  .custom-css-ticket,
-  #drawer-container,
-  #drawer-container > .MuiPaper-root,
-  .custom-css-ticket > .MuiPaper-root,
-  .custom-css-ticket.MuiPaper-root,
-  div[class*="mainPaper"],
-  div[class*="chatContainer"],
-  div[class*="mainContainer"],
-  div[class*="messagesListWrapper"],
-  .MuiGrid-root.MuiGrid-item:has(.custom-css-ticket),
-  .MuiGrid-root.MuiGrid-item:has(#drawer-container) {
+  /* 1. Shell e Viewport Principal (100vh / 100dvh para Mobile e PWA) */
+  html,
+  body,
+  #root,
+  #custom-css-shell {
     height: 100% !important;
+    min-height: 100% !important;
     max-height: 100% !important;
-    min-height: 0 !important;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    bottom: 0 !important;
-    flex: 1 1 auto !important;
+    overflow: hidden !important;
   }
 
-  /* Garante que o container de mensagens preencha toda a área restante e role suavemente */
+  /* 2. Topbar fixa no topo */
+  #custom-css-appbar,
+  header.MuiAppBar-root {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    z-index: 1200 !important;
+  }
+
+  /* 3. Espaçador da AppBar no topo (Exatamente 48px, sem esticar) */
+  main#custom-css-content > div:first-child,
+  main#custom-css-content > div[class*="jss860"],
+  .appBarSpacer {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    flex: 0 0 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 4. Container Main (Ocupa 100% da viewport e organiza verticalmente) */
+  main#custom-css-content,
+  #custom-css-content {
+    height: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 5. Painel de Atendimentos / Tickets Manager (Ocupa todo o espaço abaixo da topbar) */
+  #custom-css-content > .MuiPaper-root,
+  #custom-css-content > div:not(:first-child) {
+    flex: 1 1 auto !important;
+    height: calc(100% - 48px) !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  /* 6. Abas Mobile (Ticket / Atendimentos no Topo) */
+  .MuiBox-root:has(> .MuiBottomNavigation-root) {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .MuiBottomNavigation-root {
+    margin: 4px 10px !important;
+    height: 38px !important;
+  }
+
+  /* 7. Container do Chat / Drawer (Flex 1 completo sem desconto de 56px) */
+  #custom-css-content .MuiBox-root:has(#drawer-container),
+  #custom-css-content .MuiBox-root:has(.custom-css-ticket),
+  #drawer-container,
+  .custom-css-ticket,
+  #drawer-container > .MuiPaper-root,
+  .custom-css-ticket > .MuiPaper-root,
+  div[class*="mainPaper"],
+  div[class*="chatContainer"] {
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  /* 8. Cabeçalho e Tags fixos no topo do chat */
+  .custom-css-ticket-header {
+    flex: 0 0 auto !important;
+  }
+
+  .custom-css-ticket-tags,
+  div:has(> .custom-css-ticket-tags) {
+    flex: 0 0 auto !important;
+  }
+
+  /* 9. Wrapper das Mensagens (Expande para ocupar todo o espaço vertical restante) */
+  div:has(> #messagesList),
+  div:has(> .custom-css-messages),
   .custom-css-messages,
   #messagesList {
     flex: 1 1 auto !important;
-    height: auto !important;
+    height: 100% !important;
     min-height: 0 !important;
     margin-bottom: 0 !important;
     padding-bottom: 8px !important;
+    overflow-y: auto !important;
   }
 
-  /* Composer colado no final absoluto do container, sem vão cinza */
+  /* 10. Composer (Fixado no rodapé absoluto) */
   .custom-css-composer,
   .custom-css-composer.MuiPaper-root {
+    flex: 0 0 auto !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
     position: relative !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    margin-top: auto !important;
-    margin-bottom: 0 !important;
     width: 100% !important;
     padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+

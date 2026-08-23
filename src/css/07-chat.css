@@ -1,0 +1,151 @@
+/**
+ * ============================================================================
+ * NEXTYCHAT - ESTRUTURA DO CHAT, BALÕES & MENSAGENS
+ * ============================================================================
+ */
+
+.custom-css-ticket,
+#drawer-container {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.custom-css-ticket > .MuiPaper-root,
+#drawer-container > .MuiPaper-root {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.custom-css-messages,
+#messagesList {
+  background-color: var(--app-bg) !important;
+  background-image: none !important;
+  padding: 10px 12px !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.message-date-divider,
+.custom-css-messages .jss399,
+.custom-css-messages .jss400 {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 20px !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  padding: 4px 14px !important;
+  margin: 14px auto !important;
+}
+
+body[data-theme="dark"] .message-date-divider,
+body[data-theme="dark"] .custom-css-messages .jss399,
+body[data-theme="dark"] .custom-css-messages .jss400 {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Balões de Mensagem Proporcionais e Sem Transbordar */
+.custom-css-msg-bubble {
+  border-radius: 18px !important;
+  padding: 10px 14px !important;
+  font-size: 0.86rem !important;
+  line-height: 1.5 !important;
+  max-width: 82% !important;
+  width: fit-content !important;
+  margin: 4px 0 !important;
+  word-break: break-word !important;
+  box-sizing: border-box !important;
+  transition: transform 0.15s ease !important;
+}
+
+.custom-css-msg-bubble[data-fromme="false"] {
+  background-color: var(--bubble-in-bg) !important;
+  color: var(--bubble-in-text) !important;
+  border: 1px solid var(--bubble-in-border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border-bottom-left-radius: 4px !important;
+  align-self: flex-start !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] {
+  background: var(--bubble-out-gradient) !important;
+  color: var(--bubble-out-text) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.22) !important;
+  border-bottom-right-radius: 4px !important;
+  align-self: flex-end !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] p,
+.custom-css-msg-bubble[data-fromme="true"] .whatsmarked {
+  color: #ffffff !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] .message-meta {
+  color: var(--bubble-out-meta) !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] .message-meta svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Nota Interna Alinhada à Direita */
+.custom-css-msg-bubble.message-internal,
+.custom-css-msg-bubble[data-media-type="internal"] {
+  background-color: var(--note-bg) !important;
+  color: var(--note-text) !important;
+  border: 1px solid var(--note-border) !important;
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
+  max-width: 82% !important;
+  width: fit-content !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-msg-bubble.message-internal b {
+  color: var(--note-text) !important;
+  font-size: 0.68rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+.custom-css-msg-bubble.message-internal p {
+  color: var(--note-text) !important;
+  margin: 3px 0 0 0 !important;
+}
+
+.message-avatar[data-avatar="none"] {
+  display: none !important;
+}
+
+.message-meta {
+  font-size: 0.66rem !important;
+  opacity: 0.85 !important;
+  margin-top: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+}

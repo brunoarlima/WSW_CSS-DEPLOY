@@ -1,0 +1,131 @@
+/**
+ * ============================================================================
+ * NEXTYCHAT - ABAS MOBILE & TAGS DO TICKET
+ * ============================================================================
+ */
+
+/* 6.2 ABAS MOBILE (TICKET / ATENDIMENTOS) - SEGMENTED CONTROL MODERNO */
+.MuiBottomNavigation-root {
+  background: var(--surface-hover) !important;
+  border-radius: 12px !important;
+  padding: 4px !important;
+  height: 42px !important;
+  margin: 6px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 4px !important;
+  border: 1px solid var(--divider-subtle) !important;
+  box-sizing: border-box !important;
+}
+
+.MuiBottomNavigationAction-root {
+  flex: 1 1 50% !important;
+  max-width: 50% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  padding: 0 8px !important;
+  border-radius: 8px !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.MuiBottomNavigationAction-root .MuiBottomNavigationAction-wrapper {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+.MuiBottomNavigationAction-root svg,
+.MuiBottomNavigationAction-root .MuiSvgIcon-root {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+}
+
+.MuiBottomNavigationAction-root .MuiBottomNavigationAction-label {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+  line-height: 1 !important;
+}
+
+.MuiBottomNavigationAction-root.Mui-selected {
+  background: var(--surface-bg) !important;
+  color: var(--brand-primary) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 6.3 TAGS DO TICKET - ESPAÇAMENTO HARMONIOSO & DESIGN MODERNO */
+.custom-css-ticket-tags,
+.custom-css-ticket-tags.MuiPaper-root {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  background-color: var(--surface-bg) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--divider-subtle) !important;
+  padding: 6px 12px !important;
+  min-height: 32px !important;
+  gap: 6px 8px !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-ticket-tags .MuiInput-underline:before,
+.custom-css-ticket-tags .MuiInput-underline:after {
+  display: none !important;
+}
+
+.custom-css-ticket-tags input {
+  font-size: 0.72rem !important;
+  color: var(--text-secondary) !important;
+  padding: 3px 6px !important;
+  min-width: 60px !important;
+}
+
+.custom-css-ticket-tags .MuiChip-root {
+  height: 22px !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  border-radius: 6px !important;
+  padding: 0 6px 0 8px !important;
+  border: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin: 2px 3px !important;
+  transition: all 0.15s ease !important;
+}
+
+.custom-css-ticket-tags .MuiChip-root:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12) !important;
+}
+
+.custom-css-ticket-tags .MuiChip-label {
+  padding-left: 2px !important;
+  padding-right: 4px !important;
+  text-transform: uppercase !important;
+  font-size: 0.64rem !important;
+  line-height: 1 !important;
+}
+
+.custom-css-ticket-tags .MuiChip-deleteIcon {
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 0 0 2px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.15s ease !important;
+}
+
+.custom-css-ticket-tags .MuiChip-deleteIcon:hover {
+  color: #ffffff !important;
+  transform: scale(1.15);
+  opacity: 1 !important;
+}

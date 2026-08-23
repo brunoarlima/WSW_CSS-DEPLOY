@@ -1,0 +1,65 @@
+/**
+ * ============================================================================
+ * NEXTYCHAT - COMPOSER (BARRA DE DIGITAÇÃO)
+ * ============================================================================
+ */
+
+.custom-css-composer,
+.custom-css-composer.MuiPaper-root {
+  background-color: var(--composer-bg) !important;
+  border-top: 1px solid var(--divider-subtle) !important;
+  padding: 8px 14px !important;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-top: auto !important;
+  margin-bottom: 0 !important;
+  position: relative !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-composer-field,
+.custom-css-composer-field[data-mode] {
+  background-color: var(--composer-input-bg) !important;
+  border: 1px solid var(--composer-border) !important;
+  border-radius: 24px !important;
+  padding: 6px 16px !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-css-composer-field:focus-within {
+  background-color: var(--composer-input-focus-bg) !important;
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px var(--brand-subtle) !important;
+}
+
+.custom-css-composer textarea {
+  color: var(--composer-text) !important;
+  font-size: 0.88rem !important;
+}
+
+.custom-css-composer button.MuiIconButton-root,
+.custom-css-composer span.MuiIconButton-root {
+  color: var(--text-secondary) !important;
+  padding: 6px !important;
+  border-radius: 50% !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-composer button.MuiIconButton-root:hover,
+.custom-css-composer span.MuiIconButton-root:hover {
+  color: var(--brand-primary) !important;
+  background-color: var(--brand-subtle) !important;
+}
+
+.custom-css-composer .jss492 {
+  background: var(--surface-bg) !important;
+  border: 1px solid var(--divider-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-md) !important;
+  padding: 6px 10px !important;
+  bottom: 64px !important;
+}
