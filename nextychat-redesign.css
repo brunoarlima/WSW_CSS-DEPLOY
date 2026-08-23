@@ -989,13 +989,13 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   border-radius: 0 !important;
 }
 
-/* Cabeçalho do Chat com respiro de 16px */
+/* Cabeçalho do Chat com respiro de 16px e alinhamento perfeito */
 .custom-css-ticket-header,
 .custom-css-ticket-header.MuiCard-root {
   background-color: var(--surface-bg) !important;
   border-bottom: 1px solid var(--divider-subtle) !important;
-  padding: 10px 16px !important;
-  min-height: 52px !important;
+  padding: 8px 16px !important;
+  min-height: 54px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -1003,15 +1003,16 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   border-radius: 0 !important;
   box-shadow: none !important;
   width: 100% !important;
+  gap: 8px !important;
+  position: relative !important;
 }
 
 .custom-css-ticket-header .MuiCardHeader-root {
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important;
   flex: 1 1 auto !important;
-  width: 100% !important;
+  max-width: calc(100% - 44px) !important;
   min-width: 0 !important;
 }
 
@@ -1021,8 +1022,8 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
 }
 
 .custom-css-ticket-header .MuiAvatar-root {
-  width: 36px !important;
-  height: 36px !important;
+  width: 38px !important;
+  height: 38px !important;
   border-radius: 50% !important;
   border: none !important;
   box-shadow: none !important;
@@ -1034,14 +1035,15 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
+  overflow: hidden !important;
 }
 
 .custom-css-ticket-header .MuiCardHeader-title {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important;
   width: 100% !important;
-  gap: 8px !important;
+  gap: 6px !important;
+  overflow: hidden !important;
 }
 
 .custom-css-ticket-header .ticket-title-name {
@@ -1076,33 +1078,245 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   width: fit-content !important;
 }
 
-/* Força qualquer botão de menu/ações ou gaveta lateral no Header do Ticket para o canto direito */
-.custom-css-ticket-header .MuiCardHeader-action,
-.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]),
-.custom-css-ticket-header button[title="Ações"],
-.custom-css-ticket-header button[aria-label="Ações"],
-.custom-css-ticket-header button:has(svg[title="Ações"]),
-.custom-css-ticket-header button:has(svg[data-testid*="Menu"]),
-.custom-css-ticket-header button:has(svg[data-testid*="Dehaze"]),
-.custom-css-ticket-header .custom-ticket-header-menu-btn {
+/* Oculta divs vazias fantasmas no header */
+.custom-css-ticket-header > div:empty {
+  display: none !important;
+}
+
+/* Container do Botão de Menu/Ações (Colado no extremo canto direito, sem largura residual) */
+.custom-css-ticket-header div:has(> .custom-ticket-header-menu-btn),
+.custom-css-ticket-header div:has(> button:has(svg path[d*="M3 18"])),
+.custom-css-ticket-header .MuiCardHeader-action {
   margin-left: auto !important;
   margin-right: 0 !important;
-  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: 40px !important;
+}
+
+/* Oculta TODAS as divs/elementos irmãos vazios dentro do container de ações */
+.custom-css-ticket-header div:has(> .custom-ticket-header-menu-btn) > div,
+.custom-css-ticket-header div:has(> .custom-ticket-header-menu-btn) > *:not(button),
+.custom-css-ticket-header div:has(> button:has(svg path[d*="M3 18"])) > div,
+.custom-css-ticket-header div:has(> button:has(svg path[d*="M3 18"])) > *:not(button) {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Botão dos 3 Pontinhos Moderno no Cabeçalho */
+.custom-ticket-header-menu-btn,
+.custom-css-ticket-header button.custom-ticket-header-menu-btn,
+.custom-css-ticket-header button:has(svg path[d*="M3 18"]),
+.custom-css-ticket-header button[title="Ações"],
+.custom-css-ticket-header button[aria-label="Ações"] {
+  background-color: var(--surface-bg) !important;
+  border: 1px solid var(--divider-subtle) !important;
   border-radius: 8px !important;
-  width: 36px !important;
-  height: 36px !important;
-  padding: 6px !important;
+  color: var(--text-secondary) !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  color: var(--text-secondary) !important;
-  background: transparent !important;
-  transition: all 0.18s ease !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
 }
 
-.custom-css-ticket-header button:hover {
+.custom-ticket-header-menu-btn:hover,
+.custom-ticket-header-menu-btn:focus,
+.custom-css-ticket-header button.custom-ticket-header-menu-btn:hover,
+.custom-css-ticket-header button:has(svg path[d*="M3 18"]):hover {
+  background-color: var(--surface-hover) !important;
+  border-color: var(--brand-primary) !important;
+  color: var(--brand-primary) !important;
+  box-shadow: 0 2px 6px rgba(31, 147, 255, 0.18) !important;
+}
+
+/* Oculta o SVG antigo e injeta os 3 pontinhos modernos com máscara SVG CSS pura (imune a re-renders do React) */
+.custom-ticket-header-menu-btn svg,
+.custom-css-ticket-header button:has(svg path[d*="M3 18"]) svg {
+  display: none !important;
+}
+
+.custom-ticket-header-menu-btn .MuiIconButton-label::before,
+.custom-css-ticket-header button:has(svg path[d*="M3 18"]) .MuiIconButton-label::before {
+  content: "" !important;
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  background-color: var(--text-secondary) !important;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.custom-ticket-header-menu-btn:hover .MuiIconButton-label::before,
+.custom-css-ticket-header button:has(svg path[d*="M3 18"]):hover .MuiIconButton-label::before {
+  background-color: var(--brand-primary) !important;
+}
+
+/* ============================================================================
+ * POPOVER / MENU DROPDOWN DE AÇÕES DO TICKET (MOBILE & DROPDOWN)
+ * ============================================================================ */
+.custom-css-ticket-actions-menu,
+.MuiMenu-paper.custom-css-ticket-actions-menu,
+.MuiPopover-paper:has([data-action]),
+.MuiMenu-paper:has([data-action]) {
+  background-color: var(--surface-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--divider-subtle) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  padding: 6px 4px !important;
+  min-width: 46px !important;
+  width: auto !important;
+  overflow: hidden !important;
+  margin-top: 8px !important;
+}
+
+@media (max-width: 960px) {
+  .custom-css-ticket-actions-menu,
+  .MuiMenu-paper.custom-css-ticket-actions-menu,
+  .MuiPopover-paper:has([data-action]),
+  .MuiMenu-paper:has([data-action]) {
+    top: 150px !important;
+  }
+}
+
+.custom-css-ticket-actions-menu .MuiMenu-list,
+.MuiPopover-paper:has([data-action]) .MuiMenu-list,
+.MuiMenu-paper:has([data-action]) .MuiMenu-list {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  padding: 2px !important;
+}
+
+.custom-css-ticket-actions-menu .MuiMenuItem-root,
+.MuiPopover-paper:has([data-action]) .MuiMenuItem-root,
+.MuiMenu-paper:has([data-action]) .MuiMenuItem-root {
+  width: 38px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.custom-css-ticket-actions-menu .MuiMenuItem-root:hover,
+.MuiPopover-paper:has([data-action]) .MuiMenuItem-root:hover,
+.MuiMenu-paper:has([data-action]) .MuiMenuItem-root:hover {
   background-color: var(--surface-hover) !important;
   color: var(--brand-primary) !important;
+  transform: scale(1.08);
+}
+
+.custom-css-ticket-actions-menu button.MuiIconButton-root,
+.MuiPopover-paper:has([data-action]) button.MuiIconButton-root,
+.MuiMenu-paper:has([data-action]) button.MuiIconButton-root {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  color: inherit !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-css-ticket-actions-menu svg,
+.MuiPopover-paper:has([data-action]) svg,
+.MuiMenu-paper:has([data-action]) svg {
+  font-size: 1.25rem !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: currentColor !important;
+  fill: currentColor !important;
+  transition: transform 0.15s ease !important;
+}
+
+/* Cores contextuais no hover para ações específicas */
+.custom-css-ticket-actions-menu .MuiMenuItem-root:has([data-action="resolve"]):hover,
+.MuiPopover-paper:has([data-action]) .MuiMenuItem-root:has([data-action="resolve"]):hover,
+.custom-css-ticket-actions button[data-action="resolve"]:hover {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+}
+
+.custom-css-ticket-actions-menu .MuiMenuItem-root:has([data-action="return"]):hover,
+.MuiPopover-paper:has([data-action]) .MuiMenuItem-root:has([data-action="return"]):hover {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+  color: #f59e0b !important;
+}
+
+.custom-css-ticket-actions-menu .MuiMenuItem-root:has([data-action="transfer"]):hover,
+.MuiPopover-paper:has([data-action]) .MuiMenuItem-root:has([data-action="transfer"]):hover {
+  background-color: rgba(31, 147, 255, 0.12) !important;
+  color: var(--brand-primary) !important;
+}
+
+.custom-css-ticket-actions-menu .MuiMenuItem-root:has([data-action="delete"]):hover,
+.MuiPopover-paper:has([data-action]) .MuiMenuItem-root:has([data-action="delete"]):hover {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  color: #ef4444 !important;
+}
+
+
+/* Switch de áudio dentro do Menu Popover */
+.custom-css-ticket-actions-menu .MuiSwitch-root,
+.MuiPopover-paper:has([data-action]) .MuiSwitch-root,
+.MuiMenu-paper:has([data-action]) .MuiSwitch-root {
+  width: 32px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-css-ticket-actions-menu .MuiSwitch-switchBase,
+.MuiPopover-paper:has([data-action]) .MuiSwitch-switchBase {
+  padding: 2px !important;
+}
+
+.custom-css-ticket-actions-menu .MuiSwitch-thumb,
+.MuiPopover-paper:has([data-action]) .MuiSwitch-thumb {
+  width: 16px !important;
+  height: 16px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.custom-css-ticket-actions-menu .MuiSwitch-track,
+.MuiPopover-paper:has([data-action]) .MuiSwitch-track {
+  border-radius: 10px !important;
+  opacity: 0.3 !important;
 }
 
 /* Ações do Cabeçalho do Atendimento (Ticket) */
@@ -1352,6 +1566,21 @@ div:has(> .MuiGrid-root.MuiGrid-container) {
   color: #ffffff !important;
   transform: scale(1.15);
   opacity: 1 !important;
+}
+
+/* Oculta completamente o botão de limpar todas as tags de uma vez (Clear Indicator) */
+.custom-css-ticket-tags .MuiAutocomplete-clearIndicator,
+.custom-css-ticket-tags .MuiAutocomplete-endAdornment,
+.custom-css-ticket-tags button[aria-label="Clear"],
+.custom-css-ticket-tags button[title="Clear"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* --- [Módulo: 07-chat.css] --- */

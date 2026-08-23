@@ -129,3 +129,19 @@
   transform: scale(1.15);
   opacity: 1 !important;
 }
+
+/* Oculta completamente o botão de limpar todas as tags de uma vez (Clear Indicator) */
+.custom-css-ticket-tags .MuiAutocomplete-clearIndicator,
+.custom-css-ticket-tags .MuiAutocomplete-endAdornment,
+.custom-css-ticket-tags button[aria-label="Clear"],
+.custom-css-ticket-tags button[title="Clear"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+

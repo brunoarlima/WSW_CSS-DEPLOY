@@ -53,3 +53,12 @@ src/
 - **Material-UI Safe**: Nunca alterar posições estruturais globais que possam quebrar modais ou grids nativos do Material-UI.
 - **Tokens de Cor**: Utilizar as variáveis definidas em `00-tokens.css` (paleta Chatwoot Light e Dark).
 - **Mobile & PWA**: Garantir `height: 100%` com `flex: 1 1 auto` e `env(safe-area-inset-bottom)` para evitar que sobrem espaços vazios (como a antiga reserva de 56px da BottomNavigation).
+
+---
+
+## 5. Base de Conhecimento & Gotchas
+
+Consulte o arquivo [APRENDIZADOS-E-DIRETRIZES.md](./APRENDIZADOS-E-DIRETRIZES.md) para o catálogo completo de:
+- Erros enfrentados e causas-raiz (ex: vãos no mobile, appBarSpacers do Material-UI, classes `.jss` dinâmicas).
+- Soluções definitivas e comportamentos específicos do React/MUI v4.
+
