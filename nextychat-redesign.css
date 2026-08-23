@@ -1,0 +1,1531 @@
+/**
+ * ============================================================================
+ * NEXTYCHAT - REDESIGN SAAS (100% SEGURO & COMPATÍVEL COM MATERIAL-UI)
+ * ============================================================================
+ * - NUNCA altera posições estruturais (position: relative/fixed) do layout base
+ * - NUNCA altera o grid nativo do Material-UI (evita quebrar telas e modais)
+ * - Transforma as cores para a paleta oficial Chatwoot (Light e Dark)
+ * - Balões de mensagem modernos, orgânicos e sem glow
+ * - Cartões de atendimento sem bordas laterais antigas
+ * - Cabeçalho do chat compacto e integrado
+ * ============================================================================
+ */
+
+/* ==========================================================================
+   1. DESIGN TOKENS (SISTEMA DE CORES CHATWOOT)
+   ========================================================================== */
+:root {
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
+
+  /* Brand */
+  --brand-primary: #1f93ff;
+  --brand-hover: #1671c6;
+  --brand-gradient: linear-gradient(135deg, #1f93ff 0%, #177de0 100%);
+  --brand-subtle: #edf5ff;
+  --brand-subtle-hover: #e2efff;
+
+  /* Superfícies */
+  --app-bg: #f4f6fb;
+  --surface-bg: #ffffff;
+  --surface-hover: #f8fafc;
+  --surface-selected: #edf5ff;
+  --divider-subtle: #eaedf2;
+
+  /* Tipografia */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-on-brand: #ffffff;
+
+  /* Badges */
+  --badge-conn-bg: #e0f2fe;
+  --badge-conn-text: #0369a1;
+  --badge-queue-bg: #f1f5f9;
+  --badge-queue-text: #334155;
+
+  /* Status */
+  --status-online: #10b981;
+  --status-danger: #ef4444;
+
+  /* Balões de Conversa */
+  --bubble-in-bg: #ffffff;
+  --bubble-in-text: #0f172a;
+  --bubble-in-border: #eaedf2;
+
+  --bubble-out-bg: #1f93ff;
+  --bubble-out-gradient: linear-gradient(135deg, #1f93ff 0%, #157fed 100%);
+  --bubble-out-text: #ffffff;
+  --bubble-out-meta: rgba(255, 255, 255, 0.88);
+
+  /* Notas Internas */
+  --note-bg: #fefce8;
+  --note-border: #fef08a;
+  --note-text: #713f12;
+
+  /* Composer (Barra de Digitação) */
+  --composer-bg: #ffffff;
+  --composer-input-bg: #f1f5f9;
+  --composer-input-focus-bg: #ffffff;
+  --composer-border: #e2e8f0;
+  --composer-text: #0f172a;
+}
+
+body[data-theme="dark"] {
+  /* Brand Dark */
+  --brand-primary: #1f93ff;
+  --brand-hover: #38a9ff;
+  --brand-gradient: linear-gradient(135deg, #1f93ff 0%, #2563eb 100%);
+  --brand-subtle: rgba(31, 147, 255, 0.15);
+  --brand-subtle-hover: rgba(31, 147, 255, 0.22);
+
+  /* Superfícies Dark */
+  --app-bg: #090e15;
+  --surface-bg: #111923;
+  --surface-hover: rgba(255, 255, 255, 0.05);
+  --surface-selected: #18283d;
+  --divider-subtle: #1e2c3d;
+
+  /* Tipografia Dark */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-on-brand: #ffffff;
+
+  /* Badges Dark */
+  --badge-conn-bg: rgba(31, 147, 255, 0.2);
+  --badge-conn-text: #38bdf8;
+  --badge-queue-bg: rgba(255, 255, 255, 0.08);
+  --badge-queue-text: #cbd5e1;
+
+  /* Balões Dark */
+  --bubble-in-bg: #192433;
+  --bubble-in-text: #f8fafc;
+  --bubble-in-border: #1e2c3d;
+
+  --bubble-out-bg: #1f93ff;
+  --bubble-out-gradient: linear-gradient(135deg, #1f93ff 0%, #2563eb 100%);
+  --bubble-out-text: #ffffff;
+  --bubble-out-meta: rgba(255, 255, 255, 0.85);
+
+  /* Notas Internas Dark */
+  --note-bg: rgba(245, 158, 11, 0.12);
+  --note-border: rgba(245, 158, 11, 0.3);
+  --note-text: #fef08a;
+
+  /* Composer Dark */
+  --composer-bg: #111923;
+  --composer-input-bg: #090e15;
+  --composer-input-focus-bg: #15202d;
+  --composer-border: #1e2c3d;
+  --composer-text: #f8fafc;
+}
+
+/* ==========================================================================
+   2. SCROLLBAR MINIMALISTA (SEGURA)
+   ========================================================================== */
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent !important;
+}
+
+body[data-theme="dark"] * {
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent !important;
+}
+
+*::-webkit-scrollbar {
+  width: 4px !important;
+  height: 4px !important;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-radius: 10px !important;
+}
+
+body[data-theme="dark"] *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ==========================================================================
+   3. TOPBAR (APPBAR) - CONDENSADA, MINIMALISTA & EXPANSÍVEL NO HOVER
+   ========================================================================== */
+#custom-css-appbar,
+header.MuiAppBar-root {
+  background: var(--surface-bg) !important;
+  border-bottom: 1px solid var(--divider-subtle) !important;
+  box-shadow: none !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.2s ease !important;
+}
+
+#custom-css-appbar .MuiToolbar-root {
+  background: transparent !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.custom-css-greeting,
+#custom-css-appbar h2.MuiTypography-root {
+  color: var(--text-primary) !important;
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  align-self: center !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  gap: 6px !important;
+}
+
+.custom-css-greeting-name {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+.custom-css-greeting-company {
+  background: var(--brand-subtle) !important;
+  color: var(--brand-primary) !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  display: inline-block !important;
+}
+
+/* 1. Indicador de Ping Limpo & Compacto */
+[data-appbar="ping"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: var(--surface-hover) !important;
+  border: 1px solid var(--divider-subtle) !important;
+  padding: 3px 10px !important;
+  border-radius: 14px !important;
+  margin: 0 6px 0 0 !important;
+  flex-shrink: 0 !important;
+}
+
+[data-appbar="ping"] svg {
+  display: none !important; /* Remove ícone de wifi pesado */
+}
+
+[data-appbar="ping"] > div:not(:first-child),
+[data-appbar="ping"] [class*="jss1031"],
+[data-appbar="ping"] .jss709 {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background-color: var(--status-online) !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+}
+
+[data-appbar="ping"] span {
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+}
+
+#custom-css-appbar button.MuiIconButton-root:not([data-appbar="menu"]):not([aria-label="open drawer"]),
+#custom-css-appbar button[data-appbar]:not([data-appbar="menu"]):not([aria-label="open drawer"]) {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  margin: 0 1px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  transition: all 0.15s ease !important;
+}
+
+/* Botão da Logo da Marca (Aparece somente quando a Sidebar estiver recolhida - Sem Encaixotamento) */
+#custom-css-appbar button[data-appbar="menu"],
+#custom-css-appbar button[aria-label="open drawer"],
+.custom-brand-logo-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  padding: 0 !important;
+  margin: 0 14px 0 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  top: 0 !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+
+.custom-brand-logo-btn .MuiIconButton-label,
+#custom-css-appbar button[data-appbar="menu"] .MuiIconButton-label {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-brand-logo-btn svg,
+#custom-css-appbar button[data-appbar="menu"] svg {
+  width: 34px !important;
+  height: 34px !important;
+  display: block !important;
+  margin: auto !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.custom-brand-logo-btn:hover svg,
+#custom-css-appbar button[data-appbar="menu"]:hover svg {
+  transform: scale(1.08);
+}
+
+.custom-brand-logo-btn:hover {
+  background: transparent !important;
+  opacity: 0.9;
+}
+
+/* Oculta o botão da Topbar quando a sidebar estiver ABERTA (APENAS NO DESKTOP) */
+@media (min-width: 961px) {
+  body:not(:has(.custom-css-sidebar[data-collapsed="true"])) #custom-css-appbar button[data-appbar="menu"],
+  body:not(:has(.custom-css-sidebar[data-collapsed="true"])) #custom-css-appbar button[aria-label="open drawer"],
+  body:not(:has([data-collapsed="true"])) .custom-brand-logo-btn {
+    display: none !important;
+  }
+}
+
+#custom-css-appbar button.MuiIconButton-root:hover,
+#custom-css-appbar button[data-appbar]:hover {
+  background: var(--surface-hover) !important;
+  color: var(--brand-primary) !important;
+}
+
+#custom-css-appbar button svg,
+#custom-css-appbar .MuiSvgIcon-root {
+  color: currentColor !important;
+  fill: currentColor !important;
+  font-size: 1.15rem !important;
+}
+
+/* 3. Topbar Customizada via JS (Estrutura Estável & Gaveta Retrátil) */
+#custom-topbar-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: auto !important;
+  gap: 6px !important;
+}
+
+/* Grupo dos 4 Botões Rápidos: Ping -> Reload -> Perfil -> Status */
+#custom-topbar-quick-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* Botão Toggle (···) */
+#custom-topbar-toggle-btn {
+  background: transparent !important;
+  border: 1px solid var(--divider-subtle) !important;
+  border-radius: 8px !important;
+  color: var(--text-secondary) !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+}
+
+#custom-topbar-toggle-btn:hover,
+#custom-topbar-toggle-btn.is-active {
+  background: var(--surface-hover) !important;
+  border-color: var(--brand-primary) !important;
+  color: var(--brand-primary) !important;
+}
+
+/* Indicador se houver notificação não lida dentro da gaveta fechada */
+#custom-topbar-toggle-btn.has-badge {
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+#custom-topbar-toggle-btn.has-badge::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background-color: #ef4444 !important;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7) !important;
+  animation: topbarBadgePulse 2s infinite !important;
+}
+
+@keyframes topbarBadgePulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 5px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* Gaveta dos Ícones Secundários */
+#custom-topbar-secondary-drawer {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  max-width: 0 !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  transform: translateX(8px);
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, transform 0.25s ease !important;
+}
+
+/* Quando a gaveta for aberta pelo clique no botão */
+#custom-topbar-secondary-drawer.is-open {
+  max-width: 380px !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateX(0);
+}
+
+button[data-appbar="lang"] img {
+  width: 16px !important;
+  height: 12px !important;
+  border-radius: 2px !important;
+  object-fit: cover !important;
+}
+
+/* Ponto de Status Online */
+#custom-css-appbar .custom-css-topbar-actions button {
+  padding: 0 !important;
+}
+
+/* ==========================================================================
+   4. SIDEBAR - MENU LATERAL ESQUERDO (LARGURA EXCLUSIVA NO DESKTOP)
+   ========================================================================== */
+
+/* Regras de Estrutura e Larguras (EXCLUSIVAS PARA DESKTOP) */
+@media (min-width: 961px) {
+  /* Variáveis Dinâmicas de Largura da Sidebar */
+  body:not(:has(.custom-css-sidebar[data-collapsed="true"])) {
+    --current-sidebar-w: 260px;
+  }
+
+  body:has(.custom-css-sidebar[data-collapsed="true"]) {
+    --current-sidebar-w: 64px;
+  }
+
+  /* 1. Sidebar Esquerda e seu Elemento Pai .MuiDrawer-docked */
+  div.MuiDrawer-docked:has(> .custom-css-sidebar),
+  div.MuiDrawer-docked:has(> .MuiDrawer-paperAnchorDockedLeft),
+  .custom-css-sidebar,
+  .MuiDrawer-paperAnchorDockedLeft.custom-css-sidebar {
+    background-color: #f4f6fb !important;
+    font-family: var(--font-family) !important;
+    border-right: 1px solid var(--divider-subtle) !important;
+    box-shadow: none !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    width: var(--current-sidebar-w) !important;
+    min-width: var(--current-sidebar-w) !important;
+    max-width: var(--current-sidebar-w) !important;
+    flex-basis: var(--current-sidebar-w) !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Garante que o Drawer de Contato da Direita (.custom-css-contact-drawer) NUNCA seja afetado */
+  div.MuiDrawer-docked:has(> .custom-css-contact-drawer),
+  div.MuiDrawer-docked:has(> .MuiDrawer-paperAnchorDockedRight),
+  .custom-css-contact-drawer,
+  .MuiDrawer-paperAnchorDockedRight {
+    flex-basis: auto !important;
+    min-width: unset !important;
+    max-width: unset !important;
+  }
+
+  /* 2. Topbar / AppBar - Desktop (Aberta: 260px vs Recolhida: 100%) */
+  body:not(:has(.custom-css-sidebar[data-collapsed="true"])) #custom-css-appbar,
+  body:not(:has(.custom-css-sidebar[data-collapsed="true"])) header.MuiAppBar-root {
+    width: calc(100% - 260px) !important;
+    left: 260px !important;
+    margin-left: 0 !important;
+    right: 0 !important;
+  }
+
+  body:has(.custom-css-sidebar[data-collapsed="true"]) #custom-css-appbar,
+  body:has(.custom-css-sidebar[data-collapsed="true"]) header.MuiAppBar-root {
+    width: 100% !important;
+    left: 0 !important;
+    margin-left: 0 !important;
+    right: 0 !important;
+    z-index: 1201 !important;
+  }
+
+  /* 3. Área Principal (Main / Tickets / Chat) */
+  main,
+  div.MuiDrawer-docked:has(> .custom-css-sidebar) ~ main,
+  div.MuiDrawer-docked:has(> .custom-css-sidebar) + main,
+  div.MuiDrawer-docked:has(> .custom-css-sidebar) ~ div:not(.MuiDrawer-paper):not(.MuiBackdrop-root):not(#custom-css-appbar):not(header) {
+    margin-left: 0 !important;
+  }
+
+  .custom-css-page,
+  div:has(> .MuiGrid-container) {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Oculta completamente a scrollbar visual da sidebar */
+.custom-css-sidebar::-webkit-scrollbar,
+.custom-css-sidebar *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Quando recolhida, oculta o topo da sidebar para não ficar espremido */
+.custom-css-sidebar[data-collapsed="true"] .custom-css-logo,
+.custom-css-sidebar[data-collapsed="true"] > div:first-child,
+.MuiDrawer-paper[data-collapsed="true"] > div:first-child,
+[data-collapsed="true"] .custom-css-logo {
+  display: none !important;
+}
+
+/* Topo da Sidebar (Logo Limpa, Sem Linhas em Baixo) */
+.custom-css-logo,
+.custom-css-sidebar .MuiDrawer-paper > div:first-child {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove linhas divisórias desnecessárias abaixo da logo */
+.custom-css-sidebar hr:first-of-type,
+.custom-css-sidebar .MuiDivider-root:first-of-type,
+.custom-css-sidebar .MuiList-root > hr:first-child,
+.custom-css-sidebar .MuiList-root > .MuiDivider-root:first-child,
+.custom-css-logo + hr,
+.custom-css-logo + .MuiDivider-root {
+  display: none !important;
+}
+
+/* Títulos das Seções (PRINCIPAL, CHATS, FERRAMENTAS, APPS) */
+.custom-css-sidebar .MuiListSubheader-root,
+.custom-css-sidebar [class*="MuiListSubheader"],
+.custom-css-sidebar .custom-css-menu-group-title {
+  background: transparent !important;
+  color: #8c9ba5 !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 16px 14px 6px 14px !important;
+  line-height: 1 !important;
+}
+
+/* Linhas Divisórias Suaves e Elegantes */
+.custom-css-sidebar hr,
+.custom-css-sidebar .MuiDivider-root {
+  border: none !important;
+  height: 1px !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  margin: 8px 12px !important;
+}
+
+/* Itens do Menu na Sidebar Aberta */
+.custom-css-sidebar:not([data-collapsed="true"]) .custom-css-menu-item,
+.custom-css-sidebar:not([data-collapsed="true"]) .custom-css-menu-group,
+.custom-css-sidebar:not([data-collapsed="true"]) .MuiListItem-button,
+.MuiDrawer-paper:not([data-collapsed="true"]) .MuiListItem-button {
+  margin: 3px 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 10px !important;
+  width: calc(100% - 20px) !important;
+  box-sizing: border-box !important;
+  color: var(--text-secondary) !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-sidebar .custom-css-menu-item .MuiListItemText-primary,
+.custom-css-sidebar .custom-css-menu-group .MuiListItemText-primary {
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+  color: inherit !important;
+}
+
+/* Ícone do Item do Menu */
+.custom-css-sidebar .custom-css-icon,
+.MuiDrawer-paper .MuiListItemIcon-root {
+  min-width: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin-right: 10px !important;
+  color: var(--text-secondary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  border: none !important;
+  transition: all 0.18s ease !important;
+}
+
+/* Hover no Item do Menu */
+.custom-css-sidebar .custom-css-menu-item:hover,
+.MuiDrawer-paper .MuiListItem-button:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  color: var(--text-primary) !important;
+  border-radius: 10px !important;
+}
+
+.custom-css-sidebar .custom-css-menu-item:hover .custom-css-icon,
+.MuiDrawer-paper .MuiListItem-button:hover .MuiListItemIcon-root {
+  color: var(--brand-primary) !important;
+}
+
+/* Item Ativo (100% Arredondado em Todos os 4 Cantos, Sem Ângulos Retos e Sem Bordas Laterais) */
+.custom-css-sidebar .custom-css-menu-item[data-active="true"],
+.MuiDrawer-paper .MuiListItem-button.Mui-selected {
+  background-color: rgba(31, 147, 255, 0.12) !important;
+  color: var(--brand-primary) !important;
+  border-radius: 10px !important;
+  border: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
+.custom-css-sidebar .custom-css-menu-item::before,
+.custom-css-sidebar .custom-css-menu-item::after,
+.custom-css-sidebar .MuiListItem-button::before,
+.custom-css-sidebar .MuiListItem-button::after,
+.MuiDrawer-paper .MuiListItem-button::before,
+.MuiDrawer-paper .MuiListItem-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+.custom-css-sidebar .custom-css-menu-item[data-active="true"] .MuiListItemText-primary,
+.MuiDrawer-paper .MuiListItem-button.Mui-selected .MuiListItemText-primary {
+  color: var(--brand-primary) !important;
+  font-weight: 600 !important;
+}
+
+.custom-css-sidebar .custom-css-menu-item[data-active="true"] .custom-css-icon,
+.MuiDrawer-paper .MuiListItem-button.Mui-selected .MuiListItemIcon-root {
+  background: var(--brand-gradient) !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 8px rgba(31, 147, 255, 0.3) !important;
+  border-radius: 8px !important;
+}
+
+.custom-css-sidebar .custom-css-menu-item[data-active="true"] .custom-css-icon svg,
+.MuiDrawer-paper .MuiListItem-button.Mui-selected .MuiListItemIcon-root svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* ==========================================================================
+   4.1 SIDEBAR RECOLHIDA ([data-collapsed="true"]) - ENCAIXOTAMENTO PERFEITO & SEM BORDAS LATERAIS
+   ========================================================================== */
+.custom-css-sidebar[data-collapsed="true"] .custom-css-menu-item,
+.custom-css-sidebar[data-collapsed="true"] .custom-css-menu-group,
+.custom-css-sidebar[data-collapsed="true"] .MuiListItem-button,
+.MuiDrawer-paper[data-collapsed="true"] .MuiListItem-button {
+  margin: 6px auto !important;
+  padding: 0 !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  max-width: 44px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-sidebar[data-collapsed="true"] .custom-css-icon,
+.custom-css-sidebar[data-collapsed="true"] .MuiListItemIcon-root,
+.MuiDrawer-paper[data-collapsed="true"] .MuiListItemIcon-root {
+  margin: 0 !important;
+  min-width: unset !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+}
+
+.custom-css-sidebar[data-collapsed="true"] .MuiListItemText-root,
+.custom-css-sidebar[data-collapsed="true"] [class*="MuiListSubheader"],
+.custom-css-sidebar[data-collapsed="true"] .custom-css-menu-group-title {
+  display: none !important;
+}
+
+.custom-css-sidebar[data-collapsed="true"] .custom-css-menu-item[data-active="true"],
+.custom-css-sidebar[data-collapsed="true"] .MuiListItem-button.Mui-selected,
+.MuiDrawer-paper[data-collapsed="true"] .MuiListItem-button.Mui-selected {
+  background-color: rgba(31, 147, 255, 0.14) !important;
+  border-radius: 12px !important;
+  width: 44px !important;
+  height: 44px !important;
+  border: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   5. PAINEL DE TICKETS & AJUSTE DE RESPIRO (CONTAINER PAI)
+   ========================================================================== */
+/* Zera padding top, right e bottom do wrapper do Grid de forma dinâmica */
+div:has(> .MuiGrid-container),
+div:has(> div > .MuiGrid-container),
+div:has(> .MuiGrid-root.MuiGrid-container) {
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.custom-css-tickets,
+.custom-css-tickets.MuiPaper-root {
+  background-color: var(--surface-bg) !important;
+  border: none !important;
+  border-right: 1px solid var(--divider-subtle) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.custom-css-tickets-toolbar {
+  padding: 12px 16px 8px 16px !important;
+  background: var(--surface-bg) !important;
+  border-bottom: 1px solid var(--divider-subtle) !important;
+}
+
+.custom-css-tickets-toolbar-buttons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-bottom: 10px !important;
+}
+
+.custom-css-tickets-toolbar-buttons button.MuiButton-containedPrimary {
+  background: var(--brand-gradient) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.78rem !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+  box-shadow: 0 2px 6px rgba(31, 147, 255, 0.25) !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-tickets-toolbar-buttons button.MuiIconButton-root,
+.custom-css-tickets-toolbar-buttons button.MuiButton-text {
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  padding: 6px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  background: transparent !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-tickets-toolbar-buttons button.MuiIconButton-root:hover,
+.custom-css-tickets-toolbar-buttons button.MuiButton-text:hover {
+  background: var(--surface-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+.custom-css-tickets-toolbar-buttons button[aria-pressed="true"] {
+  background: var(--brand-subtle) !important;
+  color: var(--brand-primary) !important;
+}
+
+.custom-css-tickets-toolbar-search {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.custom-css-ticket-search .MuiOutlinedInput-root {
+  background-color: var(--surface-hover) !important;
+  border-radius: 8px !important;
+  font-size: 0.84rem !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-ticket-search .MuiOutlinedInput-notchedOutline {
+  border: 1px solid var(--divider-subtle) !important;
+}
+
+.custom-css-ticket-search .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--brand-primary) !important;
+}
+
+.custom-css-ticket-search input {
+  color: var(--text-primary) !important;
+  padding: 8px 12px !important;
+}
+
+.custom-css-tickets-toolbar-search button.MuiButton-outlined {
+  border: 1px solid var(--divider-subtle) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  padding: 6px 12px !important;
+  background: var(--surface-bg) !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-ticket-tabs {
+  background: var(--surface-hover) !important;
+  margin: 10px 14px 8px 14px !important;
+  border-radius: 10px !important;
+  padding: 3px !important;
+  min-height: 36px !important;
+}
+
+.custom-css-ticket-tabs .MuiTabs-indicator {
+  display: none !important;
+}
+
+.custom-css-ticket-tabs button.MuiTab-root {
+  min-height: 30px !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-ticket-tabs button.MuiTab-root.Mui-selected {
+  background: var(--surface-bg) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.custom-css-ticket-tabs .MuiBadge-badge {
+  background-color: var(--brand-primary) !important;
+  color: #fff !important;
+  font-size: 0.65rem !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  border-radius: 10px !important;
+  position: static !important;
+  transform: none !important;
+  margin-left: 6px !important;
+}
+
+.custom-css-ticket-list {
+  background-color: transparent !important;
+  padding: 6px 10px !important;
+}
+
+/* Cartão do Ticket - ZERO BORDAS LATERAIS */
+.custom-css-ticket-item {
+  border-radius: 12px !important;
+  margin: 4px 0 !important;
+  padding: 12px 14px !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.custom-css-ticket-item:hover {
+  background-color: var(--surface-hover) !important;
+}
+
+.custom-css-ticket-item[data-selected="true"],
+.custom-css-ticket-item.Mui-selected {
+  background-color: var(--surface-selected) !important;
+  border: none !important;
+  border-left: none !important;
+}
+
+.custom-css-ticket-item[data-unread="true"] {
+  background-color: var(--surface-selected) !important;
+  border: none !important;
+  border-left: none !important;
+}
+
+.custom-css-ticket-item .MuiAvatar-root {
+  width: 44px !important;
+  height: 44px !important;
+  margin-top: 0 !important;
+  border-radius: 50% !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-css-ticket-item .ticket-name {
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.custom-css-ticket-item .ticket-preview {
+  font-size: 0.82rem !important;
+  color: var(--text-secondary) !important;
+  margin-top: 3px !important;
+}
+
+.custom-css-ticket-item .ticket-badges {
+  display: inline-flex !important;
+  gap: 5px !important;
+  margin-top: 5px !important;
+  flex-wrap: wrap !important;
+}
+
+.custom-css-ticket-item .ticket-connection {
+  background: var(--badge-conn-bg) !important;
+  color: var(--badge-conn-text) !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 6px !important;
+  border: none !important;
+}
+
+.custom-css-ticket-item .ticket-queue {
+  background: var(--badge-queue-bg) !important;
+  color: var(--badge-queue-text) !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 6px !important;
+  border: none !important;
+}
+
+.custom-css-ticket-list hr.MuiDivider-root,
+.custom-css-ticket-list li.MuiDivider-root {
+  display: none !important;
+}
+
+/* ==========================================================================
+   6. CONTAINER DO CHAT
+   ========================================================================== */
+.custom-css-ticket,
+#drawer-container,
+.custom-css-ticket .MuiPaper-root {
+  background-color: var(--surface-bg) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Cabeçalho do Chat com respiro de 16px */
+.custom-css-ticket-header,
+.custom-css-ticket-header.MuiCard-root {
+  background-color: var(--surface-bg) !important;
+  border-bottom: 1px solid var(--divider-subtle) !important;
+  padding: 16px 16px 8px 16px !important;
+  min-height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.custom-css-ticket-header .MuiCardHeader-root {
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.custom-css-ticket-header .MuiCardHeader-avatar {
+  margin-right: 10px !important;
+}
+
+.custom-css-ticket-header .MuiAvatar-root {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-css-ticket-header .ticket-title-name {
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.2 !important;
+}
+
+.custom-css-ticket-header .ticket-title-id,
+.custom-css-ticket-header .ticket-title-protocol {
+  font-size: 0.72rem !important;
+  color: var(--text-muted) !important;
+  font-weight: 500 !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.custom-css-ticket-header .ticket-operator-label {
+  font-size: 0.7rem !important;
+  color: var(--text-muted) !important;
+}
+
+.custom-css-ticket-header .ticket-operator {
+  font-weight: 600 !important;
+  color: var(--brand-primary) !important;
+  background: var(--brand-subtle) !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  font-size: 0.7rem !important;
+}
+
+/* Ações do Cabeçalho do Atendimento (Ticket) */
+.custom-css-ticket-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+
+#custom-ticket-actions-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+
+#custom-ticket-actions-quick {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+
+/* Botão Toggle das Ações do Ticket (···) */
+#custom-ticket-actions-toggle-btn {
+  background: transparent !important;
+  border: 1px solid var(--divider-subtle) !important;
+  border-radius: 8px !important;
+  color: var(--text-secondary) !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  margin: 0 1px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  flex-shrink: 0 !important;
+}
+
+#custom-ticket-actions-toggle-btn:hover,
+#custom-ticket-actions-toggle-btn.is-active {
+  background-color: var(--surface-hover) !important;
+  border-color: var(--brand-primary) !important;
+  color: var(--brand-primary) !important;
+}
+
+/* Gaveta Retrátil das Ações Secundárias do Ticket */
+#custom-ticket-actions-drawer {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  max-width: 0 !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  transform: translateX(8px);
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, transform 0.25s ease !important;
+}
+
+#custom-ticket-actions-drawer.is-open {
+  max-width: 450px !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateX(0);
+}
+
+.custom-css-ticket-actions button.MuiIconButton-root {
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.15s ease !important;
+}
+
+.custom-css-ticket-actions button.MuiIconButton-root:hover {
+  background-color: var(--surface-hover) !important;
+  color: var(--brand-primary) !important;
+}
+
+.custom-css-ticket-actions button svg,
+.custom-css-ticket-actions .MuiSvgIcon-root {
+  font-size: 1.18rem !important;
+}
+
+.custom-css-ticket-actions button[data-action="delete"]:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: var(--status-danger) !important;
+}
+
+.custom-css-ticket-actions button[data-action="resolve"]:hover {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: var(--status-online) !important;
+}
+
+/* Switch de Permitir Áudio */
+.custom-css-ticket-actions li.MuiMenuItem-root,
+.custom-css-ticket-actions .MuiMenuItem-root {
+  width: auto !important;
+  min-width: 46px !important;
+  height: 32px !important;
+  padding: 0 4px !important;
+  background: transparent !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+  border-radius: 8px !important;
+}
+
+.custom-css-ticket-actions .MuiSwitch-root {
+  overflow: visible !important;
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   6.1 CABEÇALHO DO TICKET & AÇÕES
+   ========================================================================== */
+.custom-css-ticket-header,
+.custom-css-ticket-header.MuiCard-root {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 16px !important;
+}
+
+.custom-css-ticket-header .MuiCardHeader-root {
+  display: flex !important;
+  align-items: center !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+/* Botão de Ações do Ticket (Alinhado Perfeitamente no Canto Direito) */
+.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]),
+.custom-css-ticket-header .MuiCardHeader-action,
+.custom-css-ticket-header button[title="Ações"],
+.custom-css-ticket-header button[aria-label="Ações"],
+.custom-css-ticket-header button:has(svg[title="Ações"]) {
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+  border-radius: 8px !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-ticket-header button:has(svg path[d*="M3 18h13"]):hover,
+.custom-css-ticket-header button:has(svg[title="Ações"]):hover {
+  background-color: var(--surface-hover) !important;
+  color: var(--brand-primary) !important;
+}
+
+/* ==========================================================================
+   6.2 ABAS MOBILE (TICKET / ATENDIMENTOS) - SEGMENTED CONTROL MODERNO
+   ========================================================================== */
+.MuiBottomNavigation-root {
+  background: var(--surface-hover) !important;
+  border-radius: 12px !important;
+  padding: 4px !important;
+  height: 42px !important;
+  margin: 6px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 4px !important;
+  border: 1px solid var(--divider-subtle) !important;
+  box-sizing: border-box !important;
+}
+
+.MuiBottomNavigationAction-root {
+  flex: 1 1 50% !important;
+  max-width: 50% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  padding: 0 8px !important;
+  border-radius: 8px !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.MuiBottomNavigationAction-root .MuiBottomNavigationAction-wrapper {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+.MuiBottomNavigationAction-root svg,
+.MuiBottomNavigationAction-root .MuiSvgIcon-root {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+}
+
+.MuiBottomNavigationAction-root .MuiBottomNavigationAction-label {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+  line-height: 1 !important;
+}
+
+.MuiBottomNavigationAction-root.Mui-selected {
+  background: var(--surface-bg) !important;
+  color: var(--brand-primary) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ==========================================================================
+   6.3 TAGS DO TICKET - PILLS ULTRA COMPACTAS & CONDENSADAS
+   ========================================================================== */
+.custom-css-ticket-tags,
+.custom-css-ticket-tags.MuiPaper-root {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  background-color: var(--surface-bg) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--divider-subtle) !important;
+  padding: 3px 8px !important;
+  min-height: 24px !important;
+  gap: 4px !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-ticket-tags .MuiInput-underline:before,
+.custom-css-ticket-tags .MuiInput-underline:after {
+  display: none !important;
+}
+
+.custom-css-ticket-tags input {
+  font-size: 0.65rem !important;
+  color: var(--text-secondary) !important;
+  padding: 1px 3px !important;
+}
+
+.custom-css-ticket-tags .MuiChip-root {
+  height: 18px !important;
+  font-size: 0.60rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  border-radius: 4px !important;
+  padding: 0 4px !important;
+  border: none !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  margin: 1px 0 !important;
+  transition: transform 0.15s ease !important;
+}
+
+.custom-css-ticket-tags .MuiChip-root:hover {
+  transform: translateY(-1px);
+}
+
+.custom-css-ticket-tags .MuiChip-label {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  text-transform: uppercase !important;
+  font-size: 0.60rem !important;
+  line-height: 1 !important;
+}
+
+.custom-css-ticket-tags .MuiChip-deleteIcon {
+  width: 11px !important;
+  height: 11px !important;
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: opacity 0.15s ease !important;
+}
+
+.custom-css-ticket-tags .MuiChip-deleteIcon:hover {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================================================
+   6.4 CHAT & COMPOSER (ESTRUTURA ISOLADA DO TICKET)
+   ========================================================================== */
+.custom-css-ticket,
+#drawer-container {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.custom-css-ticket > .MuiPaper-root,
+#drawer-container > .MuiPaper-root {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.custom-css-messages,
+#messagesList {
+  background-color: var(--app-bg) !important;
+  background-image: none !important;
+  padding: 10px 12px !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.message-date-divider,
+.custom-css-messages .jss399,
+.custom-css-messages .jss400 {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 20px !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  padding: 4px 14px !important;
+  margin: 14px auto !important;
+}
+
+body[data-theme="dark"] .message-date-divider,
+body[data-theme="dark"] .custom-css-messages .jss399,
+body[data-theme="dark"] .custom-css-messages .jss400 {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Balões de Mensagem Proporcionais e Sem Transbordar */
+.custom-css-msg-bubble {
+  border-radius: 18px !important;
+  padding: 10px 14px !important;
+  font-size: 0.86rem !important;
+  line-height: 1.5 !important;
+  max-width: 82% !important;
+  width: fit-content !important;
+  margin: 4px 0 !important;
+  word-break: break-word !important;
+  box-sizing: border-box !important;
+  transition: transform 0.15s ease !important;
+}
+
+.custom-css-msg-bubble[data-fromme="false"] {
+  background-color: var(--bubble-in-bg) !important;
+  color: var(--bubble-in-text) !important;
+  border: 1px solid var(--bubble-in-border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border-bottom-left-radius: 4px !important;
+  align-self: flex-start !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] {
+  background: var(--bubble-out-gradient) !important;
+  color: var(--bubble-out-text) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.22) !important;
+  border-bottom-right-radius: 4px !important;
+  align-self: flex-end !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] p,
+.custom-css-msg-bubble[data-fromme="true"] .whatsmarked {
+  color: #ffffff !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] .message-meta {
+  color: var(--bubble-out-meta) !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] .message-meta svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Nota Interna Alinhada à Direita */
+.custom-css-msg-bubble.message-internal,
+.custom-css-msg-bubble[data-media-type="internal"] {
+  background-color: var(--note-bg) !important;
+  color: var(--note-text) !important;
+  border: 1px solid var(--note-border) !important;
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
+  max-width: 82% !important;
+  width: fit-content !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-msg-bubble.message-internal b {
+  color: var(--note-text) !important;
+  font-size: 0.68rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+.custom-css-msg-bubble.message-internal p {
+  color: var(--note-text) !important;
+  margin: 3px 0 0 0 !important;
+}
+
+.message-avatar[data-avatar="none"] {
+  display: none !important;
+}
+
+.message-meta {
+  font-size: 0.66rem !important;
+  opacity: 0.85 !important;
+  margin-top: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+}
+
+/* Composer (Barra de Digitação Fixada no Fundo Absoluto) */
+.custom-css-composer,
+.custom-css-composer.MuiPaper-root {
+  background-color: var(--composer-bg) !important;
+  border-top: 1px solid var(--divider-subtle) !important;
+  padding: 8px 14px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-top: auto !important;
+  margin-bottom: 0 !important;
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.custom-css-composer-field,
+.custom-css-composer-field[data-mode] {
+  background-color: var(--composer-input-bg) !important;
+  border: 1px solid var(--composer-border) !important;
+  border-radius: 24px !important;
+  padding: 6px 16px !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-css-composer-field:focus-within {
+  background-color: var(--composer-input-focus-bg) !important;
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px var(--brand-subtle) !important;
+}
+
+.custom-css-composer textarea {
+  color: var(--composer-text) !important;
+  font-size: 0.88rem !important;
+}
+
+.custom-css-composer button.MuiIconButton-root,
+.custom-css-composer span.MuiIconButton-root {
+  color: var(--text-secondary) !important;
+  padding: 6px !important;
+  border-radius: 50% !important;
+  transition: all 0.18s ease !important;
+}
+
+.custom-css-composer button.MuiIconButton-root:hover,
+.custom-css-composer span.MuiIconButton-root:hover {
+  color: var(--brand-primary) !important;
+  background-color: var(--brand-subtle) !important;
+}
+
+.custom-css-composer .jss492 {
+  background: var(--surface-bg) !important;
+  border: 1px solid var(--divider-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-md) !important;
+  padding: 6px 10px !important;
+  bottom: 64px !important;
+}
