@@ -157,6 +157,19 @@ Este documento registra o histórico de desafios, causas-raiz, erros enfrentados
 
 ---
 
+### 🛑 Caso 12: Modais desproporcionais em Full HD, inputs gigantes e scrollbars fantasmas
+- **Sintoma Visual / Usabilidade**:
+  - Em telas Full HD, modais simples com 3 campos abriam esticados horizontalmente até 1200px (devido a classes nativas `maxWidth="lg"` do MUI).
+  - Inputs com altura excessiva, labels cortadas e surgimento de barra de rolagem horizontal no rodapé do modal (causada pela margem negativa do `MuiGrid-container`).
+  - Botões secundários (ex: "+ Adicionar Informação") esticados em 100% da largura.
+- **Solução Definitiva ([src/css/01-global-components.css](file:///home/adminbruno/Projetos/css_wsw/src/css/01-global-components.css))**:
+  - **Largura Proporcional Calibrada**: Travado `max-width: 500px` para modais padrão e `580px` para modais de formulário completo no desktop.
+  - **Inputs & Selects Compactos**: Altura calibrada em `min-height: 40px`, padding `10px 12px` e labels flutuantes com encaixe preciso (`translate(12px, -6px)`).
+  - **Eliminação de Scrollbar Horizontal**: `margin: 0` no `MuiGrid-container` e `overflow-x: hidden` no `MuiDialogContent-root`.
+  - **Botões Compactos**: Botões "+ Adicionar" ajustados para `width: auto` com borda tracejada e estilo de pílula moderno.
+
+---
+
 ## 3. 💡 Armadilhas & Gotchas do Material-UI (React)
 
 1. **Classes Hash Dinâmicas (`.jss123`, `.jss849`)**:

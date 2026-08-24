@@ -1,0 +1,584 @@
+/**
+ * ============================================================================
+ * NEXTYCHAT — COMPONENTES GLOBAIS (MODAIS, INPUTS, BOTÕES)
+ * Backdrop sutil · Cabeçalho claro (sobrescreve inline styles jss)
+ * Inputs compactos · Sem scroll horizontal
+ * ============================================================================
+ */
+
+/* ============================================================================
+ * 1. BACKDROP — Overlay suave, não bloqueia visibilidade da tela
+ * ============================================================================ */
+
+.MuiDialog-root .MuiBackdrop-root {
+  background-color: rgba(100, 116, 139, 0.28) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ============================================================================
+ * 2. MODAL CONTAINER (Paper)
+ * ============================================================================ */
+
+.MuiDialog-paper {
+  border-radius: 12px !important;
+  background-color: var(--surface-bg, #ffffff) !important;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.07),
+    0 8px 20px -4px rgba(0, 0, 0, 0.13),
+    0 28px 48px -8px rgba(0, 0, 0, 0.10) !important;
+  overflow: hidden !important;
+  margin: 16px !important;
+  max-height: calc(100dvh - 48px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Largura máxima controlada — Modal de "Criar Ticket" usa paperWidthLg */
+@media (min-width: 600px) {
+  .MuiDialog-paper.MuiDialog-paperWidthXs { max-width: 440px !important; }
+  .MuiDialog-paper.MuiDialog-paperWidthSm { max-width: 500px !important; }
+  .MuiDialog-paper.MuiDialog-paperWidthMd { max-width: 560px !important; }
+  .MuiDialog-paper.MuiDialog-paperWidthLg { max-width: 600px !important; }
+  .MuiDialog-paper.MuiDialog-paperWidthXl { max-width: 640px !important; }
+  .MuiDialog-paper.MuiDialog-paperFullWidth { width: calc(100% - 32px) !important; }
+}
+
+/* ============================================================================
+ * 3. CABEÇALHO DO MODAL — Minimalista
+ * Fundo branco limpo + linha de accent azul embaixo.
+ * Sobrescreve fundo escuro e inline styles dos jssDynamic do WhaTicket.
+ * ============================================================================ */
+
+/* Container do cabeçalho */
+.MuiDialog-paper > .MuiBox-root:first-child {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 14px 20px !important;
+  min-height: 52px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-bottom: 1px solid var(--divider-subtle, #eaedf2) !important;
+}
+
+/* Wrapper do ícone */
+.MuiDialog-paper > .MuiBox-root:first-child > .MuiBox-root:first-child {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 7px !important;
+  background: var(--brand-subtle, #edf5ff) !important;
+  flex-shrink: 0 !important;
+}
+
+.MuiDialog-paper > .MuiBox-root:first-child > .MuiBox-root:first-child svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  fill: var(--brand-primary, #1f93ff) !important;
+}
+
+/* Wrapper do título */
+.MuiDialog-paper > .MuiBox-root:first-child > .MuiBox-root:nth-child(2) {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* Título — sobrescreve inline style color:#fff com !important */
+.MuiDialog-paper > .MuiBox-root:first-child h6,
+.MuiDialog-paper > .MuiBox-root:first-child h2,
+.MuiDialog-paper > .MuiBox-root:first-child .MuiTypography-h6 {
+  font-size: 0.90rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary, #0f172a) !important;
+  letter-spacing: -0.01em !important;
+  font-family: var(--font-family) !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+
+/* Botão ✕ fechar — sobrescreve inline style color:#fff */
+.MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root {
+  width: 26px !important;
+  height: 26px !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  border-radius: 5px !important;
+  color: var(--text-muted, #64748b) !important;
+  background: var(--surface-hover, #f1f5f9) !important;
+  border: 1px solid var(--divider-subtle, #eaedf2) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.15s, color 0.15s, border-color 0.15s !important;
+}
+
+.MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root:hover {
+  background: #fee2e2 !important;
+  border-color: #fca5a5 !important;
+  color: #dc2626 !important;
+}
+
+.MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: inherit !important;
+  fill: currentColor !important;
+}
+
+/* ============================================================================
+ * 3b. CABEÇALHO ALTERNATIVO — MuiDialogTitle-root
+ * Usado em modais com <form> como "Adicionar Contato", "Configurar", etc.
+ * O projeto aplica fundo escuro via jss dinâmico — sobrescrevemos tudo.
+ * ============================================================================ */
+
+.MuiDialogTitle-root {
+  padding: 14px 20px !important;
+  min-height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-bottom: 1px solid var(--divider-subtle, #eaedf2) !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+.MuiDialogTitle-root h2,
+.MuiDialogTitle-root .MuiTypography-h6,
+.MuiDialogTitle-root .MuiTypography-root {
+  font-size: 0.90rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary, #0f172a) !important;
+  font-family: var(--font-family) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+
+/* Conteúdo do modal com dividers (MuiDialogContent-dividers) */
+.MuiDialog-paper .MuiDialogContent-dividers {
+  border-top: none !important;
+  border-bottom: none !important;
+  padding: 20px 22px !important;
+}
+
+/* ============================================================================
+ * 4. CONTEÚDO DO MODAL
+ * ============================================================================ */
+
+.MuiDialogContent-root {
+  padding: 20px 22px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  flex: 1 1 auto !important;
+  background-color: var(--surface-bg, #ffffff) !important;
+  color: var(--text-primary, #0f172a) !important;
+}
+
+/* Zera margens negativas do MuiGrid-spacing (causa scroll horizontal e overflow)
+ * MuiGrid-spacing-xs-2 aplica margin: -8px por padrão do MUI v4 */
+.MuiDialogContent-root > .MuiGrid-container,
+.MuiDialogContent-root .MuiGrid-container,
+.MuiDialogContent-root .MuiGrid-spacing-xs-1,
+.MuiDialogContent-root .MuiGrid-spacing-xs-2,
+.MuiDialogContent-root .MuiGrid-spacing-xs-3 {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Items do Grid — gap vertical generoso para respiro entre campos */
+.MuiDialogContent-root .MuiGrid-item {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ============================================================================
+ * 5. INPUTS & SELECTS — Altura uniforme (inclui marginDense e adornos)
+ *
+ * O MUI v4 tem 3 variantes de altura:
+ *   a) Normal (.MuiOutlinedInput-input): padding 18.5px 14px
+ *   b) MarginDense (.MuiOutlinedInput-inputMarginDense): padding 10.5px 14px
+ *   c) Select (.MuiSelect-select): display:block sem height fixo
+ *
+ * Estratégia: Forçar padding 10px 12px em todas as variantes + min-height 42px
+ * no container. Isso garante altura visual idêntica em qualquer tipo de campo.
+ * ============================================================================ */
+
+/* Container base — vale para input texto E select */
+.MuiDialogContent-root .MuiInputBase-root.MuiOutlinedInput-root,
+.MuiDialog-paper .MuiInputBase-root.MuiOutlinedInput-root {
+  border-radius: 7px !important;
+  min-height: 42px !important;
+  font-size: 0.84rem !important;
+  font-family: var(--font-family) !important;
+  background-color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Input de texto — todas as variantes: normal, marginDense, adornedStart */
+.MuiDialogContent-root .MuiOutlinedInput-input,
+.MuiDialog-paper .MuiOutlinedInput-input,
+.MuiDialogContent-root .MuiOutlinedInput-inputMarginDense,
+.MuiDialog-paper .MuiOutlinedInput-inputMarginDense {
+  padding: 10px 12px !important;
+  font-size: 0.84rem !important;
+  line-height: 1.4 !important;
+  height: auto !important;
+  box-sizing: border-box !important;
+  color: var(--text-primary, #0f172a) !important;
+}
+
+/* Inputs com adorno à esquerda — reduz padding-left pois o ícone já ocupa espaço */
+.MuiDialogContent-root .MuiOutlinedInput-inputAdornedStart,
+.MuiDialog-paper .MuiOutlinedInput-inputAdornedStart {
+  padding-left: 4px !important;
+}
+
+/* Ícone de adorno (InputAdornment) — compacto e discreto */
+.MuiDialogContent-root .MuiInputAdornment-root,
+.MuiDialog-paper .MuiInputAdornment-root {
+  margin-top: 0 !important;
+}
+
+.MuiDialogContent-root .MuiInputAdornment-positionStart,
+.MuiDialog-paper .MuiInputAdornment-positionStart {
+  margin-right: 4px !important;
+  margin-left: 8px !important;
+}
+
+.MuiDialogContent-root .MuiInputAdornment-root svg,
+.MuiDialog-paper .MuiInputAdornment-root svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: var(--text-muted, #94a3b8) !important;
+}
+
+/* Select — mesmo padding do input, garantindo altura visual igual */
+.MuiDialogContent-root .MuiSelect-select,
+.MuiDialog-paper .MuiSelect-select {
+  padding: 10px 32px 10px 12px !important;
+  font-size: 0.84rem !important;
+  line-height: 1.4 !important;
+  min-height: unset !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  color: var(--text-primary, #0f172a) !important;
+  box-sizing: border-box !important;
+}
+
+/* Borda padrão */
+.MuiDialogContent-root .MuiOutlinedInput-notchedOutline,
+.MuiDialog-paper .MuiOutlinedInput-notchedOutline {
+  border-color: #cbd5e1 !important;
+}
+
+/* Borda hover */
+.MuiDialogContent-root .MuiOutlinedInput-root:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline,
+.MuiDialog-paper .MuiOutlinedInput-root:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline {
+  border-color: #94a3b8 !important;
+}
+
+/* Borda foco */
+.MuiDialogContent-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
+.MuiDialog-paper .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--brand-primary, #1f93ff) !important;
+  border-width: 1.5px !important;
+}
+
+/* Label flutuante — funciona para outlined normal e marginDense */
+.MuiDialogContent-root .MuiInputLabel-outlined,
+.MuiDialog-paper .MuiInputLabel-outlined {
+  font-size: 0.84rem !important;
+  font-family: var(--font-family) !important;
+  color: var(--text-muted, #64748b) !important;
+  transform: translate(12px, 11px) scale(1) !important;
+  pointer-events: none !important;
+}
+
+/* Label shrink (flutuando acima) */
+.MuiDialogContent-root .MuiInputLabel-outlined.MuiInputLabel-shrink,
+.MuiDialog-paper .MuiInputLabel-outlined.MuiInputLabel-shrink {
+  transform: translate(12px, -6px) scale(0.75) !important;
+  background: #ffffff !important;
+  padding: 0 4px !important;
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* Label com foco */
+.MuiDialogContent-root .MuiInputLabel-outlined.Mui-focused,
+.MuiDialog-paper .MuiInputLabel-outlined.Mui-focused {
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+/* Separadores internos do modal (hr) — mais elegantes */
+.MuiDialogContent-root hr.MuiDivider-root {
+  border: none !important;
+  border-top: 1px solid var(--divider-subtle, #eaedf2) !important;
+  margin: 18px 0 !important;
+}
+
+/* Títulos de seção do modal (ex: "Dados do contato", " Localização") */
+.MuiDialogContent-root p.MuiTypography-body1:has(> svg) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 0.80rem !important;
+  font-weight: 700 !important;
+  color: var(--text-secondary, #475569) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  margin-bottom: 8px !important;
+  margin-top: 4px !important;
+}
+
+.MuiDialogContent-root p.MuiTypography-body1:has(> svg) svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+/* ============================================================================
+ * 6. BOTÃO INTERNO "+ ADICIONAR INFORMAÇÃO" (outlined fullWidth interno)
+ * ============================================================================ */
+
+.MuiDialogContent-root .MuiButton-outlined:not(.MuiDialogActions-root .MuiButton-outlined) {
+  width: auto !important;
+  max-width: max-content !important;
+  display: inline-flex !important;
+  padding: 5px 14px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 6px !important;
+  border: 1.5px dashed var(--brand-primary, #1f93ff) !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  background: transparent !important;
+  margin-top: 6px !important;
+  transition: background 0.15s !important;
+  box-shadow: none !important;
+}
+
+.MuiDialogContent-root .MuiButton-outlined:not(.MuiDialogActions-root .MuiButton-outlined):hover {
+  background: var(--brand-subtle, #edf5ff) !important;
+  border-style: solid !important;
+}
+
+/* ============================================================================
+ * 7. RODAPÉ — Ações do Modal (último filho do Paper)
+ * ============================================================================ */
+
+.MuiDialog-paper > .MuiBox-root:last-child:not(:first-child),
+.MuiDialogActions-root {
+  padding: 10px 18px !important;
+  border-top: 1px solid var(--divider-subtle, #eaedf2) !important;
+  background-color: var(--surface-hover, #f8fafc) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Botão Cancelar (outlined) */
+.custom-css-btn-cancel,
+.MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined,
+.MuiDialogActions-root button.MuiButton-outlined,
+.MuiDialogActions-root button.MuiButton-text {
+  padding: 7px 16px !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 7px !important;
+  border: 1px solid #cbd5e1 !important;
+  color: var(--text-secondary, #475569) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  transition: all 0.15s !important;
+  cursor: pointer !important;
+}
+
+.custom-css-btn-cancel:hover,
+.MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined:hover,
+.MuiDialogActions-root button.MuiButton-outlined:hover,
+.MuiDialogActions-root button.MuiButton-text:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: var(--text-primary, #0f172a) !important;
+}
+
+/* Botão Salvar / Confirmar (contained primary) */
+.custom-css-btn-confirm,
+.MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-containedPrimary,
+.MuiDialogActions-root button.MuiButton-containedPrimary {
+  padding: 7px 20px !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 7px !important;
+  border: none !important;
+  background: var(--brand-primary, #1f93ff) !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(31, 147, 255, 0.30) !important;
+  transition: all 0.15s !important;
+  cursor: pointer !important;
+}
+
+.custom-css-btn-confirm:hover,
+.MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-containedPrimary:hover,
+.MuiDialogActions-root button.MuiButton-containedPrimary:hover {
+  background: var(--brand-hover, #1671c6) !important;
+  box-shadow: 0 3px 8px rgba(31, 147, 255, 0.38) !important;
+}
+
+.custom-css-btn-confirm:disabled,
+.MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-containedPrimary:disabled,
+.MuiDialogActions-root button.MuiButton-containedPrimary:disabled {
+  background: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  box-shadow: none !important;
+  cursor: default !important;
+}
+
+/* ============================================================================
+ * 8. BOTÃO GLOBAL "NOVO / ABRIR FORMULÁRIO" (.custom-css-btn-open-form)
+ * ============================================================================ */
+
+.custom-css-btn-open-form {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 7px 16px !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 7px !important;
+  border: none !important;
+  background: var(--brand-primary, #1f93ff) !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(31, 147, 255, 0.25) !important;
+  transition: all 0.15s !important;
+  cursor: pointer !important;
+}
+
+.custom-css-btn-open-form:hover {
+  background: var(--brand-hover, #1671c6) !important;
+  box-shadow: 0 3px 10px rgba(31, 147, 255, 0.38) !important;
+}
+
+/* ============================================================================
+ * 9. DARK MODE — Inputs e modal no tema escuro
+ * ============================================================================ */
+
+body[data-theme="dark"] .MuiDialog-paper {
+  background-color: var(--surface-bg, #111923) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 8px 20px -4px rgba(0, 0, 0, 0.40),
+    0 28px 48px -8px rgba(0, 0, 0, 0.30) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root {
+  background-color: var(--surface-bg, #111923) !important;
+  color: var(--text-primary, #f8fafc) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-root,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-root {
+  background-color: var(--app-bg, #090e15) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-input,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-input {
+  color: var(--text-primary, #f8fafc) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-notchedOutline,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-notchedOutline {
+  border-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined.MuiInputLabel-shrink,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined.MuiInputLabel-shrink {
+  background: var(--app-bg, #090e15) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child:not(:first-child),
+body[data-theme="dark"] .MuiDialogActions-root {
+  background-color: var(--app-bg, #090e15) !important;
+  border-top-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined,
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined {
+  background: var(--surface-hover, rgba(255, 255, 255, 0.05)) !important;
+  border-color: var(--divider-subtle, #1e2c3d) !important;
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+/* ============================================================================
+ * 10. SWITCH GLOBAL (MuiSwitch) — Cor brand quando ativo
+ * Aparece em: modais ("Adicionar Contato"), menus de ações e configurações.
+ * ============================================================================ */
+
+/* Track (trilho de fundo) — estado inativo */
+.MuiSwitch-root .MuiSwitch-track {
+  background-color: #cbd5e1 !important;
+  opacity: 1 !important;
+  border-radius: 20px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Thumb (bolinha) */
+.MuiSwitch-root .MuiSwitch-thumb {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* Ripple do switch — remove o azul do MUI padrão */
+.MuiSwitch-root .MuiSwitch-switchBase:hover {
+  background-color: transparent !important;
+}
+
+/* Estado ATIVO — track usa a cor brand */
+.MuiSwitch-root .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: var(--brand-primary, #1f93ff) !important;
+  opacity: 1 !important;
+}
+
+/* Estado ATIVO — thumb permanece branco */
+.MuiSwitch-root .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb {
+  background-color: #ffffff !important;
+}
+
+/* Ripple hover no ativo */
+.MuiSwitch-root .MuiSwitch-switchBase.Mui-checked:hover {
+  background-color: rgba(31, 147, 255, 0.08) !important;
+}
+
+/* Tamanho small (sizeSmall) — arredondamento proporcional */
+.MuiSwitch-sizeSmall .MuiSwitch-track {
+  border-radius: 14px !important;
+}
+
+/* Dark mode */
+body[data-theme="dark"] .MuiSwitch-root .MuiSwitch-track {
+  background-color: #334155 !important;
+}
+
+body[data-theme="dark"] .MuiSwitch-root .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: var(--brand-primary, #1f93ff) !important;
+}

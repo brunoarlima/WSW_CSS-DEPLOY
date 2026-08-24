@@ -4,10 +4,13 @@
  * ============================================================================
  */
 
-/* Zera padding top, right e bottom do wrapper do Grid de forma dinâmica */
-div:has(> .MuiGrid-container),
-div:has(> div > .MuiGrid-container),
-div:has(> .MuiGrid-root.MuiGrid-container) {
+/* Zera padding do wrapper do Grid APENAS no contexto de páginas/tickets.
+ * IMPORTANTE: nunca usar seletor genérico aqui — afetaria modais, composer, etc.
+ * Restrito ao conteúdo principal (#custom-css-content, .custom-css-page)
+ */
+#custom-css-content > div:has(> .MuiGrid-container),
+#custom-css-content > div:has(> div > .MuiGrid-container),
+.custom-css-page > div:has(> .MuiGrid-container) {
   padding-top: 0 !important;
   padding-right: 0 !important;
   padding-bottom: 0 !important;

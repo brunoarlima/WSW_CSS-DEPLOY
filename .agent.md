@@ -19,6 +19,7 @@ src/
 ├── css/
 │   ├── 00-tokens.css          # Cores, Design System e Variáveis Light/Dark
 │   ├── 01-base.css            # Scrollbar minimalista e resets base
+│   ├── 01-global-components.css # Componentes globais (95 Modais, botões Novo/Confirmar/Cancelar)
 │   ├── 02-appbar.css          # Topbar, Logo no menu, Ping e Gaveta retrátil do topo
 │   ├── 03-sidebar.css         # Menu lateral (expandido e recolhido)
 │   ├── 04-tickets-list.css    # Toolbar, abas, busca e cards de atendimento
