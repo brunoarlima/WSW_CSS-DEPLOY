@@ -34,16 +34,25 @@ const BRAND_LOGO_SVG = `
   </svg>
 `;
 
-// Substitui o ícone do hambúrguer pela Logo da Marca
+// Substitui o ícone do hambúrguer pela Logo da Marca sem destruir nós nativos do React
 function setupBrandMenuLogo(appbar) {
-  const menuBtn = appbar.querySelector('button[data-appbar="menu"], button[aria-label="open drawer"]');
-  if (!menuBtn) return;
+  try {
+    if (!appbar || !appbar.isConnected) return;
+    const menuBtn = appbar.querySelector('button[data-appbar="menu"], button[aria-label="open drawer"]');
+    if (!menuBtn || !menuBtn.isConnected) return;
 
-  menuBtn.setAttribute('title', 'Expandir menu lateral');
-
-  if (!menuBtn.classList.contains('custom-brand-logo-btn')) {
+    menuBtn.setAttribute('title', 'Expandir menu lateral');
     menuBtn.classList.add('custom-brand-logo-btn');
-    const iconLabel = menuBtn.querySelector('.MuiIconButton-label') || menuBtn;
-    iconLabel.innerHTML = BRAND_LOGO_SVG;
+
+    let logoEl = menuBtn.querySelector('.custom-brand-logo-icon');
+    if (!logoEl) {
+      logoEl = document.createElement('span');
+      logoEl.className = 'custom-brand-logo-icon';
+      logoEl.innerHTML = BRAND_LOGO_SVG;
+      menuBtn.appendChild(logoEl);
+    }
+  } catch (e) {
+    // Falha silenciosa para nunca interromper a renderização do React
   }
 }
+

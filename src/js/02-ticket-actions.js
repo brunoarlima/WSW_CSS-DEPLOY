@@ -1,99 +1,71 @@
 // ============================================================================
-// AÇÕES DO ATENDIMENTO / TICKET (Grade Condensada & Gaveta Retrátil)
+// AÇÕES DO ATENDIMENTO / TICKET (Grade Condensada & Gaveta Retrátil - Zero Reparenting)
 // Ordem: Resolver (X) -> Devolver à Fila -> Transferir -> Permitir Áudio -> [···] -> Gaveta
 // ============================================================================
 
-function getActionNodeToMove(el, actionsContainer) {
-  if (!el) return null;
-  let node = el;
-  while (node && node.parentElement && node.parentElement !== actionsContainer && node.parentElement !== document.body) {
-    node = node.parentElement;
-  }
-  return node && node.parentElement === actionsContainer ? node : el;
-}
-
 function initCustomTicketActions() {
-  const actionsContainer = document.querySelector('.custom-css-ticket-actions');
-  if (!actionsContainer) return;
+  try {
+    const actionsContainer = document.querySelector('.custom-css-ticket-actions');
+    if (!actionsContainer || !actionsContainer.isConnected) return;
 
-  let wrapper = document.getElementById('custom-ticket-actions-wrapper');
-  if (!wrapper) {
-    wrapper = document.createElement('div');
-    wrapper.id = 'custom-ticket-actions-wrapper';
-    actionsContainer.appendChild(wrapper);
-  }
+    let toggleBtn = actionsContainer.querySelector('#custom-ticket-actions-toggle-btn');
+    if (!toggleBtn) {
+      toggleBtn = document.createElement('button');
+      toggleBtn.id = 'custom-ticket-actions-toggle-btn';
+      toggleBtn.type = 'button';
+      toggleBtn.title = 'Mais ações';
+      toggleBtn.setAttribute('aria-label', 'Mais ações');
+      toggleBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+      `;
 
-  let quickGroup = document.getElementById('custom-ticket-actions-quick');
-  if (!quickGroup) {
-    quickGroup = document.createElement('div');
-    quickGroup.id = 'custom-ticket-actions-quick';
-    wrapper.appendChild(quickGroup);
-  }
+      toggleBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        actionsContainer.classList.toggle('ticket-drawer-open');
+        toggleBtn.classList.toggle('is-active');
+      });
 
-  let toggleBtn = document.getElementById('custom-ticket-actions-toggle-btn');
-  let drawer = document.getElementById('custom-ticket-actions-drawer');
+      actionsContainer.appendChild(toggleBtn);
+    }
 
-  if (!drawer) {
-    drawer = document.createElement('div');
-    drawer.id = 'custom-ticket-actions-drawer';
-  }
+    // Classifica os elementos filhos de ações sem alterar o parentNode
+    const allActionElements = actionsContainer.querySelectorAll('[data-action], .MuiMenuItem-root, button.MuiIconButton-root, .MuiSwitch-root');
+    allActionElements.forEach(function (el) {
+      if (!el || !el.isConnected || el === toggleBtn) return;
 
-  if (!toggleBtn) {
-    toggleBtn = document.createElement('button');
-    toggleBtn.id = 'custom-ticket-actions-toggle-btn';
-    toggleBtn.type = 'button';
-    toggleBtn.title = 'Mais ações';
-    toggleBtn.setAttribute('aria-label', 'Mais ações');
-    toggleBtn.innerHTML = `
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
-    `;
+      // Obtém o elemento filho direto de actionsContainer
+      let topEl = el;
+      while (topEl && topEl.parentElement && topEl.parentElement !== actionsContainer) {
+        topEl = topEl.parentElement;
+      }
+      if (!topEl || topEl.parentElement !== actionsContainer || topEl === toggleBtn) return;
 
-    toggleBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      drawer.classList.toggle('is-open');
-      toggleBtn.classList.toggle('is-active');
+      const hasResolve = topEl.querySelector('[data-action="resolve"]') || topEl.getAttribute('data-action') === 'resolve';
+      const hasReturn = topEl.querySelector('[data-action="return"]') || topEl.getAttribute('data-action') === 'return';
+      const hasTransfer = topEl.querySelector('[data-action="transfer"]') || topEl.getAttribute('data-action') === 'transfer';
+      const hasAcceptAudio = topEl.querySelector('[data-action="accept-audio"]') || topEl.getAttribute('data-action') === 'accept-audio' || topEl.querySelector('.MuiSwitch-root');
+
+      if (hasResolve) {
+        topEl.classList.add('ticket-item-quick', 'ticket-item-resolve');
+        topEl.classList.remove('ticket-item-secondary');
+      } else if (hasReturn) {
+        topEl.classList.add('ticket-item-quick', 'ticket-item-return');
+        topEl.classList.remove('ticket-item-secondary');
+      } else if (hasTransfer) {
+        topEl.classList.add('ticket-item-quick', 'ticket-item-transfer');
+        topEl.classList.remove('ticket-item-secondary');
+      } else if (hasAcceptAudio) {
+        topEl.classList.add('ticket-item-quick', 'ticket-item-accept-audio');
+        topEl.classList.remove('ticket-item-secondary');
+      } else {
+        topEl.classList.add('ticket-item-secondary');
+        topEl.classList.remove('ticket-item-quick');
+      }
     });
+  } catch (e) {
+    // Silencioso
   }
-
-  if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
-  if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
-  if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
-
-  // 1. Identifica os 4 botões de Acesso Rápido na ordem solicitada:
-  // 1º Resolver (X) -> 2º Devolver à Fila -> 3º Transferir -> 4º Permitir Áudio
-  const resolveBtn = actionsContainer.querySelector('[data-action="resolve"]');
-  const returnBtn = actionsContainer.querySelector('[data-action="return"]');
-  const transferBtn = actionsContainer.querySelector('[data-action="transfer"]');
-  const acceptAudioBtn = actionsContainer.querySelector('[data-action="accept-audio"]');
-
-  const resolveNode = getActionNodeToMove(resolveBtn, actionsContainer);
-  const returnNode = getActionNodeToMove(returnBtn, actionsContainer);
-  const transferNode = getActionNodeToMove(transferBtn, actionsContainer);
-  const acceptAudioNode = getActionNodeToMove(acceptAudioBtn, actionsContainer);
-
-  if (resolveNode && resolveNode.parentElement !== quickGroup) quickGroup.appendChild(resolveNode);
-  if (returnNode && returnNode.parentElement !== quickGroup) quickGroup.appendChild(returnNode);
-  if (transferNode && transferNode.parentElement !== quickGroup) quickGroup.appendChild(transferNode);
-  if (acceptAudioNode && acceptAudioNode.parentElement !== quickGroup) quickGroup.appendChild(acceptAudioNode);
-
-  // 2. Move os demais botões secundários para a gaveta do ticket
-  const allActionElements = actionsContainer.querySelectorAll('[data-action]');
-  allActionElements.forEach(function (el) {
-    const actionType = el.getAttribute('data-action');
-    if (
-      actionType === 'resolve' ||
-      actionType === 'return' ||
-      actionType === 'transfer' ||
-      actionType === 'accept-audio'
-    ) {
-      return;
-    }
-
-    const nodeToMove = getActionNodeToMove(el, actionsContainer);
-    if (nodeToMove && nodeToMove !== wrapper && nodeToMove.parentElement !== drawer) {
-      drawer.appendChild(nodeToMove);
-    }
-  });
 }
+

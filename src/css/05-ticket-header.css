@@ -343,23 +343,40 @@
   opacity: 0.3 !important;
 }
 
-/* Ações do Cabeçalho do Atendimento (Ticket) */
+/* ============================================================================
+   AÇÕES DO CABEÇALHO DO ATENDIMENTO (FLEX ORDER & GAVETA CSS SEGURA)
+   ============================================================================ */
 .custom-css-ticket-actions {
   display: flex !important;
   align-items: center !important;
   gap: 3px !important;
 }
 
-#custom-ticket-actions-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
+/* Ordem das ações rápidas */
+.ticket-item-resolve {
+  order: 1 !important;
 }
 
-#custom-ticket-actions-quick {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
+.ticket-item-return {
+  order: 2 !important;
+}
+
+.ticket-item-transfer {
+  order: 3 !important;
+}
+
+.ticket-item-accept-audio {
+  order: 4 !important;
+}
+
+/* Os itens secundários (gaveta) ficam antes do botão toggle */
+.ticket-item-secondary {
+  order: 5 !important;
+}
+
+/* O botão toggle fica SEMPRE no extremo canto direito */
+#custom-ticket-actions-toggle-btn {
+  order: 10 !important;
 }
 
 /* Botão Toggle das Ações do Ticket (···) */
@@ -387,24 +404,26 @@
   color: var(--brand-primary) !important;
 }
 
-/* Gaveta Retrátil das Ações Secundárias do Ticket */
-#custom-ticket-actions-drawer {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
+/* Itens Secundários (Gaveta Retrátil CSS Pura - Zero Reparenting) */
+.ticket-item-secondary {
   max-width: 0 !important;
   opacity: 0 !important;
   overflow: hidden !important;
   pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   transform: translateX(8px);
-  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, transform 0.25s ease !important;
+  transition: max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, transform 0.2s ease, margin 0.2s ease !important;
 }
 
-#custom-ticket-actions-drawer.is-open {
-  max-width: 450px !important;
+/* Quando a gaveta do Ticket estiver aberta */
+.custom-css-ticket-actions.ticket-drawer-open .ticket-item-secondary,
+.custom-css-ticket-actions:has(#custom-ticket-actions-toggle-btn.is-active) .ticket-item-secondary {
+  max-width: 42px !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   transform: translateX(0);
+  margin: 0 1px !important;
 }
 
 .custom-css-ticket-actions button.MuiIconButton-root {
@@ -458,3 +477,4 @@
   overflow: visible !important;
   margin: 0 !important;
 }
+

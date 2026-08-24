@@ -480,29 +480,81 @@
 }
 
 /* ============================================================================
- * 9. DARK MODE — Inputs e modal no tema escuro
+ * 9. DARK MODE — Cobertura completa dos modais
  * ============================================================================ */
 
+/* Paper (container do modal) */
 body[data-theme="dark"] .MuiDialog-paper {
   background-color: var(--surface-bg, #111923) !important;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 8px 20px -4px rgba(0, 0, 0, 0.40),
-    0 28px 48px -8px rgba(0, 0, 0, 0.30) !important;
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 8px 20px -4px rgba(0, 0, 0, 0.45),
+    0 28px 48px -8px rgba(0, 0, 0, 0.35) !important;
 }
 
-body[data-theme="dark"] .MuiDialogContent-root {
+/* ── Cabeçalho tipo 1: MuiBox (Criar Ticket, etc.) ── */
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child {
   background-color: var(--surface-bg, #111923) !important;
+  border-bottom-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child > .MuiBox-root:first-child {
+  background: var(--brand-subtle, rgba(31, 147, 255, 0.15)) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child h6,
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child h2,
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child .MuiTypography-h6 {
   color: var(--text-primary, #f8fafc) !important;
 }
 
-body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-root,
-body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-root {
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: var(--divider-subtle, #1e2c3d) !important;
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root:hover {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #f87171 !important;
+}
+
+/* ── Cabeçalho tipo 2: MuiDialogTitle (Adicionar Contato, etc.) ── */
+body[data-theme="dark"] .MuiDialogTitle-root {
+  background-color: var(--surface-bg, #111923) !important;
+  border-bottom-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+body[data-theme="dark"] .MuiDialogTitle-root h2,
+body[data-theme="dark"] .MuiDialogTitle-root .MuiTypography-h6,
+body[data-theme="dark"] .MuiDialogTitle-root .MuiTypography-root {
+  color: var(--text-primary, #f8fafc) !important;
+}
+
+/* ── Conteúdo ── */
+body[data-theme="dark"] .MuiDialogContent-root,
+body[data-theme="dark"] .MuiDialog-paper .MuiDialogContent-dividers {
+  background-color: var(--surface-bg, #111923) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  border-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+/* ── Inputs e Selects ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputBase-root.MuiOutlinedInput-root,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputBase-root.MuiOutlinedInput-root {
   background-color: var(--app-bg, #090e15) !important;
 }
 
 body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-input,
-body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-input {
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-input,
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-inputMarginDense,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-inputMarginDense {
+  color: var(--text-primary, #f8fafc) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root .MuiSelect-select,
+body[data-theme="dark"] .MuiDialog-paper .MuiSelect-select {
   color: var(--text-primary, #f8fafc) !important;
 }
 
@@ -511,22 +563,78 @@ body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-notchedOutline {
   border-color: var(--divider-subtle, #1e2c3d) !important;
 }
 
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-root:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-root:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline {
+  border-color: #334155 !important;
+}
+
+/* ── Ícones de adorno no dark ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputAdornment-root svg,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputAdornment-root svg {
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* ── Labels flutuantes ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined {
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* Label shrink: fundo deve ser o mesmo do input, não #ffffff */
 body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined.MuiInputLabel-shrink,
 body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined.MuiInputLabel-shrink {
   background: var(--app-bg, #090e15) !important;
+  color: var(--text-muted, #64748b) !important;
 }
 
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined.Mui-focused,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined.Mui-focused {
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+/* ── Separadores hr internos ── */
+body[data-theme="dark"] .MuiDialogContent-root hr.MuiDivider-root {
+  border-top-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+/* ── Títulos de seção uppercase ── */
+body[data-theme="dark"] .MuiDialogContent-root p.MuiTypography-body1:has(> svg) {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+/* ── Textos auxiliares (helper text) ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiFormHelperText-root {
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* ── Bloco de dica (info box azul) ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiBox-root:has(> svg + p),
+body[data-theme="dark"] .MuiDialogContent-root .MuiBox-root:has(> .MuiSvgIcon-root + .MuiTypography-root) {
+  background: rgba(31, 147, 255, 0.10) !important;
+  border-color: rgba(31, 147, 255, 0.25) !important;
+}
+
+/* ── Rodapé (ações) ── */
 body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child:not(:first-child),
 body[data-theme="dark"] .MuiDialogActions-root {
   background-color: var(--app-bg, #090e15) !important;
   border-top-color: var(--divider-subtle, #1e2c3d) !important;
 }
 
+/* Botão Cancelar no dark */
 body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined,
-body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined {
-  background: var(--surface-hover, rgba(255, 255, 255, 0.05)) !important;
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined,
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-text {
+  background: rgba(255, 255, 255, 0.05) !important;
   border-color: var(--divider-subtle, #1e2c3d) !important;
   color: var(--text-secondary, #94a3b8) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined:hover,
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: #475569 !important;
+  color: var(--text-primary, #f8fafc) !important;
 }
 
 /* ============================================================================

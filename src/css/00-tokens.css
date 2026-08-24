@@ -7,6 +7,9 @@
 :root {
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
 
+  /* Proporção do Layout (Tickets / Chat: min 460px - max 650px) */
+  --wsw-tickets-width: 460px;
+
   /* Brand */
   --brand-primary: #1f93ff;
   --brand-hover: #1671c6;

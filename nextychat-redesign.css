@@ -16,6 +16,9 @@
 :root {
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
 
+  /* Proporção do Layout (Tickets / Chat: min 460px - max 650px) */
+  --wsw-tickets-width: 460px;
+
   /* Brand */
   --brand-primary: #1f93ff;
   --brand-hover: #1671c6;
@@ -636,29 +639,81 @@ body[data-theme="dark"] *::-webkit-scrollbar-thumb {
 }
 
 /* ============================================================================
- * 9. DARK MODE — Inputs e modal no tema escuro
+ * 9. DARK MODE — Cobertura completa dos modais
  * ============================================================================ */
 
+/* Paper (container do modal) */
 body[data-theme="dark"] .MuiDialog-paper {
   background-color: var(--surface-bg, #111923) !important;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 8px 20px -4px rgba(0, 0, 0, 0.40),
-    0 28px 48px -8px rgba(0, 0, 0, 0.30) !important;
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 8px 20px -4px rgba(0, 0, 0, 0.45),
+    0 28px 48px -8px rgba(0, 0, 0, 0.35) !important;
 }
 
-body[data-theme="dark"] .MuiDialogContent-root {
+/* ── Cabeçalho tipo 1: MuiBox (Criar Ticket, etc.) ── */
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child {
   background-color: var(--surface-bg, #111923) !important;
+  border-bottom-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child > .MuiBox-root:first-child {
+  background: var(--brand-subtle, rgba(31, 147, 255, 0.15)) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child h6,
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child h2,
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child .MuiTypography-h6 {
   color: var(--text-primary, #f8fafc) !important;
 }
 
-body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-root,
-body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-root {
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: var(--divider-subtle, #1e2c3d) !important;
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:first-child > button.MuiIconButton-root:hover {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #f87171 !important;
+}
+
+/* ── Cabeçalho tipo 2: MuiDialogTitle (Adicionar Contato, etc.) ── */
+body[data-theme="dark"] .MuiDialogTitle-root {
+  background-color: var(--surface-bg, #111923) !important;
+  border-bottom-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+body[data-theme="dark"] .MuiDialogTitle-root h2,
+body[data-theme="dark"] .MuiDialogTitle-root .MuiTypography-h6,
+body[data-theme="dark"] .MuiDialogTitle-root .MuiTypography-root {
+  color: var(--text-primary, #f8fafc) !important;
+}
+
+/* ── Conteúdo ── */
+body[data-theme="dark"] .MuiDialogContent-root,
+body[data-theme="dark"] .MuiDialog-paper .MuiDialogContent-dividers {
+  background-color: var(--surface-bg, #111923) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  border-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+/* ── Inputs e Selects ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputBase-root.MuiOutlinedInput-root,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputBase-root.MuiOutlinedInput-root {
   background-color: var(--app-bg, #090e15) !important;
 }
 
 body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-input,
-body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-input {
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-input,
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-inputMarginDense,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-inputMarginDense {
+  color: var(--text-primary, #f8fafc) !important;
+}
+
+body[data-theme="dark"] .MuiDialogContent-root .MuiSelect-select,
+body[data-theme="dark"] .MuiDialog-paper .MuiSelect-select {
   color: var(--text-primary, #f8fafc) !important;
 }
 
@@ -667,22 +722,78 @@ body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-notchedOutline {
   border-color: var(--divider-subtle, #1e2c3d) !important;
 }
 
+body[data-theme="dark"] .MuiDialogContent-root .MuiOutlinedInput-root:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline,
+body[data-theme="dark"] .MuiDialog-paper .MuiOutlinedInput-root:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline {
+  border-color: #334155 !important;
+}
+
+/* ── Ícones de adorno no dark ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputAdornment-root svg,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputAdornment-root svg {
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* ── Labels flutuantes ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined {
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* Label shrink: fundo deve ser o mesmo do input, não #ffffff */
 body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined.MuiInputLabel-shrink,
 body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined.MuiInputLabel-shrink {
   background: var(--app-bg, #090e15) !important;
+  color: var(--text-muted, #64748b) !important;
 }
 
+body[data-theme="dark"] .MuiDialogContent-root .MuiInputLabel-outlined.Mui-focused,
+body[data-theme="dark"] .MuiDialog-paper .MuiInputLabel-outlined.Mui-focused {
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+/* ── Separadores hr internos ── */
+body[data-theme="dark"] .MuiDialogContent-root hr.MuiDivider-root {
+  border-top-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+/* ── Títulos de seção uppercase ── */
+body[data-theme="dark"] .MuiDialogContent-root p.MuiTypography-body1:has(> svg) {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+/* ── Textos auxiliares (helper text) ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiFormHelperText-root {
+  color: var(--text-muted, #64748b) !important;
+}
+
+/* ── Bloco de dica (info box azul) ── */
+body[data-theme="dark"] .MuiDialogContent-root .MuiBox-root:has(> svg + p),
+body[data-theme="dark"] .MuiDialogContent-root .MuiBox-root:has(> .MuiSvgIcon-root + .MuiTypography-root) {
+  background: rgba(31, 147, 255, 0.10) !important;
+  border-color: rgba(31, 147, 255, 0.25) !important;
+}
+
+/* ── Rodapé (ações) ── */
 body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child:not(:first-child),
 body[data-theme="dark"] .MuiDialogActions-root {
   background-color: var(--app-bg, #090e15) !important;
   border-top-color: var(--divider-subtle, #1e2c3d) !important;
 }
 
+/* Botão Cancelar no dark */
 body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined,
-body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined {
-  background: var(--surface-hover, rgba(255, 255, 255, 0.05)) !important;
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined,
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-text {
+  background: rgba(255, 255, 255, 0.05) !important;
   border-color: var(--divider-subtle, #1e2c3d) !important;
   color: var(--text-secondary, #94a3b8) !important;
+}
+
+body[data-theme="dark"] .MuiDialog-paper > .MuiBox-root:last-child button.MuiButton-outlined:hover,
+body[data-theme="dark"] .MuiDialogActions-root button.MuiButton-outlined:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: #475569 !important;
+  color: var(--text-primary, #f8fafc) !important;
 }
 
 /* ============================================================================
@@ -876,8 +987,14 @@ header.MuiAppBar-root {
   justify-content: center !important;
 }
 
-.custom-brand-logo-btn svg,
-#custom-css-appbar button[data-appbar="menu"] svg {
+/* Oculta o ícone nativo do Material-UI preservando o nó no DOM */
+.custom-brand-logo-btn .MuiIconButton-label svg:not(.custom-brand-logo-icon svg),
+.custom-brand-logo-btn > svg {
+  display: none !important;
+}
+
+.custom-brand-logo-btn .custom-brand-logo-icon,
+.custom-brand-logo-btn .custom-brand-logo-icon svg {
   width: 34px !important;
   height: 34px !important;
   display: block !important;
@@ -886,8 +1003,7 @@ header.MuiAppBar-root {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.custom-brand-logo-btn:hover svg,
-#custom-css-appbar button[data-appbar="menu"]:hover svg {
+.custom-brand-logo-btn:hover .custom-brand-logo-icon svg {
   transform: scale(1.08);
 }
 
@@ -918,7 +1034,9 @@ header.MuiAppBar-root {
   font-size: 1.15rem !important;
 }
 
-/* 3. Topbar Customizada via JS (Estrutura Estável & Gaveta Retrátil) */
+/* ============================================================================
+   3. TOPBAR CUSTOMIZADA VIA JS (ESTRUTURA ESTÁVEL & GAVETA RETRÁTIL)
+   ============================================================================ */
 #custom-topbar-wrapper {
   display: flex !important;
   align-items: center !important;
@@ -926,7 +1044,7 @@ header.MuiAppBar-root {
   gap: 6px !important;
 }
 
-/* Grupo dos 4 Botões Rápidos: Ping -> Reload -> Perfil -> Status */
+/* Grupo dos Botões Rápidos Principais: Notificações -> Usuário -> Status */
 #custom-topbar-quick-actions {
   display: flex !important;
   align-items: center !important;
@@ -1047,8 +1165,9 @@ button[data-appbar="lang"] img {
   div.MuiDrawer-docked:has(> .custom-css-sidebar),
   div.MuiDrawer-docked:has(> .MuiDrawer-paperAnchorDockedLeft),
   .custom-css-sidebar,
-  .MuiDrawer-paperAnchorDockedLeft.custom-css-sidebar {
-    background-color: #f4f6fb !important;
+  .MuiDrawer-paperAnchorDockedLeft.custom-css-sidebar,
+  .MuiDrawer-paperAnchorDockedLeft {
+    background-color: var(--app-bg, #f4f6fb) !important;
     font-family: var(--font-family) !important;
     border-right: 1px solid var(--divider-subtle) !important;
     box-shadow: none !important;
@@ -1321,6 +1440,92 @@ button[data-appbar="lang"] img {
   box-shadow: none !important;
 }
 
+/* ============================================================================
+ * 5. DARK MODE — SIDEBAR & MENU LATERAL
+ * ============================================================================ */
+
+/* Fundo escuro #090e15 da sidebar */
+body[data-theme="dark"] div.MuiDrawer-docked:has(> .custom-css-sidebar),
+body[data-theme="dark"] div.MuiDrawer-docked:has(> .MuiDrawer-paperAnchorDockedLeft),
+body[data-theme="dark"] .custom-css-sidebar,
+body[data-theme="dark"] .MuiDrawer-paperAnchorDockedLeft,
+body[data-theme="dark"] .MuiDrawer-paperAnchorLeft:not(.custom-css-contact-drawer) {
+  background-color: #090e15 !important;
+  border-right-color: var(--divider-subtle, #1e2c3d) !important;
+}
+
+/* Títulos das Seções (PRINCIPAL, CHATS, FERRAMENTAS, APPS) no Dark */
+body[data-theme="dark"] .custom-css-sidebar .MuiListSubheader-root,
+body[data-theme="dark"] .custom-css-sidebar [class*="MuiListSubheader"],
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-group-title,
+body[data-theme="dark"] .MuiDrawer-paperAnchorDockedLeft .MuiListSubheader-root {
+  color: #64748b !important;
+}
+
+/* Linhas Divisórias no Dark */
+body[data-theme="dark"] .custom-css-sidebar hr,
+body[data-theme="dark"] .custom-css-sidebar .MuiDivider-root,
+body[data-theme="dark"] .MuiDrawer-paperAnchorDockedLeft .MuiDivider-root {
+  background: var(--divider-subtle, #1e2c3d) !important;
+}
+
+/* Itens do Menu — Inativo / Padrão no Dark */
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-item,
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-group,
+body[data-theme="dark"] .custom-css-sidebar .MuiListItem-button,
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItem-button {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+body[data-theme="dark"] .custom-css-sidebar .custom-css-icon,
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItemIcon-root {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+/* Seta de expansão (Kanban, etc.) */
+body[data-theme="dark"] .custom-css-sidebar .MuiSvgIcon-root:not(.custom-css-icon svg):not(.MuiListItemIcon-root svg) {
+  color: #64748b !important;
+}
+
+/* Hover no Item do Menu no Dark */
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-item:hover,
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItem-button:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #f8fafc !important;
+}
+
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-item:hover .custom-css-icon,
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItem-button:hover .MuiListItemIcon-root {
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+/* Item Ativo no Dark */
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-item[data-active="true"],
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItem-button.Mui-selected {
+  background-color: rgba(31, 147, 255, 0.15) !important;
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-item[data-active="true"] .custom-css-icon,
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItem-button.Mui-selected .MuiListItemIcon-root {
+  background: var(--brand-gradient) !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(31, 147, 255, 0.35) !important;
+}
+
+body[data-theme="dark"] .custom-css-sidebar .custom-css-menu-item[data-active="true"] .custom-css-icon svg,
+body[data-theme="dark"] .MuiDrawer-paper .MuiListItem-button.Mui-selected .MuiListItemIcon-root svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Sidebar Recolhida no Dark */
+body[data-theme="dark"] .custom-css-sidebar[data-collapsed="true"] .custom-css-menu-item[data-active="true"],
+body[data-theme="dark"] .custom-css-sidebar[data-collapsed="true"] .MuiListItem-button.Mui-selected,
+body[data-theme="dark"] .MuiDrawer-paper[data-collapsed="true"] .MuiListItem-button.Mui-selected {
+  background-color: rgba(31, 147, 255, 0.18) !important;
+}
+
 /* --- [Módulo: 04-tickets-list.css] --- */
 /**
  * ============================================================================
@@ -1480,86 +1685,284 @@ button[data-appbar="lang"] img {
   padding: 6px 10px !important;
 }
 
-/* Cartão do Ticket - ZERO BORDAS LATERAIS */
+/* ==========================================================================
+   ESTRUTURA BASE & BACKGROUND DO CARD
+   ========================================================================== */
+
+/* Wrapper do card */
 .custom-css-ticket-item {
-  border-radius: 12px !important;
-  margin: 4px 0 !important;
-  padding: 12px 14px !important;
-  background-color: transparent !important;
-  border: none !important;
-  border-left: none !important;
-  box-shadow: none !important;
-  transition: all 0.15s ease !important;
+  position: relative !important;
+  border-radius: 10px !important;
+  margin: 5px 0 !important;
+  padding: 10px 12px !important;
+  background-color: #f4f6fb !important;
+  border: 1px solid #d8e2f0 !important;
+  border-left: 3px solid #d8e2f0 !important;
+  box-shadow: 0 1px 3px rgba(31, 147, 255, 0.05) !important;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item {
+  background-color: #111e2e !important;
+  border: 1px solid #1a2d42 !important;
+  border-left: 3px solid #1a2d42 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
 }
 
 .custom-css-ticket-item:hover {
-  background-color: var(--surface-hover) !important;
+  background-color: #eaf0fb !important;
+  border-color: rgba(31, 147, 255, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.08) !important;
 }
 
+body[data-theme="dark"] .custom-css-ticket-item:hover {
+  background-color: #162234 !important;
+  border-color: rgba(31, 147, 255, 0.25) !important;
+}
+
+/* Estado: Selecionado / aberto no chat */
 .custom-css-ticket-item[data-selected="true"],
 .custom-css-ticket-item.Mui-selected {
-  background-color: var(--surface-selected) !important;
-  border: none !important;
-  border-left: none !important;
+  background-color: #edf5ff !important;
+  border-left: 3px solid var(--brand-primary) !important;
+  border-color: rgba(31, 147, 255, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.1) !important;
 }
 
-.custom-css-ticket-item[data-unread="true"] {
-  background-color: var(--surface-selected) !important;
-  border: none !important;
-  border-left: none !important;
+body[data-theme="dark"] .custom-css-ticket-item[data-selected="true"],
+body[data-theme="dark"] .custom-css-ticket-item.Mui-selected {
+  background-color: #18283d !important;
+  border-left: 3px solid var(--brand-primary) !important;
 }
 
-.custom-css-ticket-item .MuiAvatar-root {
-  width: 44px !important;
-  height: 44px !important;
-  margin-top: 0 !important;
-  border-radius: 50% !important;
-  border: none !important;
-  box-shadow: none !important;
+/* Estado: Conexão com problema / desconectada / removida */
+.custom-css-ticket-item[data-connection-color="red"],
+.custom-css-ticket-item[data-status="disconnected"],
+.custom-css-ticket-item:has(.ticket-connection[data-connection-color="red"]) {
+  border-left: 3.5px solid #ef4444 !important;
+  border-color: #fecaca !important;
+  background-color: #fff1f2 !important;
 }
 
-.custom-css-ticket-item .ticket-name {
-  font-size: 0.92rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
+body[data-theme="dark"] .custom-css-ticket-item[data-connection-color="red"],
+body[data-theme="dark"] .custom-css-ticket-item[data-status="disconnected"],
+body[data-theme="dark"] .custom-css-ticket-item:has(.ticket-connection[data-connection-color="red"]) {
+  border-left: 3.5px solid #ef4444 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
-.custom-css-ticket-item .ticket-preview {
-  font-size: 0.82rem !important;
-  color: var(--text-secondary) !important;
-  margin-top: 3px !important;
-}
-
-.custom-css-ticket-item .ticket-badges {
-  display: inline-flex !important;
-  gap: 5px !important;
-  margin-top: 5px !important;
-  flex-wrap: wrap !important;
-}
-
-.custom-css-ticket-item .ticket-connection {
-  background: var(--badge-conn-bg) !important;
-  color: var(--badge-conn-text) !important;
-  font-size: 0.65rem !important;
-  font-weight: 700 !important;
-  padding: 2px 7px !important;
-  border-radius: 6px !important;
-  border: none !important;
-}
-
-.custom-css-ticket-item .ticket-queue {
-  background: var(--badge-queue-bg) !important;
-  color: var(--badge-queue-text) !important;
-  font-size: 0.65rem !important;
-  font-weight: 700 !important;
-  padding: 2px 7px !important;
-  border-radius: 6px !important;
-  border: none !important;
-}
-
+/* Remove divisores nativos entre cards */
 .custom-css-ticket-list hr.MuiDivider-root,
 .custom-css-ticket-list li.MuiDivider-root {
   display: none !important;
+}
+
+/* ==========================================================================
+   BLOCO 1: AVATAR + BADGE DE NÃO LIDAS + ESTRELA DE FAVORITO
+   (Medidas e posições validadas pelo usuário)
+   ========================================================================== */
+
+/* 1. Alinhamento vertical do card para centralizar o avatar */
+.custom-css-ticket-item {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 2. Container do Avatar (Coluna Esquerda) */
+.custom-css-ticket-item .MuiListItemAvatar-root {
+  position: relative !important;
+  min-width: 64px !important;
+  width: 64px !important;
+  height: 64px !important;
+  margin-right: 12px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 3. Caixa interna que engloba o avatar e a estrela */
+.custom-css-ticket-item .MuiListItemAvatar-root .MuiBox-root {
+  position: relative !important;
+  width: 60px !important;
+  height: 60px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 4. Avatar (Foto / Iniciais) — Borda de 2px preservando a cor da fila */
+.custom-css-ticket-item .MuiAvatar-root {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  margin: 0 !important;
+  background-color: #e2e8f0 !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+/* Garante que imagens e letras dentro do avatar fiquem perfeitamente centralizadas */
+.custom-css-ticket-item .MuiAvatar-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+}
+
+/* 5. Badge de Mensagens Não Lidas (Posição calibrada pelo usuário) */
+.custom-css-ticket-item .MuiBadge-invisible,
+.custom-css-ticket-item .MuiBadge-badge.MuiBadge-invisible {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-invisible) {
+  position: absolute !important;
+  top: 0px !important;
+  left: -16px !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  z-index: 5 !important;
+
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  border-radius: 10px !important;
+  padding: 0 4px !important;
+  border: 2px solid #f4f6fb !important;
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-invisible) {
+  border-color: #111e2e !important;
+}
+
+/* 6. Estrela de Favoritar (Posição calibrada pelo usuário) */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root {
+  position: absolute !important;
+  bottom: -9px !important;
+  right: -10px !important;
+  top: auto !important;
+  left: auto !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+
+  background: var(--surface-bg, #ffffff) !important;
+  border-radius: 50% !important;
+  border: 1px solid var(--divider-subtle, #e2e8f0) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root {
+  background: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 1px 5px rgba(245, 158, 11, 0.35) !important;
+  transform: scale(1.12);
+}
+
+/* Ícone da Estrela */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg,
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root .MuiSvgIcon-root {
+  font-size: 0.8rem !important;
+  width: 13px !important;
+  height: 13px !important;
+  color: #94a3b8 !important;
+  transition: color 0.15s ease !important;
+}
+
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover svg,
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover .MuiSvgIcon-root {
+  color: #f59e0b !important;
+}
+
+/* ==========================================================================
+   REDIMENSIONAMENTO DO PAINEL DE TICKETS (DESKTOP)
+   Controlado via variável CSS --wsw-tickets-width e manipulado via JS
+   ========================================================================== */
+@media (min-width: 961px) {
+  /* Coluna da Lista de Atendimentos (Mínimo: 460px / Máximo: 650px) */
+  #custom-css-content .MuiGrid-item:has(.custom-css-tickets),
+  .custom-css-page .MuiGrid-item:has(.custom-css-tickets),
+  #custom-css-content > div > .MuiGrid-container > .MuiGrid-grid-xs-4,
+  .custom-css-page .MuiGrid-container > .MuiGrid-grid-xs-4 {
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    min-width: 460px !important;
+    max-width: clamp(460px, var(--wsw-tickets-width, 460px), 650px) !important;
+    flex-basis: clamp(460px, var(--wsw-tickets-width, 460px), 650px) !important;
+    width: clamp(460px, var(--wsw-tickets-width, 460px), 650px) !important;
+    position: relative !important;
+  }
+
+  /* Coluna da Área de Mensagens / Chat */
+  #custom-css-content .MuiGrid-item:has(.custom-css-ticket),
+  #custom-css-content .MuiGrid-item:has(#drawer-container),
+  .custom-css-page .MuiGrid-item:has(.custom-css-ticket),
+  #custom-css-content > div > .MuiGrid-container > .MuiGrid-grid-xs-8,
+  .custom-css-page .MuiGrid-container > .MuiGrid-grid-xs-8 {
+    flex-grow: 1 !important;
+    flex-shrink: 1 !important;
+    min-width: calc(100% - 650px) !important;
+    flex-basis: calc(100% - clamp(460px, var(--wsw-tickets-width, 460px), 650px)) !important;
+    max-width: calc(100% - clamp(460px, var(--wsw-tickets-width, 460px), 650px)) !important;
+    width: calc(100% - clamp(460px, var(--wsw-tickets-width, 460px), 650px)) !important;
+  }
+
+  /* Divisor / Alça invisível na borda direita da lista apenas para cursor col-resize */
+  .custom-css-tickets {
+    position: relative !important;
+  }
+
+  .custom-css-tickets::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 50;
+    background: transparent !important;
+  }
+
+  /* Durante o arrasto: bloqueia seleção de texto e mantém cursor col-resize global */
+  body.wsw-is-resizing,
+  body.wsw-is-resizing * {
+    cursor: col-resize !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+  }
 }
 
 /* --- [Módulo: 05-ticket-header.css] --- */
@@ -1908,23 +2311,40 @@ button[data-appbar="lang"] img {
   opacity: 0.3 !important;
 }
 
-/* Ações do Cabeçalho do Atendimento (Ticket) */
+/* ============================================================================
+   AÇÕES DO CABEÇALHO DO ATENDIMENTO (FLEX ORDER & GAVETA CSS SEGURA)
+   ============================================================================ */
 .custom-css-ticket-actions {
   display: flex !important;
   align-items: center !important;
   gap: 3px !important;
 }
 
-#custom-ticket-actions-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
+/* Ordem das ações rápidas */
+.ticket-item-resolve {
+  order: 1 !important;
 }
 
-#custom-ticket-actions-quick {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
+.ticket-item-return {
+  order: 2 !important;
+}
+
+.ticket-item-transfer {
+  order: 3 !important;
+}
+
+.ticket-item-accept-audio {
+  order: 4 !important;
+}
+
+/* Os itens secundários (gaveta) ficam antes do botão toggle */
+.ticket-item-secondary {
+  order: 5 !important;
+}
+
+/* O botão toggle fica SEMPRE no extremo canto direito */
+#custom-ticket-actions-toggle-btn {
+  order: 10 !important;
 }
 
 /* Botão Toggle das Ações do Ticket (···) */
@@ -1952,24 +2372,26 @@ button[data-appbar="lang"] img {
   color: var(--brand-primary) !important;
 }
 
-/* Gaveta Retrátil das Ações Secundárias do Ticket */
-#custom-ticket-actions-drawer {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
+/* Itens Secundários (Gaveta Retrátil CSS Pura - Zero Reparenting) */
+.ticket-item-secondary {
   max-width: 0 !important;
   opacity: 0 !important;
   overflow: hidden !important;
   pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   transform: translateX(8px);
-  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, transform 0.25s ease !important;
+  transition: max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, transform 0.2s ease, margin 0.2s ease !important;
 }
 
-#custom-ticket-actions-drawer.is-open {
-  max-width: 450px !important;
+/* Quando a gaveta do Ticket estiver aberta */
+.custom-css-ticket-actions.ticket-drawer-open .ticket-item-secondary,
+.custom-css-ticket-actions:has(#custom-ticket-actions-toggle-btn.is-active) .ticket-item-secondary {
+  max-width: 42px !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   transform: translateX(0);
+  margin: 0 1px !important;
 }
 
 .custom-css-ticket-actions button.MuiIconButton-root {

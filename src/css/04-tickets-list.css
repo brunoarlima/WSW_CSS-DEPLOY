@@ -156,84 +156,284 @@
   padding: 6px 10px !important;
 }
 
-/* Cartão do Ticket - ZERO BORDAS LATERAIS */
+/* ==========================================================================
+   ESTRUTURA BASE & BACKGROUND DO CARD
+   ========================================================================== */
+
+/* Wrapper do card */
 .custom-css-ticket-item {
-  border-radius: 12px !important;
-  margin: 4px 0 !important;
-  padding: 12px 14px !important;
-  background-color: transparent !important;
-  border: none !important;
-  border-left: none !important;
-  box-shadow: none !important;
-  transition: all 0.15s ease !important;
+  position: relative !important;
+  border-radius: 10px !important;
+  margin: 5px 0 !important;
+  padding: 10px 12px !important;
+  background-color: #f4f6fb !important;
+  border: 1px solid #d8e2f0 !important;
+  border-left: 3px solid #d8e2f0 !important;
+  box-shadow: 0 1px 3px rgba(31, 147, 255, 0.05) !important;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item {
+  background-color: #111e2e !important;
+  border: 1px solid #1a2d42 !important;
+  border-left: 3px solid #1a2d42 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
 }
 
 .custom-css-ticket-item:hover {
-  background-color: var(--surface-hover) !important;
+  background-color: #eaf0fb !important;
+  border-color: rgba(31, 147, 255, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.08) !important;
 }
 
+body[data-theme="dark"] .custom-css-ticket-item:hover {
+  background-color: #162234 !important;
+  border-color: rgba(31, 147, 255, 0.25) !important;
+}
+
+/* Estado: Selecionado / aberto no chat */
 .custom-css-ticket-item[data-selected="true"],
 .custom-css-ticket-item.Mui-selected {
-  background-color: var(--surface-selected) !important;
-  border: none !important;
-  border-left: none !important;
+  background-color: #edf5ff !important;
+  border-left: 3px solid var(--brand-primary) !important;
+  border-color: rgba(31, 147, 255, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.1) !important;
 }
 
-.custom-css-ticket-item[data-unread="true"] {
-  background-color: var(--surface-selected) !important;
-  border: none !important;
-  border-left: none !important;
+body[data-theme="dark"] .custom-css-ticket-item[data-selected="true"],
+body[data-theme="dark"] .custom-css-ticket-item.Mui-selected {
+  background-color: #18283d !important;
+  border-left: 3px solid var(--brand-primary) !important;
 }
 
-.custom-css-ticket-item .MuiAvatar-root {
-  width: 44px !important;
-  height: 44px !important;
-  margin-top: 0 !important;
-  border-radius: 50% !important;
-  border: none !important;
-  box-shadow: none !important;
+/* Estado: Conexão com problema / desconectada / removida */
+.custom-css-ticket-item[data-connection-color="red"],
+.custom-css-ticket-item[data-status="disconnected"],
+.custom-css-ticket-item:has(.ticket-connection[data-connection-color="red"]) {
+  border-left: 3.5px solid #ef4444 !important;
+  border-color: #fecaca !important;
+  background-color: #fff1f2 !important;
 }
 
-.custom-css-ticket-item .ticket-name {
-  font-size: 0.92rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
+body[data-theme="dark"] .custom-css-ticket-item[data-connection-color="red"],
+body[data-theme="dark"] .custom-css-ticket-item[data-status="disconnected"],
+body[data-theme="dark"] .custom-css-ticket-item:has(.ticket-connection[data-connection-color="red"]) {
+  border-left: 3.5px solid #ef4444 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
-.custom-css-ticket-item .ticket-preview {
-  font-size: 0.82rem !important;
-  color: var(--text-secondary) !important;
-  margin-top: 3px !important;
-}
-
-.custom-css-ticket-item .ticket-badges {
-  display: inline-flex !important;
-  gap: 5px !important;
-  margin-top: 5px !important;
-  flex-wrap: wrap !important;
-}
-
-.custom-css-ticket-item .ticket-connection {
-  background: var(--badge-conn-bg) !important;
-  color: var(--badge-conn-text) !important;
-  font-size: 0.65rem !important;
-  font-weight: 700 !important;
-  padding: 2px 7px !important;
-  border-radius: 6px !important;
-  border: none !important;
-}
-
-.custom-css-ticket-item .ticket-queue {
-  background: var(--badge-queue-bg) !important;
-  color: var(--badge-queue-text) !important;
-  font-size: 0.65rem !important;
-  font-weight: 700 !important;
-  padding: 2px 7px !important;
-  border-radius: 6px !important;
-  border: none !important;
-}
-
+/* Remove divisores nativos entre cards */
 .custom-css-ticket-list hr.MuiDivider-root,
 .custom-css-ticket-list li.MuiDivider-root {
   display: none !important;
 }
+
+/* ==========================================================================
+   BLOCO 1: AVATAR + BADGE DE NÃO LIDAS + ESTRELA DE FAVORITO
+   (Medidas e posições validadas pelo usuário)
+   ========================================================================== */
+
+/* 1. Alinhamento vertical do card para centralizar o avatar */
+.custom-css-ticket-item {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 2. Container do Avatar (Coluna Esquerda) */
+.custom-css-ticket-item .MuiListItemAvatar-root {
+  position: relative !important;
+  min-width: 64px !important;
+  width: 64px !important;
+  height: 64px !important;
+  margin-right: 12px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 3. Caixa interna que engloba o avatar e a estrela */
+.custom-css-ticket-item .MuiListItemAvatar-root .MuiBox-root {
+  position: relative !important;
+  width: 60px !important;
+  height: 60px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 4. Avatar (Foto / Iniciais) — Borda de 2px preservando a cor da fila */
+.custom-css-ticket-item .MuiAvatar-root {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  margin: 0 !important;
+  background-color: #e2e8f0 !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+/* Garante que imagens e letras dentro do avatar fiquem perfeitamente centralizadas */
+.custom-css-ticket-item .MuiAvatar-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+}
+
+/* 5. Badge de Mensagens Não Lidas (Posição calibrada pelo usuário) */
+.custom-css-ticket-item .MuiBadge-invisible,
+.custom-css-ticket-item .MuiBadge-badge.MuiBadge-invisible {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-invisible) {
+  position: absolute !important;
+  top: 0px !important;
+  left: -16px !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  z-index: 5 !important;
+
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  border-radius: 10px !important;
+  padding: 0 4px !important;
+  border: 2px solid #f4f6fb !important;
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-invisible) {
+  border-color: #111e2e !important;
+}
+
+/* 6. Estrela de Favoritar (Posição calibrada pelo usuário) */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root {
+  position: absolute !important;
+  bottom: -9px !important;
+  right: -10px !important;
+  top: auto !important;
+  left: auto !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+
+  background: var(--surface-bg, #ffffff) !important;
+  border-radius: 50% !important;
+  border: 1px solid var(--divider-subtle, #e2e8f0) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root {
+  background: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 1px 5px rgba(245, 158, 11, 0.35) !important;
+  transform: scale(1.12);
+}
+
+/* Ícone da Estrela */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg,
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root .MuiSvgIcon-root {
+  font-size: 0.8rem !important;
+  width: 13px !important;
+  height: 13px !important;
+  color: #94a3b8 !important;
+  transition: color 0.15s ease !important;
+}
+
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover svg,
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover .MuiSvgIcon-root {
+  color: #f59e0b !important;
+}
+
+/* ==========================================================================
+   REDIMENSIONAMENTO DO PAINEL DE TICKETS (DESKTOP)
+   Controlado via variável CSS --wsw-tickets-width e manipulado via JS
+   ========================================================================== */
+@media (min-width: 961px) {
+  /* Coluna da Lista de Atendimentos (Mínimo: 460px / Máximo: 650px) */
+  #custom-css-content .MuiGrid-item:has(.custom-css-tickets),
+  .custom-css-page .MuiGrid-item:has(.custom-css-tickets),
+  #custom-css-content > div > .MuiGrid-container > .MuiGrid-grid-xs-4,
+  .custom-css-page .MuiGrid-container > .MuiGrid-grid-xs-4 {
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    min-width: 460px !important;
+    max-width: clamp(460px, var(--wsw-tickets-width, 460px), 650px) !important;
+    flex-basis: clamp(460px, var(--wsw-tickets-width, 460px), 650px) !important;
+    width: clamp(460px, var(--wsw-tickets-width, 460px), 650px) !important;
+    position: relative !important;
+  }
+
+  /* Coluna da Área de Mensagens / Chat */
+  #custom-css-content .MuiGrid-item:has(.custom-css-ticket),
+  #custom-css-content .MuiGrid-item:has(#drawer-container),
+  .custom-css-page .MuiGrid-item:has(.custom-css-ticket),
+  #custom-css-content > div > .MuiGrid-container > .MuiGrid-grid-xs-8,
+  .custom-css-page .MuiGrid-container > .MuiGrid-grid-xs-8 {
+    flex-grow: 1 !important;
+    flex-shrink: 1 !important;
+    min-width: calc(100% - 650px) !important;
+    flex-basis: calc(100% - clamp(460px, var(--wsw-tickets-width, 460px), 650px)) !important;
+    max-width: calc(100% - clamp(460px, var(--wsw-tickets-width, 460px), 650px)) !important;
+    width: calc(100% - clamp(460px, var(--wsw-tickets-width, 460px), 650px)) !important;
+  }
+
+  /* Divisor / Alça invisível na borda direita da lista apenas para cursor col-resize */
+  .custom-css-tickets {
+    position: relative !important;
+  }
+
+  .custom-css-tickets::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 50;
+    background: transparent !important;
+  }
+
+  /* Durante o arrasto: bloqueia seleção de texto e mantém cursor col-resize global */
+  body.wsw-is-resizing,
+  body.wsw-is-resizing * {
+    cursor: col-resize !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+  }
+}
+
+

@@ -46,17 +46,25 @@
     </svg>
   `;
   
-  // Substitui o ícone do hambúrguer pela Logo da Marca
+  // Substitui o ícone do hambúrguer pela Logo da Marca sem destruir nós nativos do React
   function setupBrandMenuLogo(appbar) {
-    const menuBtn = appbar.querySelector('button[data-appbar="menu"], button[aria-label="open drawer"]');
-    if (!menuBtn) return;
+    try {
+      if (!appbar || !appbar.isConnected) return;
+      const menuBtn = appbar.querySelector('button[data-appbar="menu"], button[aria-label="open drawer"]');
+      if (!menuBtn || !menuBtn.isConnected) return;
   
-    menuBtn.setAttribute('title', 'Expandir menu lateral');
-  
-    if (!menuBtn.classList.contains('custom-brand-logo-btn')) {
+      menuBtn.setAttribute('title', 'Expandir menu lateral');
       menuBtn.classList.add('custom-brand-logo-btn');
-      const iconLabel = menuBtn.querySelector('.MuiIconButton-label') || menuBtn;
-      iconLabel.innerHTML = BRAND_LOGO_SVG;
+  
+      let logoEl = menuBtn.querySelector('.custom-brand-logo-icon');
+      if (!logoEl) {
+        logoEl = document.createElement('span');
+        logoEl.className = 'custom-brand-logo-icon';
+        logoEl.innerHTML = BRAND_LOGO_SVG;
+        menuBtn.appendChild(logoEl);
+      }
+    } catch (e) {
+      // Falha silenciosa para nunca interromper a renderização do React
     }
   }
 
@@ -67,230 +75,213 @@
   
   // Verifica com precisão se existe um badge de notificação visível e ativo
   function hasActiveBadge(container) {
-    if (!container) return false;
+    try {
+      if (!container || !container.isConnected) return false;
   
-    const badges = container.querySelectorAll('.MuiBadge-badge, [class*="MuiBadge-badge"]');
-    for (let i = 0; i < badges.length; i++) {
-      const badge = badges[i];
+      const badges = container.querySelectorAll('.MuiBadge-badge, [class*="MuiBadge-badge"]');
+      for (let i = 0; i < badges.length; i++) {
+        const badge = badges[i];
+        if (!badge || !badge.isConnected) continue;
   
-      if (
-        badge.classList.contains('MuiBadge-invisible') ||
-        badge.className.indexOf('invisible') !== -1 ||
-        badge.getAttribute('aria-hidden') === 'true'
-      ) {
-        continue;
+        if (
+          badge.classList.contains('MuiBadge-invisible') ||
+          badge.className.indexOf('invisible') !== -1 ||
+          badge.getAttribute('aria-hidden') === 'true'
+        ) {
+          continue;
+        }
+  
+        const style = window.getComputedStyle(badge);
+        if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+          continue;
+        }
+  
+        const text = badge.textContent.trim();
+        if (text !== '' && text !== '0') {
+          return true;
+        }
+  
+        if (badge.classList.contains('MuiBadge-dot') && style.display !== 'none') {
+          return true;
+        }
       }
-  
-      const style = window.getComputedStyle(badge);
-      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
-        continue;
-      }
-  
-      const text = badge.textContent.trim();
-      if (text !== '' && text !== '0') {
-        return true;
-      }
-  
-      if (badge.classList.contains('MuiBadge-dot') && style.display !== 'none') {
-        return true;
-      }
+    } catch (e) {
+      // Silencioso
     }
   
     return false;
   }
   
   function initCustomTopbar() {
-    const appbar = document.getElementById('custom-css-appbar') || document.querySelector('header.MuiAppBar-root');
-    if (!appbar) return;
+    try {
+      const appbar = document.getElementById('custom-css-appbar') || document.querySelector('header.MuiAppBar-root');
+      if (!appbar || !appbar.isConnected) return;
   
-    const toolbar = appbar.querySelector('.MuiToolbar-root') || appbar;
+      const toolbar = appbar.querySelector('.MuiToolbar-root') || appbar;
+      if (!toolbar || !toolbar.isConnected) return;
   
-    // Atualiza o botão do menu lateral para a Logo da Marca
-    setupBrandMenuLogo(appbar);
+      // Atualiza o botão do menu lateral para a Logo da Marca
+      setupBrandMenuLogo(appbar);
   
-    let wrapper = document.getElementById('custom-topbar-wrapper');
-    if (!wrapper) {
-      wrapper = document.createElement('div');
-      wrapper.id = 'custom-topbar-wrapper';
-      toolbar.appendChild(wrapper);
-    }
+      let wrapper = document.getElementById('custom-topbar-wrapper');
+      if (!wrapper) {
+        wrapper = document.createElement('div');
+        wrapper.id = 'custom-topbar-wrapper';
+        toolbar.appendChild(wrapper);
+      }
   
-    const ping = appbar.querySelector('[data-appbar="ping"]');
-    const notifications = appbar.querySelector('button[data-appbar="notifications"]') ||
-                          appbar.querySelector('button:has(svg[data-testid*="Notification"])') ||
-                          appbar.querySelector('button[aria-label*="notifica" i]');
-    const user = appbar.querySelector('button[data-appbar="user"]');
-    const status = appbar.querySelector('[data-icon="status"], [data-appbar="status"]') ||
-                   appbar.querySelector('.custom-css-topbar-actions > :last-child');
+      const ping = appbar.querySelector('[data-appbar="ping"]');
+      const notifications = appbar.querySelector('button[data-appbar="notifications"]') ||
+                            appbar.querySelector('button:has(svg[data-testid*="Notification"])') ||
+                            appbar.querySelector('button[aria-label*="notifica" i]');
+      const user = appbar.querySelector('button[data-appbar="user"]');
+      const status = appbar.querySelector('[data-icon="status"], [data-appbar="status"]') ||
+                     appbar.querySelector('.custom-css-topbar-actions > :last-child');
   
-    let drawer = document.getElementById('custom-topbar-secondary-drawer');
-    if (!drawer) {
-      drawer = document.createElement('div');
-      drawer.id = 'custom-topbar-secondary-drawer';
-    }
+      let drawer = document.getElementById('custom-topbar-secondary-drawer');
+      if (!drawer) {
+        drawer = document.createElement('div');
+        drawer.id = 'custom-topbar-secondary-drawer';
+      }
   
-    let toggleBtn = document.getElementById('custom-topbar-toggle-btn');
-    if (!toggleBtn) {
-      toggleBtn = document.createElement('button');
-      toggleBtn.id = 'custom-topbar-toggle-btn';
-      toggleBtn.type = 'button';
-      toggleBtn.title = 'Mais opções';
-      toggleBtn.setAttribute('aria-label', 'Mais opções');
-      toggleBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-      `;
+      let toggleBtn = document.getElementById('custom-topbar-toggle-btn');
+      if (!toggleBtn) {
+        toggleBtn = document.createElement('button');
+        toggleBtn.id = 'custom-topbar-toggle-btn';
+        toggleBtn.type = 'button';
+        toggleBtn.title = 'Mais opções';
+        toggleBtn.setAttribute('aria-label', 'Mais opções');
+        toggleBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+          </svg>
+        `;
   
-      toggleBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        drawer.classList.toggle('is-open');
-        toggleBtn.classList.toggle('is-active');
+        toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          drawer.classList.toggle('is-open');
+          toggleBtn.classList.toggle('is-active');
+        });
+      }
+  
+      let quickGroup = document.getElementById('custom-topbar-quick-actions');
+      if (!quickGroup) {
+        quickGroup = document.createElement('div');
+        quickGroup.id = 'custom-topbar-quick-actions';
+      }
+  
+      // Estrutura organizada: [Ping] -> [Gaveta Secundária] -> [Toggle ···] -> [Grupo Rápido: Notificações, User, Status]
+      if (ping && ping.isConnected && ping.parentElement !== wrapper) wrapper.appendChild(ping);
+      if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
+      if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
+      if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
+  
+      if (notifications && notifications.isConnected && notifications.parentElement !== quickGroup) quickGroup.appendChild(notifications);
+      if (user && user.isConnected && user.parentElement !== quickGroup) quickGroup.appendChild(user);
+      if (status && status.isConnected && status.parentElement !== quickGroup) quickGroup.appendChild(status);
+  
+      // Identifica e move TODOS os outros botões secundários (volume, chat interno, idioma, reload, tema, etc.) para o drawer
+      const allButtons = appbar.querySelectorAll('button.MuiIconButton-root, button[data-appbar]');
+      allButtons.forEach(function (btn) {
+        if (
+          !btn ||
+          !btn.isConnected ||
+          btn === toggleBtn ||
+          btn === notifications ||
+          btn === user ||
+          btn === status ||
+          btn.getAttribute('data-appbar') === 'menu' ||
+          btn.getAttribute('aria-label') === 'open drawer' ||
+          btn.closest('#custom-topbar-quick-actions')
+        ) {
+          return;
+        }
+  
+        if (btn.parentElement !== drawer) {
+          drawer.appendChild(btn);
+        }
       });
-    }
   
-    let quickGroup = document.getElementById('custom-topbar-quick-actions');
-    if (!quickGroup) {
-      quickGroup = document.createElement('div');
-      quickGroup.id = 'custom-topbar-quick-actions';
-    }
-  
-    // Move itens principais
-    if (ping && ping.parentElement !== wrapper) wrapper.appendChild(ping);
-    if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
-    if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
-    if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
-  
-    if (notifications && notifications.parentElement !== quickGroup) quickGroup.appendChild(notifications);
-    if (user && user.parentElement !== quickGroup) quickGroup.appendChild(user);
-    if (status && status.parentElement !== quickGroup) quickGroup.appendChild(status);
-  
-    // Move secundários da topbar para a gaveta
-    const allButtons = appbar.querySelectorAll('button.MuiIconButton-root, button[data-appbar]');
-    allButtons.forEach(function (btn) {
-      if (
-        btn === toggleBtn ||
-        btn === notifications ||
-        btn === user ||
-        btn === status ||
-        btn.getAttribute('data-appbar') === 'menu' ||
-        btn.getAttribute('aria-label') === 'open drawer' ||
-        btn.closest('#custom-topbar-quick-actions')
-      ) {
-        return;
+      if (hasActiveBadge(drawer)) {
+        toggleBtn.classList.add('has-badge');
+      } else {
+        toggleBtn.classList.remove('has-badge');
       }
-  
-      if (btn.parentElement !== drawer) {
-        drawer.appendChild(btn);
-      }
-    });
-  
-    if (hasActiveBadge(drawer)) {
-      toggleBtn.classList.add('has-badge');
-    } else {
-      toggleBtn.classList.remove('has-badge');
+    } catch (e) {
+      // Silencioso para evitar quebrar React
     }
   }
 
   // --- [Módulo: 02-ticket-actions.js] ---
   // ============================================================================
-  // AÇÕES DO ATENDIMENTO / TICKET (Grade Condensada & Gaveta Retrátil)
+  // AÇÕES DO ATENDIMENTO / TICKET (Grade Condensada & Gaveta Retrátil - Zero Reparenting)
   // Ordem: Resolver (X) -> Devolver à Fila -> Transferir -> Permitir Áudio -> [···] -> Gaveta
   // ============================================================================
   
-  function getActionNodeToMove(el, actionsContainer) {
-    if (!el) return null;
-    let node = el;
-    while (node && node.parentElement && node.parentElement !== actionsContainer && node.parentElement !== document.body) {
-      node = node.parentElement;
-    }
-    return node && node.parentElement === actionsContainer ? node : el;
-  }
-  
   function initCustomTicketActions() {
-    const actionsContainer = document.querySelector('.custom-css-ticket-actions');
-    if (!actionsContainer) return;
+    try {
+      const actionsContainer = document.querySelector('.custom-css-ticket-actions');
+      if (!actionsContainer || !actionsContainer.isConnected) return;
   
-    let wrapper = document.getElementById('custom-ticket-actions-wrapper');
-    if (!wrapper) {
-      wrapper = document.createElement('div');
-      wrapper.id = 'custom-ticket-actions-wrapper';
-      actionsContainer.appendChild(wrapper);
-    }
+      let toggleBtn = actionsContainer.querySelector('#custom-ticket-actions-toggle-btn');
+      if (!toggleBtn) {
+        toggleBtn = document.createElement('button');
+        toggleBtn.id = 'custom-ticket-actions-toggle-btn';
+        toggleBtn.type = 'button';
+        toggleBtn.title = 'Mais ações';
+        toggleBtn.setAttribute('aria-label', 'Mais ações');
+        toggleBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+          </svg>
+        `;
   
-    let quickGroup = document.getElementById('custom-ticket-actions-quick');
-    if (!quickGroup) {
-      quickGroup = document.createElement('div');
-      quickGroup.id = 'custom-ticket-actions-quick';
-      wrapper.appendChild(quickGroup);
-    }
+        toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          actionsContainer.classList.toggle('ticket-drawer-open');
+          toggleBtn.classList.toggle('is-active');
+        });
   
-    let toggleBtn = document.getElementById('custom-ticket-actions-toggle-btn');
-    let drawer = document.getElementById('custom-ticket-actions-drawer');
+        actionsContainer.appendChild(toggleBtn);
+      }
   
-    if (!drawer) {
-      drawer = document.createElement('div');
-      drawer.id = 'custom-ticket-actions-drawer';
-    }
+      // Classifica os elementos filhos de ações sem alterar o parentNode
+      const allActionElements = actionsContainer.querySelectorAll('[data-action], .MuiMenuItem-root, button.MuiIconButton-root, .MuiSwitch-root');
+      allActionElements.forEach(function (el) {
+        if (!el || !el.isConnected || el === toggleBtn) return;
   
-    if (!toggleBtn) {
-      toggleBtn = document.createElement('button');
-      toggleBtn.id = 'custom-ticket-actions-toggle-btn';
-      toggleBtn.type = 'button';
-      toggleBtn.title = 'Mais ações';
-      toggleBtn.setAttribute('aria-label', 'Mais ações');
-      toggleBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-      `;
+        // Obtém o elemento filho direto de actionsContainer
+        let topEl = el;
+        while (topEl && topEl.parentElement && topEl.parentElement !== actionsContainer) {
+          topEl = topEl.parentElement;
+        }
+        if (!topEl || topEl.parentElement !== actionsContainer || topEl === toggleBtn) return;
   
-      toggleBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        drawer.classList.toggle('is-open');
-        toggleBtn.classList.toggle('is-active');
+        const hasResolve = topEl.querySelector('[data-action="resolve"]') || topEl.getAttribute('data-action') === 'resolve';
+        const hasReturn = topEl.querySelector('[data-action="return"]') || topEl.getAttribute('data-action') === 'return';
+        const hasTransfer = topEl.querySelector('[data-action="transfer"]') || topEl.getAttribute('data-action') === 'transfer';
+        const hasAcceptAudio = topEl.querySelector('[data-action="accept-audio"]') || topEl.getAttribute('data-action') === 'accept-audio' || topEl.querySelector('.MuiSwitch-root');
+  
+        if (hasResolve) {
+          topEl.classList.add('ticket-item-quick', 'ticket-item-resolve');
+          topEl.classList.remove('ticket-item-secondary');
+        } else if (hasReturn) {
+          topEl.classList.add('ticket-item-quick', 'ticket-item-return');
+          topEl.classList.remove('ticket-item-secondary');
+        } else if (hasTransfer) {
+          topEl.classList.add('ticket-item-quick', 'ticket-item-transfer');
+          topEl.classList.remove('ticket-item-secondary');
+        } else if (hasAcceptAudio) {
+          topEl.classList.add('ticket-item-quick', 'ticket-item-accept-audio');
+          topEl.classList.remove('ticket-item-secondary');
+        } else {
+          topEl.classList.add('ticket-item-secondary');
+          topEl.classList.remove('ticket-item-quick');
+        }
       });
+    } catch (e) {
+      // Silencioso
     }
-  
-    if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
-    if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
-    if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
-  
-    // 1. Identifica os 4 botões de Acesso Rápido na ordem solicitada:
-    // 1º Resolver (X) -> 2º Devolver à Fila -> 3º Transferir -> 4º Permitir Áudio
-    const resolveBtn = actionsContainer.querySelector('[data-action="resolve"]');
-    const returnBtn = actionsContainer.querySelector('[data-action="return"]');
-    const transferBtn = actionsContainer.querySelector('[data-action="transfer"]');
-    const acceptAudioBtn = actionsContainer.querySelector('[data-action="accept-audio"]');
-  
-    const resolveNode = getActionNodeToMove(resolveBtn, actionsContainer);
-    const returnNode = getActionNodeToMove(returnBtn, actionsContainer);
-    const transferNode = getActionNodeToMove(transferBtn, actionsContainer);
-    const acceptAudioNode = getActionNodeToMove(acceptAudioBtn, actionsContainer);
-  
-    if (resolveNode && resolveNode.parentElement !== quickGroup) quickGroup.appendChild(resolveNode);
-    if (returnNode && returnNode.parentElement !== quickGroup) quickGroup.appendChild(returnNode);
-    if (transferNode && transferNode.parentElement !== quickGroup) quickGroup.appendChild(transferNode);
-    if (acceptAudioNode && acceptAudioNode.parentElement !== quickGroup) quickGroup.appendChild(acceptAudioNode);
-  
-    // 2. Move os demais botões secundários para a gaveta do ticket
-    const allActionElements = actionsContainer.querySelectorAll('[data-action]');
-    allActionElements.forEach(function (el) {
-      const actionType = el.getAttribute('data-action');
-      if (
-        actionType === 'resolve' ||
-        actionType === 'return' ||
-        actionType === 'transfer' ||
-        actionType === 'accept-audio'
-      ) {
-        return;
-      }
-  
-      const nodeToMove = getActionNodeToMove(el, actionsContainer);
-      if (nodeToMove && nodeToMove !== wrapper && nodeToMove.parentElement !== drawer) {
-        drawer.appendChild(nodeToMove);
-      }
-    });
   }
 
   // --- [Módulo: 03-ticket-header.js] ---
@@ -299,177 +290,324 @@
   // ============================================================================
   
   function alignTicketHeaderMenuButton() {
-    const header = document.querySelector('.custom-css-ticket-header');
-    if (!header) return;
+    try {
+      const header = document.querySelector('.custom-css-ticket-header');
+      if (!header || !header.isConnected) return;
   
-    const menuBtn = header.querySelector(
-      'button:has(svg path[d*="M3 18"]), button:has(svg[data-testid*="Menu"]), button:has(svg[data-testid*="Dehaze"]), button[title="Ações"], button[aria-label="Ações"], .custom-ticket-header-menu-btn'
-    );
+      const menuBtn = header.querySelector(
+        'button:has(svg path[d*="M3 18"]), button:has(svg[data-testid*="Menu"]), button:has(svg[data-testid*="Dehaze"]), button[title="Ações"], button[aria-label="Ações"], .custom-ticket-header-menu-btn'
+      );
   
-    if (menuBtn) {
-      menuBtn.classList.add('custom-ticket-header-menu-btn');
-      menuBtn.setAttribute('title', 'Ações do atendimento');
+      if (menuBtn && menuBtn.isConnected) {
+        menuBtn.classList.add('custom-ticket-header-menu-btn');
+        menuBtn.setAttribute('title', 'Ações do atendimento');
   
-      const parent = menuBtn.parentElement;
-      if (parent && parent !== header) {
-        parent.style.marginLeft = 'auto';
-        parent.style.marginRight = '0';
-        parent.style.width = 'auto';
-        parent.style.maxWidth = '40px';
+        const parent = menuBtn.parentElement;
+        if (parent && parent !== header && parent.isConnected) {
+          parent.style.marginLeft = 'auto';
+          parent.style.marginRight = '0';
+          parent.style.width = 'auto';
+          parent.style.maxWidth = '40px';
   
-        // Oculta quaisquer elementos ou divs irmãs vazias residuais geradas pelo Material-UI
-        Array.from(parent.children).forEach(function (child) {
-          if (child !== menuBtn && (child.children.length === 0 || child.innerHTML.trim() === '')) {
-            child.style.display = 'none';
+          // Oculta quaisquer elementos ou divs irmãs vazias residuais geradas pelo Material-UI
+          Array.from(parent.children).forEach(function (child) {
+            if (child !== menuBtn && (child.children.length === 0 || child.innerHTML.trim() === '')) {
+              child.style.display = 'none';
+            }
+          });
+        }
+      }
+  
+      // Toggle do Drawer de Contato ao clicar no Avatar/Cabeçalho do Ticket
+      const cardHeader = header.querySelector('.MuiCardHeader-root');
+      if (cardHeader && cardHeader.isConnected && !cardHeader.dataset.hasToggleAttached) {
+        cardHeader.dataset.hasToggleAttached = 'true';
+        cardHeader.addEventListener('click', function () {
+          const drawer = document.querySelector('.custom-css-contact-drawer');
+          if (!drawer) return;
+  
+          const style = drawer.getAttribute('style') || '';
+          const isCurrentlyOpen = (style.indexOf('transform: none') !== -1 || style.indexOf('translateX(0') !== -1) &&
+                                  style.indexOf('visibility: hidden') === -1 &&
+                                  style.indexOf('translateX(440px)') === -1 &&
+                                  style.indexOf('translateX(320px)') === -1;
+  
+          // Se já estiver aberto, fecha clicando no botão de fechar do drawer
+          if (isCurrentlyOpen) {
+            const closeBtn = document.querySelector('.contact-drawer-header button');
+            if (closeBtn) {
+              setTimeout(function () {
+                closeBtn.click();
+              }, 10);
+            }
           }
         });
       }
-    }
-  
-    // Toggle do Drawer de Contato ao clicar no Avatar/Cabeçalho do Ticket
-    const cardHeader = header.querySelector('.MuiCardHeader-root');
-    if (cardHeader && !cardHeader.dataset.hasToggleAttached) {
-      cardHeader.dataset.hasToggleAttached = 'true';
-      cardHeader.addEventListener('click', function () {
-        const drawer = document.querySelector('.custom-css-contact-drawer');
-        if (!drawer) return;
-  
-        const style = drawer.getAttribute('style') || '';
-        const isCurrentlyOpen = (style.indexOf('transform: none') !== -1 || style.indexOf('translateX(0') !== -1) &&
-                                style.indexOf('visibility: hidden') === -1 &&
-                                style.indexOf('translateX(440px)') === -1 &&
-                                style.indexOf('translateX(320px)') === -1;
-  
-        // Se já estiver aberto, fecha clicando no botão de fechar do drawer
-        if (isCurrentlyOpen) {
-          const closeBtn = document.querySelector('.contact-drawer-header button');
-          if (closeBtn) {
-            setTimeout(function () {
-              closeBtn.click();
-            }, 10);
-          }
-        }
-      });
+    } catch (e) {
+      // Silencioso
     }
   }
 
-  // --- [Módulo: 04-mobile-fixes.js] ---
+  // --- [Módulo: 04-resizable-panel.js] ---
+  // ============================================================================
+  // REDIMENSIONAMENTO FLUIDO DO PAINEL DE TICKETS (DESKTOP)
+  // Altera exclusivamente a variável CSS --wsw-tickets-width no :root
+  // Persiste a preferência no localStorage sem interferir no Virtual DOM do React
+  // Limites estritos: 460px a 650px
+  // ============================================================================
+  
+  (function () {
+    try {
+      var savedWidth = localStorage.getItem('wsw_tickets_width');
+      if (savedWidth) {
+        var num = parseFloat(savedWidth);
+        if (!isNaN(num)) {
+          num = Math.max(460, Math.min(num, 650));
+          document.documentElement.style.setProperty('--wsw-tickets-width', num + 'px');
+        } else {
+          document.documentElement.style.setProperty('--wsw-tickets-width', savedWidth);
+        }
+      }
+    } catch (e) {}
+  })();
+  
+  var _wswResizerState = {
+    isResizing: false,
+    startX: 0,
+    startWidth: 0,
+    listEl: null,
+    listenersAttached: false
+  };
+  
+  function initResizablePanel() {
+    try {
+      if (_wswResizerState.listenersAttached) return;
+      _wswResizerState.listenersAttached = true;
+  
+      function getTicketsListElement() {
+        return document.querySelector(
+          '#custom-css-content .custom-css-tickets, .custom-css-page .custom-css-tickets, .custom-css-tickets, #custom-css-content .MuiGrid-grid-xs-4'
+        );
+      }
+  
+      // Início do arrasto (Mouse)
+      document.addEventListener('mousedown', function (e) {
+        try {
+          if (window.innerWidth <= 960 || e.button !== 0) return;
+  
+          var listEl = getTicketsListElement();
+          if (!listEl || !listEl.isConnected) return;
+  
+          var rect = listEl.getBoundingClientRect();
+          // Detecta clique na margem de 10px da borda direita da lista
+          if (Math.abs(e.clientX - rect.right) <= 10) {
+            _wswResizerState.isResizing = true;
+            _wswResizerState.startX = e.clientX;
+            _wswResizerState.startWidth = rect.width;
+            _wswResizerState.listEl = listEl;
+  
+            document.body.classList.add('wsw-is-resizing');
+            e.preventDefault();
+          }
+        } catch (err) {}
+      });
+  
+      // Reset ao dar duplo clique na divisória (restaura 460px)
+      document.addEventListener('dblclick', function (e) {
+        try {
+          if (window.innerWidth <= 960) return;
+  
+          var listEl = getTicketsListElement();
+          if (!listEl || !listEl.isConnected) return;
+  
+          var rect = listEl.getBoundingClientRect();
+          if (Math.abs(e.clientX - rect.right) <= 10) {
+            document.documentElement.style.setProperty('--wsw-tickets-width', '460px');
+            localStorage.removeItem('wsw_tickets_width');
+            e.preventDefault();
+          }
+        } catch (err) {}
+      });
+  
+      // Movimento do arrasto
+      document.addEventListener('mousemove', function (e) {
+        try {
+          if (!_wswResizerState.isResizing) return;
+  
+          var deltaX = e.clientX - _wswResizerState.startX;
+          var newWidth = _wswResizerState.startWidth + deltaX;
+  
+          // Limites estritos: mínimo 460px e máximo 650px
+          var minWidth = 460;
+          var maxWidth = 650;
+  
+          newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+  
+          document.documentElement.style.setProperty('--wsw-tickets-width', Math.round(newWidth) + 'px');
+        } catch (err) {}
+      });
+  
+      // Fim do arrasto
+      function endResize() {
+        try {
+          if (_wswResizerState.isResizing) {
+            _wswResizerState.isResizing = false;
+            document.body.classList.remove('wsw-is-resizing');
+  
+            var currentWidth = getComputedStyle(document.documentElement)
+              .getPropertyValue('--wsw-tickets-width')
+              .trim();
+  
+            if (currentWidth) {
+              localStorage.setItem('wsw_tickets_width', currentWidth);
+            }
+          }
+        } catch (err) {}
+      }
+  
+      document.addEventListener('mouseup', endResize);
+      window.addEventListener('blur', endResize);
+    } catch (e) {}
+  }
+
+  // --- [Módulo: 05-mobile-fixes.js] ---
   // ============================================================================
   // MOBILE & PWA FIX - Elimina espaços indevidos e calcula altura 100%
   // ============================================================================
   
   function fixMobileChatHeight() {
-    if (window.innerWidth > 960) return;
+    try {
+      if (window.innerWidth > 960) return;
   
-    // 1. Garante que o espaçador do topo fique travado em 48px
-    const mainEl = document.getElementById('custom-css-content');
-    if (mainEl && mainEl.firstElementChild) {
-      mainEl.firstElementChild.style.maxHeight = '48px';
-      mainEl.firstElementChild.style.minHeight = '48px';
-      mainEl.firstElementChild.style.height = '48px';
-      mainEl.firstElementChild.style.flex = '0 0 48px';
-    }
-  
-    // 2. Zera padding/margin de 56px em todos os containers pais e wrappers do chat
-    const selectors = [
-      '#custom-css-content',
-      '#custom-css-content > div',
-      '#custom-css-content > .MuiPaper-root',
-      '#drawer-container',
-      '.custom-css-ticket',
-      '#drawer-container > .MuiPaper-root',
-      'div[class*="mainPaper"]',
-      'div[class*="chatContainer"]',
-      'div[class*="mainContainer"]'
-    ];
-  
-    document.querySelectorAll(selectors.join(', ')).forEach(function (el) {
-      if (el.style.paddingBottom && el.style.paddingBottom.indexOf('56') !== -1) {
-        el.style.paddingBottom = '0px';
+      // 1. Garante que o espaçador do topo fique travado em 48px
+      const mainEl = document.getElementById('custom-css-content');
+      if (mainEl && mainEl.firstElementChild && mainEl.firstElementChild.isConnected) {
+        mainEl.firstElementChild.style.maxHeight = '48px';
+        mainEl.firstElementChild.style.minHeight = '48px';
+        mainEl.firstElementChild.style.height = '48px';
+        mainEl.firstElementChild.style.flex = '0 0 48px';
       }
-      if (el.style.marginBottom && el.style.marginBottom.indexOf('56') !== -1) {
-        el.style.marginBottom = '0px';
-      }
-      if (el.style.height && el.style.height.indexOf('56') !== -1) {
-        el.style.height = '100%';
-      }
-    });
   
-    // 3. Garante que o wrapper de mensagens ocupe o espaço restante
-    const messagesWrapper = document.querySelector('#messagesList');
-    if (messagesWrapper && messagesWrapper.parentElement) {
-      messagesWrapper.parentElement.style.flex = '1 1 auto';
-      messagesWrapper.parentElement.style.minHeight = '0';
+      // 2. Zera padding/margin de 56px em todos os containers pais e wrappers do chat
+      const selectors = [
+        '#custom-css-content',
+        '#custom-css-content > div',
+        '#custom-css-content > .MuiPaper-root',
+        '#drawer-container',
+        '.custom-css-ticket',
+        '#drawer-container > .MuiPaper-root',
+        'div[class*="mainPaper"]',
+        'div[class*="chatContainer"]',
+        'div[class*="mainContainer"]'
+      ];
+  
+      document.querySelectorAll(selectors.join(', ')).forEach(function (el) {
+        if (!el || !el.isConnected) return;
+        if (el.style.paddingBottom && el.style.paddingBottom.indexOf('56') !== -1) {
+          el.style.paddingBottom = '0px';
+        }
+        if (el.style.marginBottom && el.style.marginBottom.indexOf('56') !== -1) {
+          el.style.marginBottom = '0px';
+        }
+        if (el.style.height && el.style.height.indexOf('56') !== -1) {
+          el.style.height = '100%';
+        }
+      });
+  
+      // 3. Garante que o wrapper de mensagens ocupe o espaço restante
+      const messagesWrapper = document.querySelector('#messagesList');
+      if (messagesWrapper && messagesWrapper.parentElement && messagesWrapper.parentElement.isConnected) {
+        messagesWrapper.parentElement.style.flex = '1 1 auto';
+        messagesWrapper.parentElement.style.minHeight = '0';
+      }
+    } catch (e) {
+      // Silencioso
     }
   }
 
-  // --- [Módulo: 05-main.js] ---
+  // --- [Módulo: 06-main.js] ---
   // ============================================================================
-  // EVENTOS GLOBAIS E INICIALIZAÇÃO
+  // EVENTOS GLOBAIS E INICIALIZAÇÃO BLINDADA
   // ============================================================================
   
   function syncContactDrawerDesktop() {
-    if (window.innerWidth <= 960) return;
-    const drawerContainer = document.getElementById('drawer-container');
-    const contactDrawer = document.querySelector('.custom-css-contact-drawer');
-    if (!drawerContainer || !contactDrawer) return;
+    try {
+      if (window.innerWidth <= 960) return;
+      const drawerContainer = document.getElementById('drawer-container');
+      const contactDrawer = document.querySelector('.custom-css-contact-drawer');
+      if (!drawerContainer || !contactDrawer || !drawerContainer.isConnected || !contactDrawer.isConnected) return;
   
-    const style = contactDrawer.getAttribute('style') || '';
-    const isClosed = style.indexOf('visibility: hidden') !== -1 ||
-                     style.indexOf('translateX(440px)') !== -1 ||
-                     style.indexOf('translateX(320px)') !== -1;
+      const style = contactDrawer.getAttribute('style') || '';
+      const isClosed = style.indexOf('visibility: hidden') !== -1 ||
+                       style.indexOf('translateX(440px)') !== -1 ||
+                       style.indexOf('translateX(320px)') !== -1;
   
-    if (!isClosed) {
-      drawerContainer.classList.add('contact-drawer-open');
-    } else {
-      drawerContainer.classList.remove('contact-drawer-open');
+      if (!isClosed) {
+        drawerContainer.classList.add('contact-drawer-open');
+      } else {
+        drawerContainer.classList.remove('contact-drawer-open');
+      }
+    } catch (e) {
+      // Silencioso
     }
   }
   
+  // Execução isolada: falha em um módulo NUNCA interrompe os demais nem quebra o React
   function runAllInits() {
-    initCustomTopbar();
-    initCustomTicketActions();
-    alignTicketHeaderMenuButton();
-    fixMobileChatHeight();
-    syncContactDrawerDesktop();
+    try { initCustomTopbar(); } catch (e) {}
+    try { initCustomTicketActions(); } catch (e) {}
+    try { alignTicketHeaderMenuButton(); } catch (e) {}
+    try { initResizablePanel(); } catch (e) {}
+    try { fixMobileChatHeight(); } catch (e) {}
+    try { syncContactDrawerDesktop(); } catch (e) {}
   }
-  
   
   // Fecha as gavetas ao clicar fora
   document.addEventListener('click', function (e) {
-    // Topbar
-    const topWrapper = document.getElementById('custom-topbar-wrapper');
-    const topDrawer = document.getElementById('custom-topbar-secondary-drawer');
-    const topToggle = document.getElementById('custom-topbar-toggle-btn');
-    if (topWrapper && !topWrapper.contains(e.target) && topDrawer) {
-      topDrawer.classList.remove('is-open');
-      if (topToggle) topToggle.classList.remove('is-active');
-    }
+    try {
+      // Topbar
+      const topWrapper = document.getElementById('custom-topbar-wrapper');
+      const topDrawer = document.getElementById('custom-topbar-secondary-drawer');
+      const topToggle = document.getElementById('custom-topbar-toggle-btn');
+      if (topWrapper && !topWrapper.contains(e.target) && topDrawer) {
+        topDrawer.classList.remove('is-open');
+        if (topToggle) topToggle.classList.remove('is-active');
+      }
   
-    // Ticket Actions
-    const ticketWrapper = document.getElementById('custom-ticket-actions-wrapper');
-    const ticketDrawer = document.getElementById('custom-ticket-actions-drawer');
-    const ticketToggle = document.getElementById('custom-ticket-actions-toggle-btn');
-    if (ticketWrapper && !ticketWrapper.contains(e.target) && ticketDrawer) {
-      ticketDrawer.classList.remove('is-open');
-      if (ticketToggle) ticketToggle.classList.remove('is-active');
-    }
+      // Ticket Actions
+      const actionsContainer = document.querySelector('.custom-css-ticket-actions');
+      const ticketToggle = document.getElementById('custom-ticket-actions-toggle-btn');
+      if (actionsContainer && ticketToggle && !ticketToggle.contains(e.target) && !e.target.closest('.ticket-item-secondary')) {
+        actionsContainer.classList.remove('ticket-drawer-open');
+        ticketToggle.classList.remove('is-active');
+      }
+    } catch (err) {}
   });
   
-  window.addEventListener('resize', fixMobileChatHeight);
+  window.addEventListener('resize', function () {
+    try { fixMobileChatHeight(); } catch (e) {}
+  });
   
+  // Inicialização segura após o DOM estar pronto
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runAllInits);
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(runAllInits, 10);
+    });
   } else {
-    runAllInits();
+    setTimeout(runAllInits, 10);
   }
   
+  // Único MutationObserver coordenado com debounce seguro para não concorrer com a montagem do React
   let debounceTimeout = null;
   const observer = new MutationObserver(function () {
     if (debounceTimeout) clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(runAllInits, 50);
+    debounceTimeout = setTimeout(function () {
+      runAllInits();
+    }, 70);
   });
   
-  observer.observe(document.body, { childList: true, subtree: true });
+  try {
+    observer.observe(document.body, { childList: true, subtree: true });
+  } catch (e) {}
 
 })();

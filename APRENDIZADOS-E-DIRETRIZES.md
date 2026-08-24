@@ -170,6 +170,20 @@ Este documento registra o histórico de desafios, causas-raiz, erros enfrentados
 
 ---
 
+### 🛑 Caso 13: Tela branca intermitente (White Screen of Death) ao recarregar a página (F5)
+- **Sintoma Visual**:
+  - Ao recarregar a página com F5 (1 a cada 2 ou 3 vezes), a tela começava a carregar os componentes, dava uma piscada rápida e ficava 100% branca (crash total da árvore React).
+- **O que deu errado (Causa-Raiz)**:
+  - 1. **Concorrência de MutationObservers**: Existiam dois observers paralelos observando `document.body` com `subtree: true`. Um deles rodava sem debounce durante a montagem inicial dos componentes pelo React, disparando manipulações no DOM enquanto o React ainda montava a árvore de nós filhos.
+  - 2. **DOM Reparenting sem Checagem de Conexão (`node.isConnected`)**: O React guarda referências na memória aos nós do DOM (React Fiber). Ao fazer `appendChild` ou `innerHTML = ...` em nós que o React ainda está montando, o React tenta executar `removeChild`/`insertBefore` na reconciliação e lança uma `DOMException` fatal, desmontando a aplicação inteira.
+  - 3. **Ausência de `try...catch` defensivo**: Qualquer erro de referência não capturado durante a inicialização propagava para a thread principal e interrompia o ciclo de renderização.
+- **Solução Definitiva ([src/js/05-main.js](file:///home/adminbruno/Projetos/css_wsw/src/js/05-main.js))**:
+  - **Observer Único Coordenado**: Unificado em um único `MutationObserver` com debounce de 70ms para esperar o React estabilizar o DOM antes de aplicar customizações.
+  - **Verificação de Nós Conectados**: Toda manipulação de elementos agora valida `if (!el || !el.isConnected) return;` antes de interagir.
+  - **Isolamento Total por `try...catch`**: Cada módulo chamado dentro de `runAllInits()` possui bloco `try...catch` isolado. Se um componente ainda não tiver sido renderizado, a falha é silenciosa e o próximo ciclo do observer tenta novamente sem nunca quebrar o React.
+
+---
+
 ## 3. 💡 Armadilhas & Gotchas do Material-UI (React)
 
 1. **Classes Hash Dinâmicas (`.jss123`, `.jss849`)**:

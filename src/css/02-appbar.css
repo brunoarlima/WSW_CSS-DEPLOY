@@ -134,8 +134,14 @@ header.MuiAppBar-root {
   justify-content: center !important;
 }
 
-.custom-brand-logo-btn svg,
-#custom-css-appbar button[data-appbar="menu"] svg {
+/* Oculta o ícone nativo do Material-UI preservando o nó no DOM */
+.custom-brand-logo-btn .MuiIconButton-label svg:not(.custom-brand-logo-icon svg),
+.custom-brand-logo-btn > svg {
+  display: none !important;
+}
+
+.custom-brand-logo-btn .custom-brand-logo-icon,
+.custom-brand-logo-btn .custom-brand-logo-icon svg {
   width: 34px !important;
   height: 34px !important;
   display: block !important;
@@ -144,8 +150,7 @@ header.MuiAppBar-root {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.custom-brand-logo-btn:hover svg,
-#custom-css-appbar button[data-appbar="menu"]:hover svg {
+.custom-brand-logo-btn:hover .custom-brand-logo-icon svg {
   transform: scale(1.08);
 }
 
@@ -176,7 +181,9 @@ header.MuiAppBar-root {
   font-size: 1.15rem !important;
 }
 
-/* 3. Topbar Customizada via JS (Estrutura Estável & Gaveta Retrátil) */
+/* ============================================================================
+   3. TOPBAR CUSTOMIZADA VIA JS (ESTRUTURA ESTÁVEL & GAVETA RETRÁTIL)
+   ============================================================================ */
 #custom-topbar-wrapper {
   display: flex !important;
   align-items: center !important;
@@ -184,7 +191,7 @@ header.MuiAppBar-root {
   gap: 6px !important;
 }
 
-/* Grupo dos 4 Botões Rápidos: Ping -> Reload -> Perfil -> Status */
+/* Grupo dos Botões Rápidos Principais: Notificações -> Usuário -> Status */
 #custom-topbar-quick-actions {
   display: flex !important;
   align-items: center !important;
@@ -282,3 +289,5 @@ button[data-appbar="lang"] img {
 #custom-css-appbar .custom-css-topbar-actions button {
   padding: 0 !important;
 }
+
+
