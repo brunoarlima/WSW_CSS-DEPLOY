@@ -29,6 +29,8 @@ function runAllInits() {
   try { initCustomTopbar(); } catch (e) {}
   try { initCustomTicketActions(); } catch (e) {}
   try { alignTicketHeaderMenuButton(); } catch (e) {}
+  try { initTicketsSearchToggle(); } catch (e) {}
+  try { syncTicketConnectionStatus(); } catch (e) {}
   try { initResizablePanel(); } catch (e) {}
   try { fixMobileChatHeight(); } catch (e) {}
   try { syncContactDrawerDesktop(); } catch (e) {}
@@ -37,7 +39,7 @@ function runAllInits() {
 // Fecha as gavetas ao clicar fora
 document.addEventListener('click', function (e) {
   try {
-    // Topbar
+    // Topbar (Fecha a gaveta ao clicar fora)
     const topWrapper = document.getElementById('custom-topbar-wrapper');
     const topDrawer = document.getElementById('custom-topbar-secondary-drawer');
     const topToggle = document.getElementById('custom-topbar-toggle-btn');
@@ -52,6 +54,21 @@ document.addEventListener('click', function (e) {
     if (actionsContainer && ticketToggle && !ticketToggle.contains(e.target) && !e.target.closest('.ticket-item-secondary')) {
       actionsContainer.classList.remove('ticket-drawer-open');
       ticketToggle.classList.remove('is-active');
+    }
+
+    // Toolbar Tickets Search Dropdown (Fecha ao clicar fora da toolbar caso o input esteja vazio)
+    const toolbar = document.querySelector('.custom-css-tickets-toolbar');
+    const searchToggle = document.getElementById('custom-tickets-search-toggle-btn');
+    if (toolbar && toolbar.classList.contains('is-search-open') && !toolbar.contains(e.target)) {
+      const searchInput = toolbar.querySelector('.custom-css-ticket-search input');
+      const hasValue = searchInput && searchInput.value && searchInput.value.trim().length > 0;
+      if (!hasValue) {
+        toolbar.classList.remove('is-search-open');
+        if (searchToggle) {
+          searchToggle.setAttribute('aria-pressed', 'false');
+          searchToggle.classList.remove('is-active');
+        }
+      }
     }
   } catch (err) {}
 });

@@ -87,15 +87,20 @@
   min-width: 60px !important;
 }
 
-.custom-css-ticket-tags .MuiChip-root {
+.custom-css-ticket-tags .MuiChip-root,
+.custom-css-ticket-tags .MuiAutocomplete-tag,
+.MuiAutocomplete-inputRoot .MuiChip-root,
+.MuiAutocomplete-inputRoot .MuiAutocomplete-tag {
   height: 22px !important;
-  font-size: 0.65rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
-  border-radius: 6px !important;
+  font-size: 0.67rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  border-radius: 4px !important;
   padding: 0 6px 0 8px !important;
-  border: none !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid color-mix(in srgb, var(--tag-color, currentColor) 28%, transparent) !important;
+  background-color: color-mix(in srgb, var(--tag-color, currentColor) 16%, transparent) !important;
+  color: color-mix(in srgb, var(--tag-color, currentColor) 82%, #0f172a) !important;
+  box-shadow: none !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 4px !important;
@@ -103,31 +108,47 @@
   transition: all 0.15s ease !important;
 }
 
-.custom-css-ticket-tags .MuiChip-root:hover {
+.custom-css-ticket-tags .MuiChip-root:hover,
+.custom-css-ticket-tags .MuiAutocomplete-tag:hover,
+.MuiAutocomplete-inputRoot .MuiChip-root:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12) !important;
+  opacity: 0.9;
 }
 
-.custom-css-ticket-tags .MuiChip-label {
+.custom-css-ticket-tags .MuiChip-label,
+.MuiAutocomplete-inputRoot .MuiChip-label {
   padding-left: 2px !important;
   padding-right: 4px !important;
   text-transform: uppercase !important;
-  font-size: 0.64rem !important;
+  font-size: 0.65rem !important;
   line-height: 1 !important;
+  color: inherit !important;
 }
 
-.custom-css-ticket-tags .MuiChip-deleteIcon {
+.custom-css-ticket-tags .MuiChip-deleteIcon,
+.MuiAutocomplete-inputRoot .MuiChip-deleteIcon {
   width: 14px !important;
   height: 14px !important;
   margin: 0 0 0 2px !important;
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: currentColor !important;
+  opacity: 0.6;
   transition: all 0.15s ease !important;
 }
 
-.custom-css-ticket-tags .MuiChip-deleteIcon:hover {
-  color: #ffffff !important;
+.custom-css-ticket-tags .MuiChip-deleteIcon:hover,
+.MuiAutocomplete-inputRoot .MuiChip-deleteIcon:hover {
+  color: #ef4444 !important;
   transform: scale(1.15);
   opacity: 1 !important;
+}
+
+/* Suporte a Dark Mode */
+body[data-theme="dark"] .custom-css-ticket-tags .MuiChip-root,
+body[data-theme="dark"] .custom-css-ticket-tags .MuiAutocomplete-tag,
+body[data-theme="dark"] .MuiAutocomplete-inputRoot .MuiChip-root {
+  background-color: color-mix(in srgb, var(--tag-color, currentColor) 22%, transparent) !important;
+  color: color-mix(in srgb, var(--tag-color, currentColor) 80%, #ffffff) !important;
+  border-color: color-mix(in srgb, var(--tag-color, currentColor) 35%, transparent) !important;
 }
 
 /* Oculta completamente o botão de limpar todas as tags de uma vez (Clear Indicator) */

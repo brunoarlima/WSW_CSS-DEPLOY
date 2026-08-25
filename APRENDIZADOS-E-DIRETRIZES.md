@@ -184,6 +184,55 @@ Este documento registra o histórico de desafios, causas-raiz, erros enfrentados
 
 ---
 
+### 🛑 Caso 14: Detecção de Desconexão do WhatsApp e Coloração de Alerta sem Quebrar o React
+- **Sintoma Visual**: Quando uma conexão de WhatsApp caía ou era removida, a interface não refletia o estado de alerta de desconexão (cor rosada `#fee2e2` / borda vermelha `#ef4444`).
+- **O que deu errado (Causa-Raiz)**:
+  - O NextyChat gerencia o status de conexão via WebSockets e estado interno do React. Tentativas anteriores de injetar elementos ou manipular nós DOM dinamicamente causavam conflitos com a reconciliação do React Fiber, gerando tela branca.
+- **Solução Definitiva ([src/js/04-ticket-connection.js](file:///home/adminbruno/Projetos/css_wsw/src/js/04-ticket-connection.js))**:
+  - Leitura **100% passiva e read-only**:
+    1. Verificação de texto no badge de conexão (`REMOVIDO`, `DESCONECTADO`, `OFFLINE`).
+    2. Verificação de atributo nativo `data-connection-color="red"`.
+    3. Inspeção segura de propriedades no nó React Fiber (`ticket.whatsapp.status !== 'CONNECTED'`).
+  - Aplicação de atributo `data-connection-status="disconnected"` exclusivamente no container raiz do card, sem alterar nenhum filho do React.
+  - CSS ([src/css/04-tickets-list.css](file:///home/adminbruno/Projetos/css_wsw/src/css/04-tickets-list.css)) aplica fundo `#fee2e2`, borda de destaque lateral `4px solid #ef4444` e badge em vermelho `#ef4444`.
+
+---
+
+### 🛑 Caso 15: Horário do Ticket desalinhado no centro vertical do Card (MUI SecondaryAction)
+- **Sintoma Visual**: O horário (`10:01`) ficava flutuando no meio da altura do card, no lado direito, desalinhado com o topo e com a linha do nome.
+- **O que deu errado (Causa-Raiz)**:
+  - O Material-UI v4 injeta o container `.MuiListItemSecondaryAction-root` com regras nativas `top: 50%; transform: translateY(-50%); position: absolute;`.
+  - Qualquer elemento posicionado relativamente dentro dele herdava a centralização vertical de 50%.
+- **Solução Definitiva ([src/css/04-tickets-list.css](file:///home/adminbruno/Projetos/css_wsw/src/css/04-tickets-list.css))**:
+  - Redefinir o container pai `.custom-css-ticket-item .MuiListItemSecondaryAction-root` com `position: absolute !important; top: 8px !important; right: 12px !important; transform: none !important;`.
+  - Estilizar `.ticket-datetime` e `.ticket-time` como `position: static !important; background: transparent !important; border: none !important;` com tipografia limpa e elegante (`font-size: 0.74rem; font-weight: 500; color: #64748b`).
+
+---
+
+### 🛑 Caso 16: Metadados do Atendimento (Conexão, Atendente e Fila) Poluindo Visualmente como Tags Sólidas
+- **Sintoma Visual**: Os 3 metadados superiores apareciam como blocos de cores sólidas chapadas e pesadas (ex: fundo preto sólido no atendente), confundindo-se com as tags reais do atendimento que ficam logo abaixo.
+- **Solução Definitiva ([src/css/04-tickets-list.css](file:///home/adminbruno/Projetos/css_wsw/src/css/04-tickets-list.css))**:
+  - **Conexão (`.ticket-connection`)**: Fundo suave neutro (`#edf5ff`), borda fina na cor primária e ícone SVG de **antena/sinal** (`::before`).
+  - **Atendente (`.ticket-user`)**: Fundo suave neutro (`#edf5ff`), borda fina na cor primária e ícone SVG de **pessoa/atendente** (`::before`), eliminando o bloco preto pesado.
+  - **Fila (`.ticket-queue`)**: Fundo neutro suave com borda fina e texto na cor dinâmica da fila (`--queue-color`), com ícone SVG exato de **sitemap / departamento** (`fa-sitemap`).
+  - Centralização vertical perfeita com `height: 22px; padding: 0 8px; align-items: center; justify-content: center; line-height: normal;`.
+
+---
+
+### 🛑 Caso 17: Padrão de Tags do Notion com `color-mix` e Sincronização Global
+- **Sintoma Visual**: Tags nos cards e no cabeçalho eram blocos sólidos coloridos, e no cabeçalho (`MuiAutocomplete-tag`) perderam a cor ficando acinzentadas após intervenção de CSS genérico.
+- **Causa-Raiz**:
+  - As tags do cabeçalho utilizam `.MuiAutocomplete-tag` com `data-tag-color` dinâmico, mas não eram alcançadas pelo script de sincronização que rodava apenas nos cards de tickets.
+- **Solução Definitiva ([src/css/04-tickets-list.css](file:///home/adminbruno/Projetos/css_wsw/src/css/04-tickets-list.css) e [src/css/06-ticket-tags.css](file:///home/adminbruno/Projetos/css_wsw/src/css/06-ticket-tags.css))**:
+  - **Estética Notion**:
+    - Fundo pastel translúcido: `background-color: color-mix(in srgb, var(--tag-color, currentColor) 16%, transparent) !important;`
+    - Texto saturado legível: `color: color-mix(in srgb, var(--tag-color, currentColor) 82%, #0f172a) !important;`
+    - Borda ultrafina: `border: 1px solid color-mix(in srgb, var(--tag-color, currentColor) 28%, transparent) !important;`
+    - Cantos `border-radius: 4px` com suporte completo a Dark Mode.
+  - **Sincronização Global ([src/js/04-ticket-connection.js](file:///home/adminbruno/Projetos/css_wsw/src/js/04-ticket-connection.js))**: O script agora varre globalmente todas as tags da página (`.custom-css-contact-tag, .custom-css-ticket-tags .MuiChip-root, .MuiAutocomplete-tag, [data-tag-color]`), propagando `--tag-color` instantaneamente de forma passiva.
+
+---
+
 ## 3. 💡 Armadilhas & Gotchas do Material-UI (React)
 
 1. **Classes Hash Dinâmicas (`.jss123`, `.jss849`)**:

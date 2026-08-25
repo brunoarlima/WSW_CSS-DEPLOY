@@ -140,5 +140,3 @@ function initCustomTopbar() {
     // Silencioso para evitar quebrar React
   }
 }
-
-
