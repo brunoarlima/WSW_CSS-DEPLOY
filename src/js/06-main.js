@@ -69,6 +69,18 @@ document.addEventListener('click', function (e) {
         }
       }
     }
+
+    // Composer Actions Drawer (Fecha ao clicar fora da gaveta de ações quando visível)
+    const composerDrawer = document.querySelector('.custom-css-composer div:has(> [aria-label="emojiPicker"]), .custom-css-composer .jss492');
+    if (composerDrawer && composerDrawer.offsetParent !== null && !composerDrawer.contains(e.target)) {
+      const composerOpenBtn = document.querySelector('.custom-css-composer > button, .custom-css-composer > span.MuiIconButton-root');
+      if (!composerOpenBtn || !composerOpenBtn.contains(e.target)) {
+        const composerCloseBtn = composerDrawer.querySelector('button:last-child');
+        if (composerCloseBtn && typeof composerCloseBtn.click === 'function') {
+          composerCloseBtn.click();
+        }
+      }
+    }
   } catch (err) {}
 });
 

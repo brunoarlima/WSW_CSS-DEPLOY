@@ -782,6 +782,179 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-tags .custom-css-contact
 }
 
 /* ==========================================================================
+   BLOCO 5: BOTÕES DE AÇÃO RÁPIDA DO CARD (SOMENTE ÍCONES COM TOOLTIP)
+   Posicionamento logo abaixo do horário, estilo compacto com cores lavadas
+   ========================================================================== */
+
+/* Container dos botões de ação dentro do card (Linha logo abaixo do horário) */
+.custom-css-ticket-item span:has(> button.MuiButton-sizeSmall),
+.custom-css-ticket-item div:has(> button.MuiButton-sizeSmall),
+.custom-css-ticket-item .MuiListItemSecondaryAction-root:has(> button.MuiButton-sizeSmall) {
+  position: absolute !important;
+  top: 26px !important;
+  right: 12px !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 5px !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+}
+
+/* Botões de Ação do Card (Ícones Compactos com Tooltip) */
+.custom-css-ticket-item button.MuiButton-sizeSmall,
+.custom-css-ticket-item button.custom-css-btn-confirm,
+.custom-css-ticket-item .MuiButton-containedSizeSmall {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  right: auto !important;
+  left: auto !important;
+  margin: 0 !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  max-height: 22px !important;
+  width: 22px !important;
+  min-width: 22px !important;
+  max-width: 22px !important;
+  padding: 0 !important;
+  border-radius: 5px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+  overflow: visible !important;
+}
+
+/* Oculta o texto para exibir exclusivamente o ícone */
+.custom-css-ticket-item button.MuiButton-sizeSmall .MuiButton-label,
+.custom-css-ticket-item button.custom-css-btn-confirm .MuiButton-label {
+  font-size: 0 !important;
+  color: transparent !important;
+  display: none !important;
+}
+
+/* Ícone Base Centralizado */
+.custom-css-ticket-item button.MuiButton-sizeSmall::before {
+  content: '' !important;
+  width: 12px !important;
+  height: 12px !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+  background-color: currentColor !important;
+}
+
+/* Tooltip Flutuante via CSS (Alinhado à direita para crescer para dentro do card com z-index alto) */
+.custom-css-ticket-item button.MuiButton-sizeSmall::after {
+  position: absolute !important;
+  bottom: 125% !important;
+  right: 0 !important;
+  transform: translateY(3px) !important;
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  color: #ffffff !important;
+  font-size: 0.65rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  white-space: nowrap !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease !important;
+  z-index: 9999 !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28) !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall:hover {
+  z-index: 60 !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall:hover::after {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+/* Botão ACEITAR (Ícone Check + Fundo Azul Lavado + Borda Azul + Tooltip) */
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"],
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child) {
+  background-color: rgba(31, 147, 255, 0.12) !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  border: 1px solid var(--brand-primary, #1f93ff) !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"]::before,
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child)::before {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"]::after,
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child)::after {
+  content: 'Aceitar atendimento' !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"]:hover,
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child):hover {
+  background-color: rgba(31, 147, 255, 0.22) !important;
+  color: var(--brand-hover, #1671c6) !important;
+  border-color: var(--brand-hover, #1671c6) !important;
+  box-shadow: 0 1px 4px rgba(31, 147, 255, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+/* Botão FINALIZAR (Ícone Fechar + Fundo Vermelho Lavado + Borda Vermelha + Tooltip) */
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"],
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  color: #dc2626 !important;
+  border: 1px solid #ef4444 !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"]::before,
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child::before {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E") no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"]::after,
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child::after {
+  content: 'Finalizar atendimento' !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"]:hover,
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child:hover {
+  background-color: rgba(239, 68, 68, 0.22) !important;
+  color: #b91c1c !important;
+  border-color: #dc2626 !important;
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+/* Suporte a Dark Mode */
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"],
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child) {
+  background-color: rgba(31, 147, 255, 0.18) !important;
+  color: #60a5fa !important;
+  border-color: #3b82f6 !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"],
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall:last-child {
+  background-color: rgba(239, 68, 68, 0.18) !important;
+  color: #f87171 !important;
+  border-color: #dc2626 !important;
+}
+
+/* ==========================================================================
    REDIMENSIONAMENTO DO PAINEL DE TICKETS (DESKTOP)
    Controlado via variável CSS --wsw-tickets-width e manipulado via JS
    ========================================================================== */

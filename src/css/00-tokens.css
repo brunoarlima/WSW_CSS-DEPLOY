@@ -10,6 +10,9 @@
   /* Proporção do Layout (Tickets / Chat: min 460px - max 650px) */
   --wsw-tickets-width: 460px;
 
+  /* Proporção do Layout do Contato (Desktop: min 320px - max 520px) */
+  --wsw-contact-drawer-width: 340px;
+
   /* Brand */
   --brand-primary: #1f93ff;
   --brand-hover: #1671c6;

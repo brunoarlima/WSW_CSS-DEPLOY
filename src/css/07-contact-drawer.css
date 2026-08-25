@@ -23,13 +23,13 @@
     box-shadow: none !important;
   }
 
-  /* Paper do Chat quando o Drawer está ABERTO (Encolhe exatamente 320px) */
+  /* Paper do Chat quando o Drawer está ABERTO (Encolhe de acordo com a largura dinâmica do Drawer) */
   #drawer-container:has(.custom-css-contact-drawer[style*="transform: none"]) > .MuiPaper-root:first-child,
   #drawer-container:has(.custom-css-contact-drawer:not([style*="translateX"]):not([style*="visibility: hidden"])) > .MuiPaper-root:first-child,
   #drawer-container.contact-drawer-open > .MuiPaper-root:first-child,
   .custom-css-ticket.contact-drawer-open > .MuiPaper-root:first-child {
-    width: calc(100% - 320px) !important;
-    max-width: calc(100% - 320px) !important;
+    width: calc(100% - clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px)) !important;
+    max-width: calc(100% - clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px)) !important;
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
@@ -39,6 +39,13 @@
     box-shadow: none !important;
     background-color: var(--surface-bg) !important;
     transition: width 225ms cubic-bezier(0, 0, 0.2, 1), max-width 225ms cubic-bezier(0, 0, 0.2, 1) !important;
+  }
+
+  /* Durante o arrasto: remove transição para resposta instantânea a 60fps */
+  body.wsw-is-resizing #drawer-container > .MuiPaper-root:first-child,
+  body.wsw-is-resizing .custom-css-ticket > .MuiPaper-root:first-child,
+  body.wsw-is-resizing .custom-css-contact-drawer {
+    transition: none !important;
   }
 
   /* Paper do Chat quando o Drawer está FECHADO (Ocupa 100% da tela) */
@@ -57,7 +64,7 @@
     transition: width 225ms cubic-bezier(0, 0, 0.2, 1), max-width 225ms cubic-bezier(0, 0, 0.2, 1) !important;
   }
 
-  /* Drawer Acoplado no Desktop */
+  /* Drawer Acoplado no Desktop (Largura Dinâmica e Fluida) */
   .custom-css-contact-drawer,
   .custom-css-contact-drawer.MuiDrawer-paperAnchorDockedRight,
   .custom-css-contact-drawer.MuiDrawer-paper {
@@ -65,9 +72,9 @@
     top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    width: 320px !important;
-    min-width: 320px !important;
-    max-width: 320px !important;
+    width: clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px) !important;
+    min-width: clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px) !important;
+    max-width: clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px) !important;
     height: 100% !important;
     border-left: 1px solid var(--divider-subtle) !important;
     border-radius: 0 !important;
@@ -76,6 +83,19 @@
     display: flex !important;
     flex-direction: column !important;
     z-index: 5 !important;
+  }
+
+  /* Alça invisível na borda esquerda do Drawer para indicar redimensionamento */
+  .custom-css-contact-drawer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 50;
+    background: transparent !important;
   }
 }
 

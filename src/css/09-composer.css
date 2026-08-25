@@ -23,43 +23,287 @@
 
 .custom-css-composer-field,
 .custom-css-composer-field[data-mode] {
+  position: relative !important;
   background-color: var(--composer-input-bg) !important;
-  border: 1px solid var(--composer-border) !important;
+  border: 1.5px solid var(--composer-border) !important;
   border-radius: 24px !important;
   padding: 6px 16px !important;
-  transition: all 0.2s ease !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.custom-css-composer-field:focus-within {
+/* ============================================================================
+   1. MODO NORMAL (data-mode="normal" ou default) — Borda Azul
+   ============================================================================ */
+.custom-css-composer-field:not([data-mode]),
+.custom-css-composer-field[data-mode="normal"] {
+  border-color: var(--composer-border, #e2e8f0) !important;
+}
+
+.custom-css-composer-field:not([data-mode]):focus-within,
+.custom-css-composer-field[data-mode="normal"]:focus-within {
   background-color: var(--composer-input-focus-bg) !important;
-  border-color: var(--brand-primary) !important;
-  box-shadow: 0 0 0 3px var(--brand-subtle) !important;
+  border-color: var(--brand-primary, #1f93ff) !important;
+  box-shadow: 0 0 0 3px var(--brand-subtle, rgba(31, 147, 255, 0.15)) !important;
 }
 
+/* ============================================================================
+   2. MODO NOTA INTERNA (data-mode="internal") — Borda Amarela/Âmbar
+   ============================================================================ */
+.custom-css-composer-field[data-mode="internal"] {
+  border-color: #f59e0b !important;
+  background-color: rgba(245, 158, 11, 0.04) !important;
+}
+
+.custom-css-composer-field[data-mode="internal"]:focus-within {
+  border-color: #d97706 !important;
+  background-color: rgba(245, 158, 11, 0.07) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.20) !important;
+}
+
+/* Badge Indicador de Nota Interna */
+.custom-css-composer-field[data-mode="internal"]::after {
+  content: 'NOTA INTERNA' !important;
+  position: absolute !important;
+  top: -9px !important;
+  right: 18px !important;
+  background: #f59e0b !important;
+  color: #ffffff !important;
+  font-size: 0.60rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 2px 7px !important;
+  border-radius: 10px !important;
+  line-height: 1.2 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.35) !important;
+}
+
+/* ============================================================================
+   3. MODO ASSINATURA (data-mode="signature") — Borda Índigo & Bubble a 45°
+   ============================================================================ */
+.custom-css-composer-field[data-mode="signature"] {
+  border-color: #6366f1 !important;
+  background-color: rgba(99, 102, 241, 0.04) !important;
+}
+
+.custom-css-composer-field[data-mode="signature"]:focus-within {
+  border-color: #4f46e5 !important;
+  background-color: rgba(99, 102, 241, 0.07) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.20) !important;
+}
+
+/* Bubble Indicador de Mensagem Assinada Flutuante perto da borda */
+.custom-css-composer-field[data-mode="signature"]::after {
+  content: '✍ ASSINADO' !important;
+  position: absolute !important;
+  top: -10px !important;
+  right: 18px !important;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  font-size: 0.60rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 2.5px 8px !important;
+  border-radius: 12px !important;
+  line-height: 1.2 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.38) !important;
+  transform: rotate(-2deg) !important;
+}
+
+/* ============================================================================
+   4. SUPORTE A DARK MODE
+   ============================================================================ */
+body[data-theme="dark"] .custom-css-composer-field[data-mode="internal"] {
+  background-color: rgba(245, 158, 11, 0.09) !important;
+  border-color: #f59e0b !important;
+}
+
+body[data-theme="dark"] .custom-css-composer-field[data-mode="internal"]:focus-within {
+  background-color: rgba(245, 158, 11, 0.14) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.28) !important;
+}
+
+body[data-theme="dark"] .custom-css-composer-field[data-mode="signature"] {
+  background-color: rgba(99, 102, 241, 0.09) !important;
+  border-color: #818cf8 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer-field[data-mode="signature"]:focus-within {
+  background-color: rgba(99, 102, 241, 0.14) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.28) !important;
+}
+
+/* ============================================================================
+   5. GAVETA FLUTUANTE DE AÇÕES (EMOJI, UPLOAD, CONTATO, ASSINATURA, NOTA INTERNA)
+   ============================================================================ */
+
+/* ============================================================================
+   5. GAVETA FLUTUANTE DE AÇÕES (EMOJI, UPLOAD, CONTATO, ASSINATURA, NOTA INTERNA)
+   ============================================================================ */
+
+/* Container da Gaveta Flutuante (Respeita o display do React para abrir/fechar normalmente) */
+.custom-css-composer .jss492,
+.custom-css-composer div[class*="jss"]:has(> [aria-label="emojiPicker"]),
+.custom-css-composer div:has(> [aria-label="emojiPicker"]),
+.custom-css-composer div:has(> [aria-label="sendContact"]),
+.custom-css-composer div:has(> [data-action="signature"]) {
+  background: var(--surface-bg, #ffffff) !important;
+  border: 1px solid var(--divider-subtle, #eaedf2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  padding: 4px 6px !important;
+  bottom: 60px !important;
+  gap: 3px !important;
+  z-index: 100 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer .jss492,
+body[data-theme="dark"] .custom-css-composer div[class*="jss"]:has(> [aria-label="emojiPicker"]),
+body[data-theme="dark"] .custom-css-composer div:has(> [aria-label="emojiPicker"]),
+body[data-theme="dark"] .custom-css-composer div:has(> [aria-label="sendContact"]),
+body[data-theme="dark"] .custom-css-composer div:has(> [data-action="signature"]) {
+  background: #15202d !important;
+  border-color: #1e2c3d !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Botões da Gaveta Flutuante (Formato Base) */
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) button.MuiIconButton-root,
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) span.MuiIconButton-root,
+.custom-css-composer div:has(> [data-action="signature"]) button.MuiIconButton-root,
+.custom-css-composer div:has(> [data-action="signature"]) span.MuiIconButton-root,
+.custom-css-composer .jss492 button.MuiIconButton-root,
+.custom-css-composer .jss492 span.MuiIconButton-root {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 7px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-secondary, #64748b) !important;
+  border: 1px solid transparent;
+  background-color: transparent;
+  transition: all 0.15s ease !important;
+}
+
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) svg,
+.custom-css-composer div:has(> [data-action="signature"]) svg,
+.custom-css-composer .jss492 svg {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* Hover Padrão nos Ícones Inativos da Gaveta */
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) button.MuiIconButton-root:hover,
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) span.MuiIconButton-root:hover,
+.custom-css-composer div:has(> [data-action="signature"]) button.MuiIconButton-root:hover,
+.custom-css-composer .jss492 button.MuiIconButton-root:hover {
+  color: var(--brand-primary, #1f93ff) !important;
+  background-color: var(--brand-subtle, #edf5ff) !important;
+}
+
+body[data-theme="dark"] .custom-css-composer div:has(> [aria-label="emojiPicker"]) button.MuiIconButton-root:hover,
+body[data-theme="dark"] .custom-css-composer div:has(> [data-action="signature"]) button.MuiIconButton-root:hover,
+body[data-theme="dark"] .custom-css-composer .jss492 button.MuiIconButton-root:hover {
+  background-color: rgba(31, 147, 255, 0.15) !important;
+  color: #60a5fa !important;
+}
+
+/* ============================================================================
+   6. FEEDBACK VISUAL DOS ÍCONES ATIVOS (ASSINATURA & NOTA INTERNA)
+   ============================================================================ */
+
+/* A. Ícone ASSINAR MENSAGEM quando ATIVO */
+.custom-css-composer:has([data-mode="signature"]) button[data-action="signature"],
+.custom-css-composer:has([data-mode="signature"]) button[title*="Assinar"],
+.custom-css-composer:has([data-mode="signature"]) button[aria-label*="Assinar"],
+.custom-css-composer button[data-action="signature"][aria-pressed="true"],
+.custom-css-composer button[title*="Assinar"][aria-pressed="true"],
+.custom-css-composer button[aria-label*="Assinar"][aria-pressed="true"],
+.custom-css-composer button[data-action="signature"][style*="rgb(229, 57, 53)"] {
+  background-color: rgba(99, 102, 241, 0.14) !important;
+  color: #6366f1 !important;
+  border: 1px solid rgba(99, 102, 241, 0.45) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.20) !important;
+}
+
+.custom-css-composer:has([data-mode="signature"]) button[data-action="signature"]:hover,
+.custom-css-composer button[data-action="signature"][aria-pressed="true"]:hover,
+.custom-css-composer button[title*="Assinar"][aria-pressed="true"]:hover {
+  background-color: rgba(99, 102, 241, 0.24) !important;
+  color: #4f46e5 !important;
+  border-color: #6366f1 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer:has([data-mode="signature"]) button[data-action="signature"],
+body[data-theme="dark"] .custom-css-composer button[data-action="signature"][aria-pressed="true"],
+body[data-theme="dark"] .custom-css-composer button[title*="Assinar"][aria-pressed="true"] {
+  background-color: rgba(99, 102, 241, 0.22) !important;
+  color: #a5b4fc !important;
+  border-color: #6366f1 !important;
+}
+
+/* B. Ícone NOTA INTERNA quando ATIVO */
+.custom-css-composer:has([data-mode="internal"]) button[data-action="internal"],
+.custom-css-composer:has([data-mode="internal"]) button[aria-label*="interna"],
+.custom-css-composer button[data-action="internal"][aria-pressed="true"],
+.custom-css-composer button[aria-label*="interna"][aria-pressed="true"] {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(245, 158, 11, 0.45) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.20) !important;
+}
+
+.custom-css-composer:has([data-mode="internal"]) button[data-action="internal"]:hover,
+.custom-css-composer button[data-action="internal"][aria-pressed="true"]:hover,
+.custom-css-composer button[aria-label*="interna"][aria-pressed="true"]:hover {
+  background-color: rgba(245, 158, 11, 0.26) !important;
+  color: #b45309 !important;
+  border-color: #d97706 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer:has([data-mode="internal"]) button[data-action="internal"],
+body[data-theme="dark"] .custom-css-composer button[data-action="internal"][aria-pressed="true"],
+body[data-theme="dark"] .custom-css-composer button[aria-label*="interna"][aria-pressed="true"] {
+  background-color: rgba(245, 158, 11, 0.22) !important;
+  color: #fde047 !important;
+  border-color: #f59e0b !important;
+}
+
+/* C. Botão Fechar (X) da Gaveta — Hover Vermelho Suave */
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) > button:last-child:hover,
+.custom-css-composer .jss492 > button:last-child:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.10) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ============================================================================
+   7. ELEMENTOS GERAIS DO COMPOSER (TEXTAREA & BOTÕES EXTERNOS)
+   ============================================================================ */
 .custom-css-composer textarea {
   color: var(--composer-text) !important;
   font-size: 0.88rem !important;
 }
 
-.custom-css-composer button.MuiIconButton-root,
-.custom-css-composer span.MuiIconButton-root {
+.custom-css-composer > button.MuiIconButton-root,
+.custom-css-composer > span.MuiIconButton-root {
   color: var(--text-secondary) !important;
   padding: 6px !important;
   border-radius: 50% !important;
   transition: all 0.18s ease !important;
 }
 
-.custom-css-composer button.MuiIconButton-root:hover,
-.custom-css-composer span.MuiIconButton-root:hover {
+.custom-css-composer > button.MuiIconButton-root:hover,
+.custom-css-composer > span.MuiIconButton-root:hover {
   color: var(--brand-primary) !important;
   background-color: var(--brand-subtle) !important;
-}
-
-.custom-css-composer .jss492 {
-  background: var(--surface-bg) !important;
-  border: 1px solid var(--divider-subtle) !important;
-  border-radius: 12px !important;
-  box-shadow: var(--shadow-md) !important;
-  padding: 6px 10px !important;
-  bottom: 64px !important;
 }

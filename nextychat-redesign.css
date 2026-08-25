@@ -19,6 +19,9 @@
   /* Proporção do Layout (Tickets / Chat: min 460px - max 650px) */
   --wsw-tickets-width: 460px;
 
+  /* Proporção do Layout do Contato (Desktop: min 320px - max 520px) */
+  --wsw-contact-drawer-width: 340px;
+
   /* Brand */
   --brand-primary: #1f93ff;
   --brand-hover: #1671c6;
@@ -2340,6 +2343,179 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-tags .custom-css-contact
 }
 
 /* ==========================================================================
+   BLOCO 5: BOTÕES DE AÇÃO RÁPIDA DO CARD (SOMENTE ÍCONES COM TOOLTIP)
+   Posicionamento logo abaixo do horário, estilo compacto com cores lavadas
+   ========================================================================== */
+
+/* Container dos botões de ação dentro do card (Linha logo abaixo do horário) */
+.custom-css-ticket-item span:has(> button.MuiButton-sizeSmall),
+.custom-css-ticket-item div:has(> button.MuiButton-sizeSmall),
+.custom-css-ticket-item .MuiListItemSecondaryAction-root:has(> button.MuiButton-sizeSmall) {
+  position: absolute !important;
+  top: 26px !important;
+  right: 12px !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 5px !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+}
+
+/* Botões de Ação do Card (Ícones Compactos com Tooltip) */
+.custom-css-ticket-item button.MuiButton-sizeSmall,
+.custom-css-ticket-item button.custom-css-btn-confirm,
+.custom-css-ticket-item .MuiButton-containedSizeSmall {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  right: auto !important;
+  left: auto !important;
+  margin: 0 !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  max-height: 22px !important;
+  width: 22px !important;
+  min-width: 22px !important;
+  max-width: 22px !important;
+  padding: 0 !important;
+  border-radius: 5px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+  overflow: visible !important;
+}
+
+/* Oculta o texto para exibir exclusivamente o ícone */
+.custom-css-ticket-item button.MuiButton-sizeSmall .MuiButton-label,
+.custom-css-ticket-item button.custom-css-btn-confirm .MuiButton-label {
+  font-size: 0 !important;
+  color: transparent !important;
+  display: none !important;
+}
+
+/* Ícone Base Centralizado */
+.custom-css-ticket-item button.MuiButton-sizeSmall::before {
+  content: '' !important;
+  width: 12px !important;
+  height: 12px !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+  background-color: currentColor !important;
+}
+
+/* Tooltip Flutuante via CSS (Alinhado à direita para crescer para dentro do card com z-index alto) */
+.custom-css-ticket-item button.MuiButton-sizeSmall::after {
+  position: absolute !important;
+  bottom: 125% !important;
+  right: 0 !important;
+  transform: translateY(3px) !important;
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  color: #ffffff !important;
+  font-size: 0.65rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  white-space: nowrap !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease !important;
+  z-index: 9999 !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28) !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall:hover {
+  z-index: 60 !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall:hover::after {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+/* Botão ACEITAR (Ícone Check + Fundo Azul Lavado + Borda Azul + Tooltip) */
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"],
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child) {
+  background-color: rgba(31, 147, 255, 0.12) !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  border: 1px solid var(--brand-primary, #1f93ff) !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"]::before,
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child)::before {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"]::after,
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child)::after {
+  content: 'Aceitar atendimento' !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"]:hover,
+.custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child):hover {
+  background-color: rgba(31, 147, 255, 0.22) !important;
+  color: var(--brand-hover, #1671c6) !important;
+  border-color: var(--brand-hover, #1671c6) !important;
+  box-shadow: 0 1px 4px rgba(31, 147, 255, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+/* Botão FINALIZAR (Ícone Fechar + Fundo Vermelho Lavado + Borda Vermelha + Tooltip) */
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"],
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  color: #dc2626 !important;
+  border: 1px solid #ef4444 !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"]::before,
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child::before {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E") no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"]::after,
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child::after {
+  content: 'Finalizar atendimento' !important;
+}
+
+.custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"]:hover,
+.custom-css-ticket-item button.MuiButton-sizeSmall:last-child:hover {
+  background-color: rgba(239, 68, 68, 0.22) !important;
+  color: #b91c1c !important;
+  border-color: #dc2626 !important;
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+/* Suporte a Dark Mode */
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall[style*="green"],
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall:first-child:not(:last-child) {
+  background-color: rgba(31, 147, 255, 0.18) !important;
+  color: #60a5fa !important;
+  border-color: #3b82f6 !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall[style*="red"],
+body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall:last-child {
+  background-color: rgba(239, 68, 68, 0.18) !important;
+  color: #f87171 !important;
+  border-color: #dc2626 !important;
+}
+
+/* ==========================================================================
    REDIMENSIONAMENTO DO PAINEL DE TICKETS (DESKTOP)
    Controlado via variável CSS --wsw-tickets-width e manipulado via JS
    ========================================================================== */
@@ -3074,13 +3250,13 @@ body[data-theme="dark"] .MuiAutocomplete-inputRoot .MuiChip-root {
     box-shadow: none !important;
   }
 
-  /* Paper do Chat quando o Drawer está ABERTO (Encolhe exatamente 320px) */
+  /* Paper do Chat quando o Drawer está ABERTO (Encolhe de acordo com a largura dinâmica do Drawer) */
   #drawer-container:has(.custom-css-contact-drawer[style*="transform: none"]) > .MuiPaper-root:first-child,
   #drawer-container:has(.custom-css-contact-drawer:not([style*="translateX"]):not([style*="visibility: hidden"])) > .MuiPaper-root:first-child,
   #drawer-container.contact-drawer-open > .MuiPaper-root:first-child,
   .custom-css-ticket.contact-drawer-open > .MuiPaper-root:first-child {
-    width: calc(100% - 320px) !important;
-    max-width: calc(100% - 320px) !important;
+    width: calc(100% - clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px)) !important;
+    max-width: calc(100% - clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px)) !important;
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
@@ -3090,6 +3266,13 @@ body[data-theme="dark"] .MuiAutocomplete-inputRoot .MuiChip-root {
     box-shadow: none !important;
     background-color: var(--surface-bg) !important;
     transition: width 225ms cubic-bezier(0, 0, 0.2, 1), max-width 225ms cubic-bezier(0, 0, 0.2, 1) !important;
+  }
+
+  /* Durante o arrasto: remove transição para resposta instantânea a 60fps */
+  body.wsw-is-resizing #drawer-container > .MuiPaper-root:first-child,
+  body.wsw-is-resizing .custom-css-ticket > .MuiPaper-root:first-child,
+  body.wsw-is-resizing .custom-css-contact-drawer {
+    transition: none !important;
   }
 
   /* Paper do Chat quando o Drawer está FECHADO (Ocupa 100% da tela) */
@@ -3108,7 +3291,7 @@ body[data-theme="dark"] .MuiAutocomplete-inputRoot .MuiChip-root {
     transition: width 225ms cubic-bezier(0, 0, 0.2, 1), max-width 225ms cubic-bezier(0, 0, 0.2, 1) !important;
   }
 
-  /* Drawer Acoplado no Desktop */
+  /* Drawer Acoplado no Desktop (Largura Dinâmica e Fluida) */
   .custom-css-contact-drawer,
   .custom-css-contact-drawer.MuiDrawer-paperAnchorDockedRight,
   .custom-css-contact-drawer.MuiDrawer-paper {
@@ -3116,9 +3299,9 @@ body[data-theme="dark"] .MuiAutocomplete-inputRoot .MuiChip-root {
     top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    width: 320px !important;
-    min-width: 320px !important;
-    max-width: 320px !important;
+    width: clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px) !important;
+    min-width: clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px) !important;
+    max-width: clamp(320px, var(--wsw-contact-drawer-width, 340px), 520px) !important;
     height: 100% !important;
     border-left: 1px solid var(--divider-subtle) !important;
     border-radius: 0 !important;
@@ -3127,6 +3310,19 @@ body[data-theme="dark"] .MuiAutocomplete-inputRoot .MuiChip-root {
     display: flex !important;
     flex-direction: column !important;
     z-index: 5 !important;
+  }
+
+  /* Alça invisível na borda esquerda do Drawer para indicar redimensionamento */
+  .custom-css-contact-drawer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 50;
+    background: transparent !important;
   }
 }
 
@@ -3533,13 +3729,68 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
   color: #ffffff !important;
 }
 
-.custom-css-msg-bubble[data-fromme="true"] .message-meta {
-  color: var(--bubble-out-meta) !important;
+/* ============================================================================
+   CONTRASTE DE LINKS E METADADOS NOS BALÕES DE MENSAGEM
+   ============================================================================ */
+
+/* 1. Links no Balão de Saída (Fundo Azul) -> Branco nítido com sublinhado suave */
+.custom-css-msg-bubble[data-fromme="true"] a,
+.custom-css-msg-bubble[data-fromme="true"] a:visited,
+.custom-css-msg-bubble[data-fromme="true"] .whatsmarked a,
+.custom-css-msg-bubble[data-fromme="true"] span a {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 500 !important;
+  transition: opacity 0.15s ease !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] a:hover {
+  opacity: 0.85 !important;
+  text-decoration-color: #ffffff !important;
+}
+
+/* 2. Metadados do Balão de Saída (Nome, data, hora e check duplo) */
+.custom-css-msg-bubble[data-fromme="true"] .message-meta,
+.custom-css-msg-bubble[data-fromme="true"] .message-meta span,
+.custom-css-msg-bubble[data-fromme="true"] .message-meta p {
+  color: rgba(255, 255, 255, 0.88) !important;
+  opacity: 1 !important;
 }
 
 .custom-css-msg-bubble[data-fromme="true"] .message-meta svg {
   color: #ffffff !important;
   fill: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* 3. Links no Balão de Entrada (Fundo Claro/Escuro) */
+.custom-css-msg-bubble[data-fromme="false"] a,
+.custom-css-msg-bubble[data-fromme="false"] a:visited,
+.custom-css-msg-bubble[data-fromme="false"] .whatsmarked a,
+.custom-css-msg-bubble[data-fromme="false"] span a {
+  color: var(--brand-primary, #1f93ff) !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(31, 147, 255, 0.4) !important;
+  font-weight: 500 !important;
+}
+
+.custom-css-msg-bubble[data-fromme="false"] a:hover {
+  color: var(--brand-hover, #1671c6) !important;
+  text-decoration-color: var(--brand-hover, #1671c6) !important;
+}
+
+/* 4. Links na Nota Interna (Fundo Âmbar) */
+.custom-css-msg-bubble.message-internal a,
+.custom-css-msg-bubble[data-media-type="internal"] a {
+  color: #b45309 !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+}
+
+body[data-theme="dark"] .custom-css-msg-bubble.message-internal a,
+body[data-theme="dark"] .custom-css-msg-bubble[data-media-type="internal"] a {
+  color: #fde047 !important;
 }
 
 /* Nota Interna Alinhada à Direita */
@@ -3585,6 +3836,129 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
   gap: 4px !important;
 }
 
+/* ============================================================================
+   BOTÃO DE DOWNLOAD DE MÍDIA (ÍCONE FA-CLOUD-ARROW-DOWN)
+   Posicionado com position: absolute; left: 20px; bottom: 10px;
+   ============================================================================ */
+
+/* Balão como âncora relativa */
+.custom-css-msg-bubble {
+  position: relative !important;
+}
+
+/* Container do Botão de Download */
+.custom-css-msg-bubble div:has(> button.MuiButton-outlinedPrimary),
+.custom-css-msg-bubble div:has(> button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"])) {
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Botão de Download (Formato Quadrado Arredondado com Ícone Proporcional e Centralizado) */
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]) {
+  position: absolute !important;
+  left: 20px !important;
+  bottom: 10px !important;
+  top: auto !important;
+  right: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background-color: rgba(31, 147, 255, 0.12) !important;
+  border: 1px solid rgba(31, 147, 255, 0.40) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+  cursor: pointer !important;
+  z-index: 5 !important;
+  transition: all 0.15s ease !important;
+  overflow: hidden !important;
+}
+
+/* Oculta os elementos internos nativos para garantir centralização matemática perfeita */
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary .MuiButton-label,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]) .MuiButton-label {
+  display: none !important;
+}
+
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary .MuiButton-startIcon,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]) .MuiButton-startIcon {
+  display: none !important;
+}
+
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary svg,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]) svg {
+  display: none !important;
+}
+
+/* Ícone Font Awesome fa-cloud-arrow-down (\f0ed) — Ampliado e 100% Centralizado */
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary::before,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"])::before {
+  content: "\f0ed" !important;
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "FontAwesome", sans-serif !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hover no Botão de Download */
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary:hover,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]):hover {
+  background-color: rgba(31, 147, 255, 0.24) !important;
+  border-color: var(--brand-primary, #1f93ff) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(31, 147, 255, 0.28) !important;
+}
+
+.custom-css-msg-bubble button.MuiButton-outlinedPrimary:hover::before,
+.custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]):hover::before {
+  color: var(--brand-hover, #1671c6) !important;
+}
+
+/* Download no Balão de Saída (Enviado / Fundo Azul) */
+.custom-css-msg-bubble[data-fromme="true"] button.MuiButton-outlinedPrimary,
+.custom-css-msg-bubble[data-fromme="true"] button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]) {
+  background-color: rgba(255, 255, 255, 0.20) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] button.MuiButton-outlinedPrimary::before,
+.custom-css-msg-bubble[data-fromme="true"] button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]):before {
+  color: #ffffff !important;
+}
+
+.custom-css-msg-bubble[data-fromme="true"] button.MuiButton-outlinedPrimary:hover,
+.custom-css-msg-bubble[data-fromme="true"] button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]):hover {
+  background-color: rgba(255, 255, 255, 0.35) !important;
+  border-color: #ffffff !important;
+}
+
+/* Suporte a Dark Mode */
+body[data-theme="dark"] .custom-css-msg-bubble button.MuiButton-outlinedPrimary,
+body[data-theme="dark"] .custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]) {
+  background-color: rgba(31, 147, 255, 0.18) !important;
+  border-color: rgba(31, 147, 255, 0.40) !important;
+}
+
+body[data-theme="dark"] .custom-css-msg-bubble button.MuiButton-outlinedPrimary::before,
+body[data-theme="dark"] .custom-css-msg-bubble button:has(svg path[d*="M19 9h-4V3H9v6H5l7 7 7-7z"]):before {
+  color: #60a5fa !important;
+}
+
 /* --- [Módulo: 09-composer.css] --- */
 /**
  * ============================================================================
@@ -3611,45 +3985,289 @@ body[data-theme="dark"] .custom-css-messages .jss400 {
 
 .custom-css-composer-field,
 .custom-css-composer-field[data-mode] {
+  position: relative !important;
   background-color: var(--composer-input-bg) !important;
-  border: 1px solid var(--composer-border) !important;
+  border: 1.5px solid var(--composer-border) !important;
   border-radius: 24px !important;
   padding: 6px 16px !important;
-  transition: all 0.2s ease !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.custom-css-composer-field:focus-within {
+/* ============================================================================
+   1. MODO NORMAL (data-mode="normal" ou default) — Borda Azul
+   ============================================================================ */
+.custom-css-composer-field:not([data-mode]),
+.custom-css-composer-field[data-mode="normal"] {
+  border-color: var(--composer-border, #e2e8f0) !important;
+}
+
+.custom-css-composer-field:not([data-mode]):focus-within,
+.custom-css-composer-field[data-mode="normal"]:focus-within {
   background-color: var(--composer-input-focus-bg) !important;
-  border-color: var(--brand-primary) !important;
-  box-shadow: 0 0 0 3px var(--brand-subtle) !important;
+  border-color: var(--brand-primary, #1f93ff) !important;
+  box-shadow: 0 0 0 3px var(--brand-subtle, rgba(31, 147, 255, 0.15)) !important;
 }
 
+/* ============================================================================
+   2. MODO NOTA INTERNA (data-mode="internal") — Borda Amarela/Âmbar
+   ============================================================================ */
+.custom-css-composer-field[data-mode="internal"] {
+  border-color: #f59e0b !important;
+  background-color: rgba(245, 158, 11, 0.04) !important;
+}
+
+.custom-css-composer-field[data-mode="internal"]:focus-within {
+  border-color: #d97706 !important;
+  background-color: rgba(245, 158, 11, 0.07) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.20) !important;
+}
+
+/* Badge Indicador de Nota Interna */
+.custom-css-composer-field[data-mode="internal"]::after {
+  content: 'NOTA INTERNA' !important;
+  position: absolute !important;
+  top: -9px !important;
+  right: 18px !important;
+  background: #f59e0b !important;
+  color: #ffffff !important;
+  font-size: 0.60rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 2px 7px !important;
+  border-radius: 10px !important;
+  line-height: 1.2 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.35) !important;
+}
+
+/* ============================================================================
+   3. MODO ASSINATURA (data-mode="signature") — Borda Índigo & Bubble a 45°
+   ============================================================================ */
+.custom-css-composer-field[data-mode="signature"] {
+  border-color: #6366f1 !important;
+  background-color: rgba(99, 102, 241, 0.04) !important;
+}
+
+.custom-css-composer-field[data-mode="signature"]:focus-within {
+  border-color: #4f46e5 !important;
+  background-color: rgba(99, 102, 241, 0.07) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.20) !important;
+}
+
+/* Bubble Indicador de Mensagem Assinada Flutuante perto da borda */
+.custom-css-composer-field[data-mode="signature"]::after {
+  content: '✍ ASSINADO' !important;
+  position: absolute !important;
+  top: -10px !important;
+  right: 18px !important;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  font-size: 0.60rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 2.5px 8px !important;
+  border-radius: 12px !important;
+  line-height: 1.2 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.38) !important;
+  transform: rotate(-2deg) !important;
+}
+
+/* ============================================================================
+   4. SUPORTE A DARK MODE
+   ============================================================================ */
+body[data-theme="dark"] .custom-css-composer-field[data-mode="internal"] {
+  background-color: rgba(245, 158, 11, 0.09) !important;
+  border-color: #f59e0b !important;
+}
+
+body[data-theme="dark"] .custom-css-composer-field[data-mode="internal"]:focus-within {
+  background-color: rgba(245, 158, 11, 0.14) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.28) !important;
+}
+
+body[data-theme="dark"] .custom-css-composer-field[data-mode="signature"] {
+  background-color: rgba(99, 102, 241, 0.09) !important;
+  border-color: #818cf8 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer-field[data-mode="signature"]:focus-within {
+  background-color: rgba(99, 102, 241, 0.14) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.28) !important;
+}
+
+/* ============================================================================
+   5. GAVETA FLUTUANTE DE AÇÕES (EMOJI, UPLOAD, CONTATO, ASSINATURA, NOTA INTERNA)
+   ============================================================================ */
+
+/* ============================================================================
+   5. GAVETA FLUTUANTE DE AÇÕES (EMOJI, UPLOAD, CONTATO, ASSINATURA, NOTA INTERNA)
+   ============================================================================ */
+
+/* Container da Gaveta Flutuante (Respeita o display do React para abrir/fechar normalmente) */
+.custom-css-composer .jss492,
+.custom-css-composer div[class*="jss"]:has(> [aria-label="emojiPicker"]),
+.custom-css-composer div:has(> [aria-label="emojiPicker"]),
+.custom-css-composer div:has(> [aria-label="sendContact"]),
+.custom-css-composer div:has(> [data-action="signature"]) {
+  background: var(--surface-bg, #ffffff) !important;
+  border: 1px solid var(--divider-subtle, #eaedf2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  padding: 4px 6px !important;
+  bottom: 60px !important;
+  gap: 3px !important;
+  z-index: 100 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer .jss492,
+body[data-theme="dark"] .custom-css-composer div[class*="jss"]:has(> [aria-label="emojiPicker"]),
+body[data-theme="dark"] .custom-css-composer div:has(> [aria-label="emojiPicker"]),
+body[data-theme="dark"] .custom-css-composer div:has(> [aria-label="sendContact"]),
+body[data-theme="dark"] .custom-css-composer div:has(> [data-action="signature"]) {
+  background: #15202d !important;
+  border-color: #1e2c3d !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Botões da Gaveta Flutuante (Formato Base) */
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) button.MuiIconButton-root,
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) span.MuiIconButton-root,
+.custom-css-composer div:has(> [data-action="signature"]) button.MuiIconButton-root,
+.custom-css-composer div:has(> [data-action="signature"]) span.MuiIconButton-root,
+.custom-css-composer .jss492 button.MuiIconButton-root,
+.custom-css-composer .jss492 span.MuiIconButton-root {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 7px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-secondary, #64748b) !important;
+  border: 1px solid transparent;
+  background-color: transparent;
+  transition: all 0.15s ease !important;
+}
+
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) svg,
+.custom-css-composer div:has(> [data-action="signature"]) svg,
+.custom-css-composer .jss492 svg {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* Hover Padrão nos Ícones Inativos da Gaveta */
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) button.MuiIconButton-root:hover,
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) span.MuiIconButton-root:hover,
+.custom-css-composer div:has(> [data-action="signature"]) button.MuiIconButton-root:hover,
+.custom-css-composer .jss492 button.MuiIconButton-root:hover {
+  color: var(--brand-primary, #1f93ff) !important;
+  background-color: var(--brand-subtle, #edf5ff) !important;
+}
+
+body[data-theme="dark"] .custom-css-composer div:has(> [aria-label="emojiPicker"]) button.MuiIconButton-root:hover,
+body[data-theme="dark"] .custom-css-composer div:has(> [data-action="signature"]) button.MuiIconButton-root:hover,
+body[data-theme="dark"] .custom-css-composer .jss492 button.MuiIconButton-root:hover {
+  background-color: rgba(31, 147, 255, 0.15) !important;
+  color: #60a5fa !important;
+}
+
+/* ============================================================================
+   6. FEEDBACK VISUAL DOS ÍCONES ATIVOS (ASSINATURA & NOTA INTERNA)
+   ============================================================================ */
+
+/* A. Ícone ASSINAR MENSAGEM quando ATIVO */
+.custom-css-composer:has([data-mode="signature"]) button[data-action="signature"],
+.custom-css-composer:has([data-mode="signature"]) button[title*="Assinar"],
+.custom-css-composer:has([data-mode="signature"]) button[aria-label*="Assinar"],
+.custom-css-composer button[data-action="signature"][aria-pressed="true"],
+.custom-css-composer button[title*="Assinar"][aria-pressed="true"],
+.custom-css-composer button[aria-label*="Assinar"][aria-pressed="true"],
+.custom-css-composer button[data-action="signature"][style*="rgb(229, 57, 53)"] {
+  background-color: rgba(99, 102, 241, 0.14) !important;
+  color: #6366f1 !important;
+  border: 1px solid rgba(99, 102, 241, 0.45) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.20) !important;
+}
+
+.custom-css-composer:has([data-mode="signature"]) button[data-action="signature"]:hover,
+.custom-css-composer button[data-action="signature"][aria-pressed="true"]:hover,
+.custom-css-composer button[title*="Assinar"][aria-pressed="true"]:hover {
+  background-color: rgba(99, 102, 241, 0.24) !important;
+  color: #4f46e5 !important;
+  border-color: #6366f1 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer:has([data-mode="signature"]) button[data-action="signature"],
+body[data-theme="dark"] .custom-css-composer button[data-action="signature"][aria-pressed="true"],
+body[data-theme="dark"] .custom-css-composer button[title*="Assinar"][aria-pressed="true"] {
+  background-color: rgba(99, 102, 241, 0.22) !important;
+  color: #a5b4fc !important;
+  border-color: #6366f1 !important;
+}
+
+/* B. Ícone NOTA INTERNA quando ATIVO */
+.custom-css-composer:has([data-mode="internal"]) button[data-action="internal"],
+.custom-css-composer:has([data-mode="internal"]) button[aria-label*="interna"],
+.custom-css-composer button[data-action="internal"][aria-pressed="true"],
+.custom-css-composer button[aria-label*="interna"][aria-pressed="true"] {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(245, 158, 11, 0.45) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.20) !important;
+}
+
+.custom-css-composer:has([data-mode="internal"]) button[data-action="internal"]:hover,
+.custom-css-composer button[data-action="internal"][aria-pressed="true"]:hover,
+.custom-css-composer button[aria-label*="interna"][aria-pressed="true"]:hover {
+  background-color: rgba(245, 158, 11, 0.26) !important;
+  color: #b45309 !important;
+  border-color: #d97706 !important;
+}
+
+body[data-theme="dark"] .custom-css-composer:has([data-mode="internal"]) button[data-action="internal"],
+body[data-theme="dark"] .custom-css-composer button[data-action="internal"][aria-pressed="true"],
+body[data-theme="dark"] .custom-css-composer button[aria-label*="interna"][aria-pressed="true"] {
+  background-color: rgba(245, 158, 11, 0.22) !important;
+  color: #fde047 !important;
+  border-color: #f59e0b !important;
+}
+
+/* C. Botão Fechar (X) da Gaveta — Hover Vermelho Suave */
+.custom-css-composer div:has(> [aria-label="emojiPicker"]) > button:last-child:hover,
+.custom-css-composer .jss492 > button:last-child:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.10) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ============================================================================
+   7. ELEMENTOS GERAIS DO COMPOSER (TEXTAREA & BOTÕES EXTERNOS)
+   ============================================================================ */
 .custom-css-composer textarea {
   color: var(--composer-text) !important;
   font-size: 0.88rem !important;
 }
 
-.custom-css-composer button.MuiIconButton-root,
-.custom-css-composer span.MuiIconButton-root {
+.custom-css-composer > button.MuiIconButton-root,
+.custom-css-composer > span.MuiIconButton-root {
   color: var(--text-secondary) !important;
   padding: 6px !important;
   border-radius: 50% !important;
   transition: all 0.18s ease !important;
 }
 
-.custom-css-composer button.MuiIconButton-root:hover,
-.custom-css-composer span.MuiIconButton-root:hover {
+.custom-css-composer > button.MuiIconButton-root:hover,
+.custom-css-composer > span.MuiIconButton-root:hover {
   color: var(--brand-primary) !important;
   background-color: var(--brand-subtle) !important;
-}
-
-.custom-css-composer .jss492 {
-  background: var(--surface-bg) !important;
-  border: 1px solid var(--divider-subtle) !important;
-  border-radius: 12px !important;
-  box-shadow: var(--shadow-md) !important;
-  padding: 6px 10px !important;
-  bottom: 64px !important;
 }
 
 /* --- [Módulo: 10-mobile.css] --- */
