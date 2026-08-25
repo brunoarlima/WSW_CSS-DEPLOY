@@ -20,7 +20,10 @@ header.MuiAppBar-root {
   padding: 0 16px !important;
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  /* gap removido: itens ocultos (secondary, order:11) com gap:6px geravam
+     ~10 × 6px = 60px de espaço invisível entre o Ping e o Toggle.
+     O espaçamento entre botões visíveis é mantido pelos margin:0 1px dos botões MUI. */
+  gap: 0 !important;
 }
 
 .custom-css-greeting,
@@ -34,6 +37,10 @@ header.MuiAppBar-root {
   line-height: 1 !important;
   margin: 0 !important;
   gap: 6px !important;
+  /* Âncora de alinhamento: empurra tudo à direita do greeting para a borda direita.
+     Mais confiável que margin-left:auto no ping pois não sofre conflito de !important. */
+  flex: 1 1 auto !important;
+  min-width: 0 !important; /* Evita overflow do texto em telas menores */
 }
 
 .custom-css-greeting-name {
@@ -182,24 +189,45 @@ header.MuiAppBar-root {
 }
 
 /* ============================================================================
-   3. TOPBAR CUSTOMIZADA VIA JS (ESTRUTURA ESTÁVEL & GAVETA RETRÁTIL)
+   3. TOPBAR CUSTOMIZADA VIA JS — ZERO REPARENTING
+   Organização visual por classes CSS, sem containers DOM intermediários.
+   O JS injeta classes nos nós React; o CSS posiciona via Flexbox order.
    ============================================================================ */
-#custom-topbar-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  margin-left: auto !important;
-  gap: 6px !important;
+
+/* Garante que o toolbar seja o contexto flex ordenado */
+#custom-css-appbar .MuiToolbar-root {
+  flex-wrap: nowrap !important;
 }
 
-/* Grupo dos Botões Rápidos Principais: Notificações -> Usuário -> Status */
-#custom-topbar-quick-actions {
-  display: flex !important;
-  align-items: center !important;
-  gap: 4px !important;
+/* Ping — posicionado logo após o greeting (que consume o espaço livre)
+   margin-left é intencionalmente 0 para não conflitar com [data-appbar="ping"] */
+#custom-css-appbar .custom-topbar-ping {
+  order: 10 !important;
+  margin-left: 0 !important;
+  margin-right: 4px !important;
+  flex-shrink: 0 !important;
 }
 
-/* Botão Toggle (···) */
+/* Botões de ação secundária (gaveta) — ficam entre Ping e Toggle (order 11)
+   max-width:0 + margin:0 garante ZERO contribuição no layout quando fechados */
+#custom-css-appbar .custom-topbar-action--secondary {
+  order: 11 !important;
+  max-width: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateX(8px) !important;
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s ease,
+              transform 0.25s ease !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Botão Toggle (···) — criado pelo script, inserido pelo toolbar.appendChild */
 #custom-topbar-toggle-btn {
+  order: 12 !important;
   background: transparent !important;
   border: 1px solid var(--divider-subtle) !important;
   border-radius: 8px !important;
@@ -257,25 +285,26 @@ header.MuiAppBar-root {
   }
 }
 
-/* Gaveta dos Ícones Secundários */
-#custom-topbar-secondary-drawer {
-  display: flex !important;
-  align-items: center !important;
-  gap: 3px !important;
-  max-width: 0 !important;
-  opacity: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-  transform: translateX(8px);
-  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, transform 0.25s ease !important;
-}
+/* ============================================================================
+   Ações Rápidas — Ordem individual (esq → dir): Notif → Usuário → Status
+   Lidos da direita para a esquerda: Status → Usuário → Notificação → Toggle → Ping
+   ============================================================================ */
+#custom-css-appbar .custom-topbar-action--notif  { order: 13 !important; flex-shrink: 0 !important; }
+#custom-css-appbar .custom-topbar-action--user   { order: 14 !important; flex-shrink: 0 !important; }
+#custom-css-appbar .custom-topbar-action--status { order: 15 !important; flex-shrink: 0 !important; }
 
-/* Quando a gaveta for aberta pelo clique no botão */
-#custom-topbar-secondary-drawer.is-open {
-  max-width: 380px !important;
+/* Fallback genérico caso algum quick não tenha subtipo */
+#custom-css-appbar .custom-topbar-action--quick  { flex-shrink: 0 !important; }
+
+/* ESTADO ABERTO: appbar recebe a classe pelo toggleBtn.click() */
+/* Ao abrir a gaveta, os botões secundários expandem com animação suave */
+#custom-css-appbar.custom-topbar-drawer-open .custom-topbar-action--secondary {
+  max-width: 48px !important;
   opacity: 1 !important;
   pointer-events: auto !important;
-  transform: translateX(0);
+  transform: translateX(0) !important;
+  overflow: visible !important;
+  margin: 0 1px !important;
 }
 
 button[data-appbar="lang"] img {

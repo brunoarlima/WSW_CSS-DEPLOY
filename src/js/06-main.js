@@ -40,11 +40,10 @@ function runAllInits() {
 document.addEventListener('click', function (e) {
   try {
     // Topbar (Fecha a gaveta ao clicar fora)
-    const topWrapper = document.getElementById('custom-topbar-wrapper');
-    const topDrawer = document.getElementById('custom-topbar-secondary-drawer');
+    const appbar = document.getElementById('custom-css-appbar') || document.querySelector('header.MuiAppBar-root');
     const topToggle = document.getElementById('custom-topbar-toggle-btn');
-    if (topWrapper && !topWrapper.contains(e.target) && topDrawer) {
-      topDrawer.classList.remove('is-open');
+    if (appbar && !appbar.contains(e.target) && appbar.classList.contains('custom-topbar-drawer-open')) {
+      appbar.classList.remove('custom-topbar-drawer-open');
       if (topToggle) topToggle.classList.remove('is-active');
     }
 

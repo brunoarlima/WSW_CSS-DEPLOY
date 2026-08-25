@@ -72,6 +72,12 @@
   // ============================================================================
   // TOPBAR (APPBAR) - Organização de Ícones & Gaveta Retrátil
   // ============================================================================
+  // PRINCÍPIO ZERO REPARENTING: Este módulo NUNCA executa appendChild, prepend,
+  // insertBefore ou remove em elementos gerenciados pelo React (Virtual DOM).
+  // A organização visual é 100% delegada ao CSS via classes identificadoras.
+  // As classes são aplicadas no filho DIRETO do .MuiToolbar-root para que o
+  // Flexbox order tenha efeito real no layout.
+  // ============================================================================
   
   // Verifica com precisão se existe um badge de notificação visível e ativo
   function hasActiveBadge(container) {
@@ -123,13 +129,24 @@
       // Atualiza o botão do menu lateral para a Logo da Marca
       setupBrandMenuLogo(appbar);
   
-      let wrapper = document.getElementById('custom-topbar-wrapper');
-      if (!wrapper) {
-        wrapper = document.createElement('div');
-        wrapper.id = 'custom-topbar-wrapper';
-        toolbar.appendChild(wrapper);
+      // -------------------------------------------------------------------------
+      // Helper: retorna o filho DIRETO do toolbar que contém o elemento.
+      // O Flexbox `order` só funciona em filhos diretos do container flex.
+      // Sem este helper, o `order` aplicado a um botão dentro de um wrapper
+      // React não teria efeito na posição visual do grupo.
+      // -------------------------------------------------------------------------
+      function getToolbarChild(el) {
+        if (!el || !el.isConnected) return null;
+        let node = el;
+        while (node && node.parentElement && node.parentElement !== toolbar) {
+          node = node.parentElement;
+        }
+        return (node && node.parentElement === toolbar) ? node : null;
       }
   
+      // -------------------------------------------------------------------------
+      // PASSO 1: Identifica os elementos-alvo (sem movê-los)
+      // -------------------------------------------------------------------------
       const ping = appbar.querySelector('[data-appbar="ping"]');
       const notifications = appbar.querySelector('button[data-appbar="notifications"]') ||
                             appbar.querySelector('button:has(svg[data-testid*="Notification"])') ||
@@ -138,12 +155,77 @@
       const status = appbar.querySelector('[data-icon="status"], [data-appbar="status"]') ||
                      appbar.querySelector('.custom-css-topbar-actions > :last-child');
   
-      let drawer = document.getElementById('custom-topbar-secondary-drawer');
-      if (!drawer) {
-        drawer = document.createElement('div');
-        drawer.id = 'custom-topbar-secondary-drawer';
+      // -------------------------------------------------------------------------
+      // PASSO 2: Resolve o filho direto do toolbar para cada elemento-alvo
+      // e injeta a classe identificadora NESSE filho direto.
+      // -------------------------------------------------------------------------
+  
+      // Ping
+      const pingTarget = getToolbarChild(ping) || ping;
+      if (pingTarget && pingTarget.isConnected) {
+        pingTarget.classList.add('custom-topbar-ping');
       }
   
+      // Notificações — resolve o wrapper direto do toolbar
+      const notifTarget = getToolbarChild(notifications);
+      if (notifTarget && notifTarget.isConnected) {
+        notifTarget.classList.add('custom-topbar-action', 'custom-topbar-action--quick', 'custom-topbar-action--notif');
+      } else if (notifications && notifications.isConnected) {
+        notifications.classList.add('custom-topbar-action', 'custom-topbar-action--quick', 'custom-topbar-action--notif');
+      }
+  
+      // Usuário
+      const userTarget = getToolbarChild(user);
+      if (userTarget && userTarget.isConnected) {
+        userTarget.classList.add('custom-topbar-action', 'custom-topbar-action--quick', 'custom-topbar-action--user');
+      } else if (user && user.isConnected) {
+        user.classList.add('custom-topbar-action', 'custom-topbar-action--quick', 'custom-topbar-action--user');
+      }
+  
+      // Status
+      const statusTarget = getToolbarChild(status);
+      if (statusTarget && statusTarget.isConnected) {
+        statusTarget.classList.add('custom-topbar-action', 'custom-topbar-action--quick', 'custom-topbar-action--status');
+      } else if (status && status.isConnected) {
+        status.classList.add('custom-topbar-action', 'custom-topbar-action--quick', 'custom-topbar-action--status');
+      }
+  
+      // -------------------------------------------------------------------------
+      // PASSO 3: Botões secundários — classifica wrappers diretos do toolbar,
+      // evitando re-classificar wrappers já marcados como quick-actions.
+      // -------------------------------------------------------------------------
+      const classifiedTargets = new Set([pingTarget, notifTarget, userTarget, statusTarget].filter(Boolean));
+      const allButtons = appbar.querySelectorAll('button.MuiIconButton-root, button[data-appbar]');
+      let hasSecondaryBadge = false;
+  
+      allButtons.forEach(function (btn) {
+        if (
+          !btn || !btn.isConnected ||
+          btn === notifications || btn === user || btn === status ||
+          btn.getAttribute('data-appbar') === 'menu' ||
+          btn.getAttribute('aria-label') === 'open drawer' ||
+          btn.id === 'custom-topbar-toggle-btn'
+        ) {
+          return;
+        }
+  
+        const wrapper = getToolbarChild(btn) || btn;
+  
+        // Não reclassifica wrappers que já receberam classes de quick-action
+        if (classifiedTargets.has(wrapper)) return;
+        classifiedTargets.add(wrapper);
+  
+        wrapper.classList.add('custom-topbar-action', 'custom-topbar-action--secondary');
+  
+        if (!hasSecondaryBadge && hasActiveBadge(wrapper)) {
+          hasSecondaryBadge = true;
+        }
+      });
+  
+      // -------------------------------------------------------------------------
+      // PASSO 4: Cria e insere o botão de toggle (elemento 100% vanilla, seguro)
+      // O toggleBtn é o ÚNICO elemento que o script cria e insere no DOM.
+      // -------------------------------------------------------------------------
       let toggleBtn = document.getElementById('custom-topbar-toggle-btn');
       if (!toggleBtn) {
         toggleBtn = document.createElement('button');
@@ -159,50 +241,21 @@
   
         toggleBtn.addEventListener('click', function (e) {
           e.stopPropagation();
-          drawer.classList.toggle('is-open');
+          // Alterna estado no appbar — o CSS cuida da gaveta visual
+          appbar.classList.toggle('custom-topbar-drawer-open');
           toggleBtn.classList.toggle('is-active');
         });
+  
+        // Inserção segura: toggleBtn foi criado por este script, não pelo React
+        if (toolbar.isConnected) {
+          toolbar.appendChild(toggleBtn);
+        }
       }
   
-      let quickGroup = document.getElementById('custom-topbar-quick-actions');
-      if (!quickGroup) {
-        quickGroup = document.createElement('div');
-        quickGroup.id = 'custom-topbar-quick-actions';
-      }
-  
-      // Estrutura organizada: [Ping] -> [Gaveta Secundária] -> [Toggle ···] -> [Grupo Rápido: Notificações, User, Status]
-      if (ping && ping.isConnected && ping.parentElement !== wrapper) wrapper.appendChild(ping);
-      if (drawer.parentElement !== wrapper) wrapper.appendChild(drawer);
-      if (toggleBtn.parentElement !== wrapper) wrapper.appendChild(toggleBtn);
-      if (quickGroup.parentElement !== wrapper) wrapper.appendChild(quickGroup);
-  
-      if (notifications && notifications.isConnected && notifications.parentElement !== quickGroup) quickGroup.appendChild(notifications);
-      if (user && user.isConnected && user.parentElement !== quickGroup) quickGroup.appendChild(user);
-      if (status && status.isConnected && status.parentElement !== quickGroup) quickGroup.appendChild(status);
-  
-      // Identifica e move TODOS os outros botões secundários (volume, chat interno, idioma, reload, tema, etc.) para o drawer
-      const allButtons = appbar.querySelectorAll('button.MuiIconButton-root, button[data-appbar]');
-      allButtons.forEach(function (btn) {
-        if (
-          !btn ||
-          !btn.isConnected ||
-          btn === toggleBtn ||
-          btn === notifications ||
-          btn === user ||
-          btn === status ||
-          btn.getAttribute('data-appbar') === 'menu' ||
-          btn.getAttribute('aria-label') === 'open drawer' ||
-          btn.closest('#custom-topbar-quick-actions')
-        ) {
-          return;
-        }
-  
-        if (btn.parentElement !== drawer) {
-          drawer.appendChild(btn);
-        }
-      });
-  
-      if (hasActiveBadge(drawer)) {
+      // -------------------------------------------------------------------------
+      // PASSO 5: Atualiza indicador de badge no botão toggle (apenas leitura)
+      // -------------------------------------------------------------------------
+      if (hasSecondaryBadge) {
         toggleBtn.classList.add('has-badge');
       } else {
         toggleBtn.classList.remove('has-badge');
@@ -418,7 +471,9 @@
   // REDIMENSIONAMENTO FLUIDO DO PAINEL DE TICKETS (DESKTOP)
   // Altera exclusivamente a variável CSS --wsw-tickets-width no :root
   // Persiste a preferência no localStorage sem interferir no Virtual DOM do React
-  // Limites estritos: 460px a 650px
+  // Limites: mínimo 465px | máximo 680px
+  // Snap-to-Collapse: arrastar além do mínimo (>30px) fecha a sidebar via .click()
+  // no botão React [data-appbar="menu"] — zero manipulação de DOM, zero reparenting
   // ============================================================================
   
   (function () {
@@ -427,13 +482,13 @@
       if (savedWidth) {
         var num = parseFloat(savedWidth);
         if (!isNaN(num)) {
-          num = Math.max(460, Math.min(num, 650));
+          num = Math.max(465, Math.min(num, 680));
           document.documentElement.style.setProperty('--wsw-tickets-width', num + 'px');
         } else {
           document.documentElement.style.setProperty('--wsw-tickets-width', savedWidth);
         }
       }
-    } catch (e) {}
+    } catch (e) { }
   })();
   
   var _wswResizerState = {
@@ -441,8 +496,35 @@
     startX: 0,
     startWidth: 0,
     listEl: null,
-    listenersAttached: false
+    listenersAttached: false,
+    snapTriggered: false   // Evita múltiplos disparos do snap-to-collapse no mesmo arrasto
   };
+  
+  // -----------------------------------------------------------------------
+  // Dispara o colapso da Sidebar via .click() no botão React de toggle.
+  // Seguro: não toca no DOM, não move nós — apenas simula um clique que
+  // passa pelo sistema de eventos do React normalmente.
+  // O botão [data-appbar="menu"] funciona mesmo quando oculto por CSS
+  // (display:none não impede o disparo de .click() programático).
+  // -----------------------------------------------------------------------
+  function _wswCollapseSidebar() {
+    try {
+      var sidebar = document.querySelector('.custom-css-sidebar');
+      if (!sidebar || !sidebar.isConnected) return;
+  
+      // Já está recolhida — nada a fazer
+      if (sidebar.getAttribute('data-collapsed') === 'true') return;
+  
+      // Botão React de toggle da sidebar (visível quando recolhida, oculto quando expandida,
+      // mas .click() funciona em ambos os estados)
+      var toggleBtn = document.querySelector('button[data-appbar="menu"]') ||
+                      document.querySelector('button[aria-label="open drawer"]');
+  
+      if (toggleBtn && toggleBtn.isConnected) {
+        toggleBtn.click();
+      }
+    } catch (e) { }
+  }
   
   function initResizablePanel() {
     try {
@@ -470,14 +552,15 @@
             _wswResizerState.startX = e.clientX;
             _wswResizerState.startWidth = rect.width;
             _wswResizerState.listEl = listEl;
+            _wswResizerState.snapTriggered = false; // Reseta flag a cada novo arrasto
   
             document.body.classList.add('wsw-is-resizing');
             e.preventDefault();
           }
-        } catch (err) {}
+        } catch (err) { }
       });
   
-      // Reset ao dar duplo clique na divisória (restaura 460px)
+      // Reset ao dar duplo clique na divisória (restaura 465px)
       document.addEventListener('dblclick', function (e) {
         try {
           if (window.innerWidth <= 960) return;
@@ -487,11 +570,11 @@
   
           var rect = listEl.getBoundingClientRect();
           if (Math.abs(e.clientX - rect.right) <= 10) {
-            document.documentElement.style.setProperty('--wsw-tickets-width', '460px');
+            document.documentElement.style.setProperty('--wsw-tickets-width', '465px');
             localStorage.removeItem('wsw_tickets_width');
             e.preventDefault();
           }
-        } catch (err) {}
+        } catch (err) { }
       });
   
       // Movimento do arrasto
@@ -499,17 +582,29 @@
         try {
           if (!_wswResizerState.isResizing) return;
   
+          var minWidth = 465;
+          var maxWidth = 680;
+          // Quantidade de px além do mínimo que dispara o colapso da sidebar
+          var snapThreshold = 30;
+  
           var deltaX = e.clientX - _wswResizerState.startX;
-          var newWidth = _wswResizerState.startWidth + deltaX;
+          var rawWidth = _wswResizerState.startWidth + deltaX;
   
-          // Limites estritos: mínimo 460px e máximo 650px
-          var minWidth = 460;
-          var maxWidth = 650;
+          // ---------------------------------------------------------------
+          // SNAP-TO-COLLAPSE: se o usuário continuar arrastando além do
+          // limiar de snap (minWidth - snapThreshold), fecha a sidebar.
+          // Executa apenas uma vez por sessão de arrasto (snapTriggered).
+          // ---------------------------------------------------------------
+          if (rawWidth < minWidth - snapThreshold && !_wswResizerState.snapTriggered) {
+            _wswResizerState.snapTriggered = true;
+            endResize();          // Finaliza o arrasto imediatamente
+            _wswCollapseSidebar(); // Colapsa a sidebar via evento React
+            return;
+          }
   
-          newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
-  
+          var newWidth = Math.max(minWidth, Math.min(rawWidth, maxWidth));
           document.documentElement.style.setProperty('--wsw-tickets-width', Math.round(newWidth) + 'px');
-        } catch (err) {}
+        } catch (err) { }
       });
   
       // Fim do arrasto
@@ -527,12 +622,12 @@
               localStorage.setItem('wsw_tickets_width', currentWidth);
             }
           }
-        } catch (err) {}
+        } catch (err) { }
       }
   
       document.addEventListener('mouseup', endResize);
       window.addEventListener('blur', endResize);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // --- [Módulo: 04-ticket-connection.js] ---
@@ -729,11 +824,10 @@
   document.addEventListener('click', function (e) {
     try {
       // Topbar (Fecha a gaveta ao clicar fora)
-      const topWrapper = document.getElementById('custom-topbar-wrapper');
-      const topDrawer = document.getElementById('custom-topbar-secondary-drawer');
+      const appbar = document.getElementById('custom-css-appbar') || document.querySelector('header.MuiAppBar-root');
       const topToggle = document.getElementById('custom-topbar-toggle-btn');
-      if (topWrapper && !topWrapper.contains(e.target) && topDrawer) {
-        topDrawer.classList.remove('is-open');
+      if (appbar && !appbar.contains(e.target) && appbar.classList.contains('custom-topbar-drawer-open')) {
+        appbar.classList.remove('custom-topbar-drawer-open');
         if (topToggle) topToggle.classList.remove('is-active');
       }
   
