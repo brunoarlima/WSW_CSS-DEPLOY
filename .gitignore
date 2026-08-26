@@ -3,6 +3,5 @@ node_modules/
 .DS_Store
 *.log
 
-# Scripts de Deploy e Tokens locais (ignorar)
-deploy.js
-deploy.sh
+# Comandos locais com credenciais (ignorar)
+bash.md

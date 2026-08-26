@@ -5,7 +5,8 @@
   "main": "build.js",
   "scripts": {
     "build": "node build.js",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "deploy:global": "node deploy.js --global"
   },
   "keywords": [
     "nextychat",

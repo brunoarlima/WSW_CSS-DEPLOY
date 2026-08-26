@@ -45,8 +45,11 @@ src/
 - **Compilar Módulos**: `npm run build` ou `node build.js`
   - Concatena os arquivos de `src/css/` gerando `nextychat-redesign.css`.
   - Concatena os arquivos de `src/js/` gerando `nextychat-redesign.js` dentro de uma IIFE segura e valida a sintaxe.
-- **Deploy na API**: `npm run deploy` ou `./deploy.sh`
-  - Executa o build automaticamente antes de enviar o CSS e JS para a API do NextyChat.
+- **Deploy Isolado por Empresa (Padrão)**: `npm run deploy` ou `./deploy.sh`
+  - Compila os módulos e lê o comando cURL em `bash.md`.
+  - Atualiza exclusivamente a empresa especificada com os novos `customCss`, `customJs` e `useCustomCss: true`.
+- **Deploy Global (Todas as Empresas)**: `npm run deploy:global` ou `node deploy.js --global`
+  - Envia para os endpoints globais `/settings/customCssFrontend` e `/settings/customJsFrontend`.
 
 ---
 
