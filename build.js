@@ -2,10 +2,10 @@
 
 /**
  * ============================================================================
- * BUILD & CONCATENAÇÃO MODULAR - NEXTYCHAT / WSW REDESIGN
+ * BUILD & CONCATENAÇÃO MODULAR - WSW REDESIGN
  * ============================================================================
  * Concatena todos os módulos de `src/css/` e `src/js/` gerando os arquivos
- * de distribuição finais `nextychat-redesign.css` e `nextychat-redesign.js`.
+ * de distribuição finais `wsw-redesign.css` e `wsw-redesign.js`.
  */
 
 const fs = require('fs');
@@ -13,8 +13,8 @@ const path = require('path');
 
 const CSS_SRC_DIR = path.join(__dirname, 'src', 'css');
 const JS_SRC_DIR = path.join(__dirname, 'src', 'js');
-const CSS_DIST_FILE = path.join(__dirname, 'nextychat-redesign.css');
-const JS_DIST_FILE = path.join(__dirname, 'nextychat-redesign.js');
+const CSS_DIST_FILE = path.join(__dirname, 'wsw-redesign.css');
+const JS_DIST_FILE = path.join(__dirname, 'wsw-redesign.js');
 
 function buildCSS() {
   console.log('📦 Concatenando módulos CSS...');
@@ -27,7 +27,7 @@ function buildCSS() {
     .filter(f => f.endsWith('.css'))
     .sort();
 
-  let combinedCss = `/**\n * ============================================================================\n * NEXTYCHAT - REDESIGN SAAS (COMPATÍVEL COM MATERIAL-UI)\n * ARQUIVO GERADO AUTOMATICAMENTE VIA BUILD - NÃO EDITE DIRETAMENTE\n * Edite os módulos individuais em src/css/\n * ============================================================================\n */\n\n`;
+  let combinedCss = `/**\n * ============================================================================\n * WSW - REDESIGN SAAS (COMPATÍVEL COM MATERIAL-UI)\n * ARQUIVO GERADO AUTOMATICAMENTE VIA BUILD - NÃO EDITE DIRETAMENTE\n * Edite os módulos individuais em src/css/\n * ============================================================================\n */\n\n`;
 
   files.forEach(file => {
     const filePath = path.join(CSS_SRC_DIR, file);
@@ -61,7 +61,7 @@ function buildJS() {
     console.log(`  + ${file}`);
   });
 
-  const finalJs = `/**\n * ============================================================================\n * NEXTYCHAT / WSW - CUSTOM JS (TOPBAR, TICKET ACTIONS & MOBILE FIXES)\n * ARQUIVO GERADO AUTOMATICAMENTE VIA BUILD - NÃO EDITE DIRETAMENTE\n * Edite os módulos individuais em src/js/\n * ============================================================================\n */\n\n(function () {\n  'use strict';\n\n${combinedJsBody}})();\n`;
+  const finalJs = `/**\n * ============================================================================\n * WSW - CUSTOM JS (TOPBAR, TICKET ACTIONS & MOBILE FIXES)\n * ARQUIVO GERADO AUTOMATICAMENTE VIA BUILD - NÃO EDITE DIRETAMENTE\n * Edite os módulos individuais em src/js/\n * ============================================================================\n */\n\n(function () {\n  'use strict';\n\n${combinedJsBody}})();\n`;
 
   // Validação de sintaxe
   try {
@@ -77,7 +77,7 @@ function buildJS() {
 }
 
 function main() {
-  console.log('🚀 Iniciando Build do NextyChat Redesign...\n');
+  console.log('🚀 Iniciando Build do WSW Redesign...\n');
   buildCSS();
   buildJS();
   console.log('✨ Build concluído com sucesso!');

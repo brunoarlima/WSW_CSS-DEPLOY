@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Script de Deploy do NextyChat / WSW Redesign
+ * Script de Deploy do WSW Redesign
  *
  * Modos de Uso:
  *   1. Deploy por Empresa (Padrão e Recomendado):
@@ -20,14 +20,14 @@ const http = require('http');
 const { buildCSS, buildJS } = require('./build.js');
 
 const BASH_MD_PATH = path.join(__dirname, 'bash.md');
-const CSS_PATH = path.join(__dirname, 'nextychat-redesign.css');
-const JS_PATH = path.join(__dirname, 'nextychat-redesign.js');
+const CSS_PATH = path.join(__dirname, 'wsw-redesign.css');
+const JS_PATH = path.join(__dirname, 'wsw-redesign.js');
 
-// Configurações para Deploy Global (Legado / Fallback via variáveis de ambiente)
+// Configurações para Deploy Global (Fallback via variáveis de ambiente)
 const GLOBAL_CONFIG = {
-  baseUrl: process.env.NEXTY_BASE_URL || 'https://gestao.nextychat.com',
-  bearerToken: process.env.NEXTY_TOKEN || '',
-  cookie: process.env.NEXTY_COOKIE || ''
+  baseUrl: process.env.API_BASE_URL || process.env.WSW_BASE_URL || 'https://api.seudominio.com',
+  bearerToken: process.env.API_TOKEN || process.env.WSW_TOKEN || '',
+  cookie: process.env.API_COOKIE || process.env.WSW_COOKIE || ''
 };
 
 /**
@@ -242,12 +242,6 @@ async function deployCompany() {
 
   const companyId = jsonData.id || 'Desconhecido';
   const companyName = jsonData.name || jsonData.namecomplete || 'Empresa';
-
-  console.log(`🎯 Alvo do Deploy:`);
-  console.log(`   - Empresa ID: ${companyId}`);
-  console.log(`   - Nome:       ${companyName}`);
-  console.log(`   - Endpoint:   ${method} ${url}\n`);
-
   // Lê os arquivos compilados
   const cssContent = fs.existsSync(CSS_PATH) ? fs.readFileSync(CSS_PATH, 'utf8') : '';
   const jsContent = fs.existsSync(JS_PATH) ? fs.readFileSync(JS_PATH, 'utf8') : '';
@@ -259,52 +253,80 @@ async function deployCompany() {
     console.warn(`⚠️ Aviso: ${JS_PATH} está vazio ou não foi encontrado.`);
   }
 
-  // Atualiza estritamente os campos necessários
+  // Garante que o CSS customizado esteja sempre ATIVADO na empresa
   jsonData.customCss = cssContent;
   jsonData.customJs = jsContent;
   jsonData.useCustomCss = true;
+  if ('use_custom_css' in jsonData) {
+    jsonData.use_custom_css = true;
+  }
+
+  console.log(`🎯 Alvo do Deploy:`);
+  console.log(`   - Empresa ID:   ${companyId}`);
+  console.log(`   - Nome:         ${companyName}`);
+  console.log(`   - Endpoint:     ${method} ${url}`);
+  console.log(`   - Estado CSS:   ATIVADO (useCustomCss: true)\n`);
 
   const payload = JSON.stringify(jsonData);
 
   process.stdout.write(`📦 Enviando atualização isolada para ${companyName} (ID: ${companyId})... `);
   const result = await makeHttpRequest(url, method, headers, payload);
   console.log(`✅ SUCESSO! (HTTP ${result.statusCode})`);
-  console.log(`\n✨ Redesign atualizado com sucesso exclusivamente na empresa ${companyName}!`);
+  console.log(`\n✨ Redesign e useCustomCss: true aplicados com sucesso exclusivamente na empresa ${companyName}!`);
 }
 
 /**
- * Deploy Global (legado / todas as instâncias)
+ * Deploy Global (todas as empresas / instâncias)
+ * Reaproveita os tokens e headers autenticados do bash.md (se existir) ou variáveis de ambiente.
  */
 async function deployGlobal() {
   console.log('🌐 Modo Deploy Global selecionado (/settings/*)...\n');
 
-  function sendGlobalUpdate(endpoint, key, content) {
-    const url = new URL(`${GLOBAL_CONFIG.baseUrl}/settings/${endpoint}`);
-    const payload = JSON.stringify({ key, value: content });
-    const headers = {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GLOBAL_CONFIG.bearerToken}`,
-      'Origin': 'https://painel.nextychat.com',
-      'Referer': 'https://painel.nextychat.com/',
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
-    };
-    if (GLOBAL_CONFIG.cookie) {
-      headers['Cookie'] = GLOBAL_CONFIG.cookie;
+  let baseUrl = GLOBAL_CONFIG.baseUrl;
+  let headers = {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${GLOBAL_CONFIG.bearerToken}`,
+    'Origin': process.env.APP_ORIGIN || 'https://app.seudominio.com',
+    'Referer': process.env.APP_REFERER || 'https://app.seudominio.com/',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
+  };
+  if (GLOBAL_CONFIG.cookie) {
+    headers['Cookie'] = GLOBAL_CONFIG.cookie;
+  }
+
+  // Se o bash.md existir, extrai dele os headers autenticados e a URL base automaticamente
+  if (fs.existsSync(BASH_MD_PATH)) {
+    const rawBash = fs.readFileSync(BASH_MD_PATH, 'utf8').trim();
+    if (rawBash) {
+      try {
+        const parsed = parseCurlCommand(rawBash);
+        const parsedUrl = new URL(parsed.url);
+        baseUrl = parsedUrl.origin;
+        headers = { ...headers, ...parsed.headers };
+        console.log(`🔑 Sessão e URL base extraídas automaticamente do bash.md (${baseUrl})\n`);
+      } catch (e) {
+        // Fallback silencioso para env vars se o parse falhar
+      }
     }
+  }
+
+  function sendGlobalUpdate(endpoint, key, content) {
+    const url = new URL(`${baseUrl}/settings/${endpoint}`);
+    const payload = JSON.stringify({ key, value: content });
     return makeHttpRequest(url.toString(), 'PUT', headers, payload);
   }
 
   if (fs.existsSync(CSS_PATH)) {
     const cssContent = fs.readFileSync(CSS_PATH, 'utf8');
-    process.stdout.write('📦 Enviando CSS Global (nextychat-redesign.css)... ');
+    process.stdout.write('📦 Enviando CSS Global (wsw-redesign.css)... ');
     await sendGlobalUpdate('customCssFrontend', 'customCssFrontend', cssContent);
     console.log('✅ SUCESSO!');
   }
 
   if (fs.existsSync(JS_PATH)) {
     const jsContent = fs.readFileSync(JS_PATH, 'utf8');
-    process.stdout.write('📦 Enviando JS Global (nextychat-redesign.js)... ');
+    process.stdout.write('📦 Enviando JS Global (wsw-redesign.js)... ');
     await sendGlobalUpdate('customJsFrontend', 'customJsFrontend', jsContent);
     console.log('✅ SUCESSO!');
   }
@@ -315,7 +337,7 @@ async function deployGlobal() {
 async function main() {
   const isGlobal = process.argv.includes('--global') || process.argv.includes('-g');
 
-  console.log('🚀 Iniciando pipeline de Deploy do NextyChat Redesign...\n');
+  console.log('🚀 Iniciando pipeline de Deploy do WSW Redesign...\n');
 
   // 1. Compila os módulos
   console.log('🔨 Compilando CSS e JS...');

@@ -1,7 +1,7 @@
 {
-  "name": "css_wsw",
+  "name": "wsw-redesign",
   "version": "1.0.0",
-  "description": "NextyChat / WSW - Redesign SaaS Modular",
+  "description": "WSW - Redesign SaaS Modular",
   "main": "build.js",
   "scripts": {
     "build": "node build.js",
@@ -9,10 +9,12 @@
     "deploy:global": "node deploy.js --global"
   },
   "keywords": [
-    "nextychat",
     "wsw",
     "css",
-    "redesign"
+    "redesign",
+    "chatwoot",
+    "whaticket",
+    "material-ui"
   ],
   "author": "",
   "license": "ISC"

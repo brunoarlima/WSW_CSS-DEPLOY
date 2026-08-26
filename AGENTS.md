@@ -1,6 +1,6 @@
-# Diretrizes do Projeto: NextyChat / WSW Redesign
+# Diretrizes do Projeto: WSW Redesign
 
-Este repositório gerencia o redesign visual (CSS) e os aprimoramentos de interface (JS) do NextyChat / WSW.
+Este repositório gerencia o redesign visual (CSS) e os aprimoramentos de interface (JS) do WSW.
 
 ---
 
@@ -8,7 +8,8 @@ Este repositório gerencia o redesign visual (CSS) e os aprimoramentos de interf
 
 1. **Idioma**: Sempre responda em **português do Brasil**.
 2. **Validação antes do Commit**: **NUNCA** faça `git commit` ou `git push` automaticamente sem que o usuário tenha testado e aprovado explicitamente o resultado em produção/ambiente de teste.
-3. **Estrutura Modular**: **NUNCA** edite diretamente os arquivos gerados `nextychat-redesign.css` e `nextychat-redesign.js`. Sempre edite os módulos individuais em `src/css/` e `src/js/`.
+3. **Estrutura Modular**: **NUNCA** edite diretamente os arquivos gerados `wsw-redesign.css` e `wsw-redesign.js`. Sempre edite os módulos individuais em `src/css/` e `src/js/`.
+4. **Isolamento de Repositório (Zero Ações no Original)**: **NUNCA** faça commits, pushes ou qualquer alteração no repositório remoto original. Todas as modificações devem ser mantidas exclusivamente locais até que o novo repositório receba o projeto e o usuário autorize o primeiro commit/push.
 
 ---
 
@@ -17,34 +18,20 @@ Este repositório gerencia o redesign visual (CSS) e os aprimoramentos de interf
 ```text
 src/
 ├── css/
-│   ├── 00-tokens.css          # Cores, Design System e Variáveis Light/Dark
-│   ├── 01-base.css            # Scrollbar minimalista e resets base
-│   ├── 01-global-components.css # Componentes globais (95 Modais, botões Novo/Confirmar/Cancelar)
-│   ├── 02-appbar.css          # Topbar, Logo no menu, Ping e Gaveta retrátil do topo
-│   ├── 03-sidebar.css         # Menu lateral (expandido e recolhido)
-│   ├── 04-tickets-list.css    # Toolbar, abas, busca e cards de atendimento
-│   ├── 05-ticket-header.css   # Cabeçalho do chat, ações rápidas e gaveta do ticket
-│   ├── 06-ticket-tags.css     # Abas mobile (segmented) e tags do atendimento
-│   ├── 07-contact-drawer.css  # Sidebar lateral do contato (docked no desktop, overlay no mobile)
-│   ├── 08-chat.css            # Área de mensagens, balões in/out e notas internas
-│   ├── 09-composer.css        # Barra de digitação (input, botões, anexo)
-│   └── 10-mobile.css          # Otimizações mobile/PWA (100% altura, sem vão de 56px)
+│   └── 00-tokens.css          # Cores, Design System e Variáveis Light/Dark
 └── js/
-    ├── 00-brand-logo.js       # SVG em alta resolução e injeção da logo
-    ├── 01-topbar.js           # Organização dos ícones do topo e gaveta retrátil
-    ├── 02-ticket-actions.js   # Ações rápidas e gaveta retrátil do atendimento
-    ├── 03-ticket-header.js    # Alinhamento do botão de menu/ações no cabeçalho
-    ├── 04-mobile-fixes.js     # Normalização de altura e layout mobile/PWA
-    └── 05-main.js             # Inicialização, MutationObserver e eventos globais
+    └── 00-main.js             # Inicialização, MutationObserver e scripts customizados
 ```
+
+> **Nota**: Novos módulos de CSS e JS devem ser criados dentro de `src/css/` e `src/js/` seguindo prefixos numéricos (ex: `01-base.css`, `02-appbar.css`) para garantir a ordem correta de concatenação pelo `build.js`.
 
 ---
 
 ## 3. Comandos e Automação
 
 - **Compilar Módulos**: `npm run build` ou `node build.js`
-  - Concatena os arquivos de `src/css/` gerando `nextychat-redesign.css`.
-  - Concatena os arquivos de `src/js/` gerando `nextychat-redesign.js` dentro de uma IIFE segura e valida a sintaxe.
+  - Concatena os arquivos de `src/css/` gerando `wsw-redesign.css`.
+  - Concatena os arquivos de `src/js/` gerando `wsw-redesign.js` dentro de uma IIFE segura e valida a sintaxe.
 - **Deploy Isolado por Empresa (Padrão)**: `npm run deploy` ou `./deploy.sh`
   - Compila os módulos e lê o comando cURL em `bash.md`.
   - Atualiza exclusivamente a empresa especificada com os novos `customCss`, `customJs` e `useCustomCss: true`.
@@ -56,14 +43,15 @@ src/
 ## 4. Diretrizes de CSS & Design
 
 - **Material-UI Safe**: Nunca alterar posições estruturais globais que possam quebrar modais ou grids nativos do Material-UI.
-- **Tokens de Cor**: Utilizar as variáveis definidas em `00-tokens.css` (paleta Chatwoot Light e Dark).
-- **Mobile & PWA**: Garantir `height: 100%` com `flex: 1 1 auto` e `env(safe-area-inset-bottom)` para evitar que sobrem espaços vazios (como a antiga reserva de 56px da BottomNavigation).
+- **Tokens de Cor**: Utilizar as variáveis definidas em `00-tokens.css`.
+- **Mobile & PWA**: Garantir `height: 100%` com `flex: 1 1 auto` e `env(safe-area-inset-bottom)` para evitar que sobrem espaços vazios.
 
 ---
 
-## 5. Base de Conhecimento & Gotchas
+## 5. Base de Conhecimento, Âncoras & Gotchas
 
-Consulte o arquivo [APRENDIZADOS-E-DIRETRIZES.md](./APRENDIZADOS-E-DIRETRIZES.md) para o catálogo completo de:
-- Erros enfrentados e causas-raiz (ex: vãos no mobile, appBarSpacers do Material-UI, classes `.jss` dinâmicas).
-- Soluções definitivas e comportamentos específicos do React/MUI v4.
+Consulte a documentação de suporte:
+- [Customizacao-CSS-JS.md](./Customizacao-CSS-JS.md): Arquitetura das camadas de customização geral e por empresa.
+- [Ancoras-CSS_V2.md](./Ancoras-CSS_V2.md): Catálogo completo e atualizado de âncoras e seletores da plataforma.
+- [APRENDIZADOS-E-DIRETRIZES.md](./APRENDIZADOS-E-DIRETRIZES.md): Histórico e template para registro de armadilhas do MUI/React e soluções definitivas.
 
