@@ -1569,9 +1569,9 @@ body[data-theme="dark"] .MuiDrawer-paper[data-collapsed="true"] .MuiListItem-but
  * IMPORTANTE: nunca usar seletor genérico aqui — afetaria modais, composer, etc.
  * Restrito ao conteúdo principal (#custom-css-content, .custom-css-page)
  */
-#custom-css-content > div:has(> .MuiGrid-container),
-#custom-css-content > div:has(> div > .MuiGrid-container),
-.custom-css-page > div:has(> .MuiGrid-container) {
+#custom-css-content>div:has(> .MuiGrid-container),
+#custom-css-content>div:has(> div > .MuiGrid-container),
+.custom-css-page>div:has(> .MuiGrid-container) {
   padding-top: 0 !important;
   padding-right: 0 !important;
   padding-bottom: 0 !important;
@@ -1591,7 +1591,8 @@ body[data-theme="dark"] .MuiDrawer-paper[data-collapsed="true"] .MuiListItem-but
    ========================================================================== */
 
 .custom-css-tickets-toolbar {
-  padding: 16px 14px 10px 14px !important; /* Respiro superior para não cortar badges */
+  padding: 16px 14px 10px 14px !important;
+  /* Respiro superior para não cortar badges */
   background: var(--surface-bg) !important;
   border-bottom: 1px solid var(--divider-subtle) !important;
   display: flex !important;
@@ -1608,7 +1609,8 @@ body[data-theme="dark"] .MuiDrawer-paper[data-collapsed="true"] .MuiListItem-but
   gap: 6px !important;
   margin: 0 !important;
   flex-wrap: nowrap !important;
-  overflow: visible !important; /* Garante que o badge com número não seja cortado */
+  overflow: visible !important;
+  /* Garante que o badge com número não seja cortado */
 }
 
 /* Badges de número nos botões da toolbar (ex: Filas) */
@@ -1810,7 +1812,8 @@ body[data-theme="dark"] .MuiDrawer-paper[data-collapsed="true"] .MuiListItem-but
   position: relative !important;
   border-radius: 10px !important;
   margin: 5px 0 !important;
-  padding: 7px 12px 8px 12px !important; /* Levemente reduzido no topo e base para melhor aproveitamento */
+  padding: 12px !important;
+  /* Padding uniforme de 12px (superior, inferior e laterais) */
   background-color: #f4f6fb !important;
   border: 1px solid #d8e2f0 !important;
   border-left: 3px solid #d8e2f0 !important;
@@ -1857,7 +1860,8 @@ body[data-theme="dark"] .custom-css-ticket-item.Mui-selected {
 .custom-css-ticket-item[data-connection-color="red"],
 .custom-css-ticket-item[data-status="disconnected"],
 .custom-css-ticket-item:has(.ticket-connection[data-connection-color="red"]) {
-  background-color: #fee2e2 !important; /* Tom rosado fiel ao #FFCCCC original com excelente contraste */
+  background-color: #fee2e2 !important;
+  /* Tom rosado fiel ao #FFCCCC original com excelente contraste */
   border-color: #fca5a5 !important;
   border-left: 4px solid #ef4444 !important;
 }
@@ -1923,6 +1927,17 @@ body[data-theme="dark"] .custom-css-ticket-item:has(.ticket-connection[data-conn
   justify-content: center !important;
 }
 
+/* Badge de Mensagens Não Lidas (Ancorada como camada sobre o container do avatar) */
+.custom-css-ticket-item .MuiListItemAvatar-root .MuiBadge-root {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+}
+
 /* 4. Avatar (Foto / Iniciais) — Borda de 2px preservando a cor da fila */
 .custom-css-ticket-item .MuiAvatar-root {
   width: 60px !important;
@@ -1945,7 +1960,7 @@ body[data-theme="dark"] .custom-css-ticket-item:has(.ticket-connection[data-conn
   border-radius: 50% !important;
 }
 
-/* 5. Badge de Mensagens Não Lidas (Posição calibrada pelo usuário) */
+/* 5. Badge de Mensagens Não Lidas (Ancorada perfeitamente ao topo-esquerdo do avatar) */
 .custom-css-ticket-item .MuiBadge-invisible,
 .custom-css-ticket-item .MuiBadge-badge.MuiBadge-invisible {
   display: none !important;
@@ -1953,14 +1968,15 @@ body[data-theme="dark"] .custom-css-ticket-item:has(.ticket-connection[data-conn
   pointer-events: none !important;
 }
 
+.custom-css-ticket-item .MuiListItemAvatar-root .MuiBadge-badge:not(.MuiBadge-invisible),
 .custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-invisible) {
   position: absolute !important;
   top: 0px !important;
-  left: -16px !important;
+  left: 0px !important;
   right: auto !important;
   bottom: auto !important;
   transform: none !important;
-  z-index: 5 !important;
+  z-index: 6 !important;
 
   background-color: #10b981 !important;
   color: #ffffff !important;
@@ -1982,7 +1998,7 @@ body[data-theme="dark"] .custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-in
   border-color: #111e2e !important;
 }
 
-/* 6. Estrela de Favoritar (Posição calibrada pelo usuário) */
+/* 6. Estrela de Favoritar (Estilização com Destaque Visual) */
 .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root {
   position: absolute !important;
   bottom: -9px !important;
@@ -1998,7 +2014,7 @@ body[data-theme="dark"] .custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-in
 
   background: var(--surface-bg, #ffffff) !important;
   border-radius: 50% !important;
-  border: 1px solid var(--divider-subtle, #e2e8f0) !important;
+  border: 1px solid var(--divider-subtle, #cbd5e1) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
   display: flex !important;
   align-items: center !important;
@@ -2009,28 +2025,70 @@ body[data-theme="dark"] .custom-css-ticket-item .MuiBadge-badge:not(.MuiBadge-in
 
 body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root {
   background: #1e293b !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
 }
 
-.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover {
-  border-color: #f59e0b !important;
-  box-shadow: 0 1px 5px rgba(245, 158, 11, 0.35) !important;
-  transform: scale(1.12);
-}
-
-/* Ícone da Estrela */
+/* Ícone da Estrela Base (Não Favoritada) */
 .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg,
 .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root .MuiSvgIcon-root {
-  font-size: 0.8rem !important;
-  width: 13px !important;
-  height: 13px !important;
+  font-size: 0.85rem !important;
+  width: 14px !important;
+  height: 14px !important;
   color: #94a3b8 !important;
-  transition: color 0.15s ease !important;
+  fill: currentColor !important;
+  transition: all 0.15s ease !important;
+}
+
+/* Hover na Estrela Não Favoritada */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 1px 6px rgba(245, 158, 11, 0.35) !important;
+  transform: scale(1.12);
 }
 
 .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover svg,
 .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:hover .MuiSvgIcon-root {
   color: #f59e0b !important;
+}
+
+/* ==========================================================================
+   ESTADO FAVORITADO (Destaque em Amarelo Forte / Âmbar Brilhante)
+   ========================================================================== */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[data-favorite="true"],
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:has(svg[data-favorite="true"]),
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:has(path[d*="M12 17.27L18.18 21l-1.64-7.03L22 9.24"]),
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[title*="Remover dos favoritos"] {
+  background: #fffbeb !important;
+  border: 1.5px solid #f59e0b !important;
+  box-shadow: 0 1px 5px rgba(245, 158, 11, 0.4) !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[data-favorite="true"],
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:has(svg[data-favorite="true"]),
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:has(path[d*="M12 17.27L18.18 21l-1.64-7.03L22 9.24"]),
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[title*="Remover dos favoritos"] {
+  background: rgba(245, 158, 11, 0.18) !important;
+  border-color: #fbbf24 !important;
+}
+
+/* Ícone da Estrela Favoritada em Amarelo Forte */
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[data-favorite="true"] svg,
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg[data-favorite="true"],
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:has(svg[data-favorite="true"]) svg,
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg:has(path[d*="M12 17.27L18.18 21l-1.64-7.03L22 9.24"]),
+.custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[title*="Remover dos favoritos"] svg {
+  color: #f59e0b !important;
+  fill: #f59e0b !important;
+  filter: drop-shadow(0 1px 1px rgba(245, 158, 11, 0.3)) !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[data-favorite="true"] svg,
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg[data-favorite="true"],
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root:has(svg[data-favorite="true"]) svg,
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root svg:has(path[d*="M12 17.27L18.18 21l-1.64-7.03L22 9.24"]),
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.MuiIconButton-root[title*="Remover dos favoritos"] svg {
+  color: #fbbf24 !important;
+  fill: #fbbf24 !important;
 }
 
 /* ==========================================================================
@@ -2047,59 +2105,121 @@ body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.M
   flex: 1 1 auto !important;
 }
 
-/* Linha Superior: Alinha Ícone do Canal + Ícone Olho + Nome + Tempo */
-.custom-css-ticket-item .MuiListItemText-root > span:first-child,
+/* Linha Superior: Nome + Tempo (Ícone do olho no canto superior direito) */
+.custom-css-ticket-item .MuiListItemText-root>span:first-child,
 .custom-css-ticket-item .MuiTypography-root:has(.ticket-channel-icon),
 .custom-css-ticket-item span:has(> .ticket-channel-icon) {
-  display: inline-flex !important;
+  display: flex !important;
   align-items: center !important;
   flex-wrap: nowrap !important;
-  gap: 4px !important;
   line-height: 1.2 !important;
   margin-bottom: 2px !important;
   vertical-align: middle !important;
+  padding-right: 28px !important;
+  /* Respiro para não colidir com o olho no canto superior direito */
+  font-size: 0 !important;
+  /* Neutraliza visualmente todos os nós de texto anônimos */
+  letter-spacing: -999px !important;
+  /* Colapsa qualquer espaço remanescente no flex container */
 }
 
-/* Ícone do Canal (WhatsApp, Instagram, Webchat, etc.) */
+/* Joga o span que contém o Nome do Contato para o início absoluto (order: -1) antes de qualquer &nbsp; */
+.custom-css-ticket-item .MuiListItemText-root>span:first-child>span,
+.custom-css-ticket-item .MuiListItemText-root>span:first-child strong,
+.custom-css-ticket-item span:has(> strong > .ticket-name) {
+  order: -1 !important;
+  /* Prioridade máxima no flexbox: renderiza antes de todos os nós anônimos */
+  font-size: 0.88rem !important;
+  letter-spacing: normal !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ícone do Canal (Ocultado no topo — fundido na pílula de conexão abaixo) */
 .custom-css-ticket-item .ticket-channel-icon,
 .custom-css-ticket-item svg[data-channel],
 .custom-css-ticket-item svg.ticket-channel-icon {
-  font-size: 1.05rem !important;
-  width: 17px !important;
-  height: 17px !important;
-  min-width: 17px !important;
+  display: none !important;
+}
+
+/* Ícone de Espiar Conversa (Botão Compacto Cinza com Borda no Padrão do Sistema) */
+.custom-css-ticket-item .custom-ticket-spy-btn,
+.custom-css-ticket-item svg:has(path[d*="M12 4.5C7"]),
+.custom-css-ticket-item svg:has(path[d^="M12 4.5"]),
+.custom-css-ticket-item svg[title="Espiar Conversa"],
+.custom-css-ticket-item svg[aria-label="Espiar Conversa"],
+.custom-css-ticket-item .MuiSvgIcon-root[title*="Espiar"],
+.custom-css-ticket-item .MuiListItemText-root>span:first-child svg:not(.ticket-channel-icon):not([data-channel]) {
+  position: absolute !important;
+  top: 10px !important;
+  right: 12px !important;
+  left: auto !important;
+  bottom: auto !important;
+  font-size: 0.95rem !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  max-width: 22px !important;
+  min-height: 22px !important;
+  max-height: 22px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   vertical-align: middle !important;
   margin: 0 !important;
-  color: var(--text-primary) !important;
-  fill: currentColor !important;
-  flex-shrink: 0 !important;
-}
-
-/* Ícone de Espiar Conversa (Olho Azul) */
-.custom-css-ticket-item svg[title="Espiar Conversa"],
-.custom-css-ticket-item svg[aria-label="Espiar Conversa"],
-.custom-css-ticket-item .MuiSvgIcon-root[title*="Espiar"] {
-  font-size: 1.05rem !important;
-  width: 17px !important;
-  height: 17px !important;
-  min-width: 17px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  vertical-align: middle !important;
-  margin: 0 4px 0 0 !important;
-  color: #1f93ff !important;
+  padding: 3px !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  /* Borda discreta e nítida no padrão dos botões */
+  color: #475569 !important;
   cursor: pointer !important;
   flex-shrink: 0 !important;
-  transition: transform 0.15s ease, color 0.15s ease !important;
+  z-index: 12 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  box-sizing: border-box !important;
+  transition: all 0.15s ease !important;
 }
 
-.custom-css-ticket-item svg[title="Espiar Conversa"]:hover {
-  transform: scale(1.15);
-  color: #0070f3 !important;
+.custom-css-ticket-item .custom-ticket-spy-btn:hover,
+.custom-css-ticket-item svg:has(path[d*="M12 4.5C7"]):hover,
+.custom-css-ticket-item svg:has(path[d^="M12 4.5"]):hover,
+.custom-css-ticket-item svg[title="Espiar Conversa"]:hover,
+.custom-css-ticket-item svg[aria-label="Espiar Conversa"]:hover,
+.custom-css-ticket-item .MuiSvgIcon-root[title*="Espiar"]:hover,
+.custom-css-ticket-item .MuiListItemText-root>span:first-child svg:not(.ticket-channel-icon):not([data-channel]):hover {
+  background-color: #edf5ff !important;
+  border-color: rgba(31, 147, 255, 0.45) !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  box-shadow: 0 2px 5px rgba(31, 147, 255, 0.15) !important;
+  transform: translateY(-1px);
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .custom-ticket-spy-btn,
+body[data-theme="dark"] .custom-css-ticket-item svg:has(path[d*="M12 4.5C7"]),
+body[data-theme="dark"] .custom-css-ticket-item svg:has(path[d^="M12 4.5"]),
+body[data-theme="dark"] .custom-css-ticket-item svg[title="Espiar Conversa"],
+body[data-theme="dark"] .custom-css-ticket-item svg[aria-label="Espiar Conversa"],
+body[data-theme="dark"] .custom-css-ticket-item .MuiSvgIcon-root[title*="Espiar"],
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemText-root>span:first-child svg:not(.ticket-channel-icon):not([data-channel]) {
+  background-color: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #94a3b8 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .custom-ticket-spy-btn:hover,
+body[data-theme="dark"] .custom-css-ticket-item svg:has(path[d*="M12 4.5C7"]):hover,
+body[data-theme="dark"] .custom-css-ticket-item svg:has(path[d^="M12 4.5"]):hover,
+body[data-theme="dark"] .custom-css-ticket-item svg[title="Espiar Conversa"]:hover,
+body[data-theme="dark"] .custom-css-ticket-item svg[aria-label="Espiar Conversa"]:hover,
+body[data-theme="dark"] .custom-css-ticket-item .MuiSvgIcon-root[title*="Espiar"]:hover,
+body[data-theme="dark"] .custom-css-ticket-item .MuiListItemText-root>span:first-child svg:not(.ticket-channel-icon):not([data-channel]):hover {
+  background-color: rgba(31, 147, 255, 0.18) !important;
+  border-color: rgba(31, 147, 255, 0.45) !important;
+  color: #60a5fa !important;
 }
 
 /* Nome do Contato */
@@ -2124,12 +2244,12 @@ body[data-theme="dark"] .custom-css-ticket-item .MuiListItemAvatar-root button.M
    HORÁRIO DO TICKET (.ticket-datetime / .ticket-time) — ESTILO SAAS PREMIUM
    ========================================================================== */
 
-/* Container nativo do Material-UI posicionado no topo superior direito */
+/* Container nativo do Material-UI posicionado no canto inferior direito */
 .custom-css-ticket-item .MuiListItemSecondaryAction-root {
   position: absolute !important;
-  top: 8px !important;
+  top: auto !important;
   right: 12px !important;
-  bottom: auto !important;
+  bottom: 0px !important;
   transform: none !important;
   display: flex !important;
   align-items: center !important;
@@ -2169,18 +2289,102 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-time {
 }
 
 /* ==========================================================================
-   BLOCO 3: METADADOS DO ATENDIMENTO (CONEXÃO, ATENDENTE & FILA)
-   Desacoplado de tags sólidas pesadas — Estilo SaaS Premium
+   PREVIEW DA ÚLTIMA MENSAGEM DO TICKET (.ticket-preview)
+   Restauração da mensagem completa via CSS (Zero mutação no DOM do React)
+   ========================================================================== */
+
+.custom-css-ticket-item .ticket-preview {
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Neutraliza margens e quebras de nós de parágrafo (<p>) do atendente */
+.custom-css-ticket-item .ticket-preview p {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.custom-css-ticket-item .ticket-preview > span:first-child,
+.custom-css-ticket-item .ticket-preview > p:first-child,
+.custom-css-ticket-item .ticket-preview > *:first-child:not(.ticket-badges):not(.ticket-tags) {
+  font-size: 0.8125rem !important;
+  color: var(--text-secondary, #64748b) !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Quando data-full-preview está presente: oculta o corte artificial e exibe a mensagem real completa */
+.custom-css-ticket-item .ticket-preview > span:first-child[data-full-preview],
+.custom-css-ticket-item .ticket-preview > p:first-child[data-full-preview],
+.custom-css-ticket-item .ticket-preview > *:first-child:not(.ticket-badges):not(.ticket-tags)[data-full-preview] {
+  font-size: 0 !important;
+}
+
+.custom-css-ticket-item .ticket-preview > span:first-child[data-full-preview]::after,
+.custom-css-ticket-item .ticket-preview > p:first-child[data-full-preview]::after,
+.custom-css-ticket-item .ticket-preview > *:first-child:not(.ticket-badges):not(.ticket-tags)[data-full-preview]::after {
+  content: attr(data-full-preview) !important;
+  font-size: 0.8125rem !important;
+  color: var(--text-secondary, #64748b) !important;
+  white-space: nowrap !important;
+  display: inline !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .ticket-preview > span:first-child,
+body[data-theme="dark"] .custom-css-ticket-item .ticket-preview > p:first-child,
+body[data-theme="dark"] .custom-css-ticket-item .ticket-preview > *:first-child:not(.ticket-badges):not(.ticket-tags) {
+  color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .ticket-preview > span:first-child[data-full-preview]::after,
+body[data-theme="dark"] .custom-css-ticket-item .ticket-preview > p:first-child[data-full-preview]::after,
+body[data-theme="dark"] .custom-css-ticket-item .ticket-preview > *:first-child:not(.ticket-badges):not(.ticket-tags)[data-full-preview]::after {
+  color: #94a3b8 !important;
+}
+
+/* ==========================================================================
+   BLOCO 3: METADADOS DO ATENDIMENTO (CONEXÃO, ATENDENTE & FILA) — CAIXA ÚNICA COM DIVISÓRIAS
+   Encapsula todos os elementos em uma borda discreta única com divisores internos
    ========================================================================== */
 
 .custom-css-ticket-item .ticket-badges,
 .custom-css-ticket-item span.ticket-badges {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 5px !important;
-  margin: 5px 0 4px 0 !important;
-  padding: 0 !important;
+  flex-wrap: nowrap !important;
+  gap: 0 !important;
+  margin: 4px 0 4px 0 !important;
+  padding: 4px 8px 2px 8px !important;
+  /* Padding superior de 4px */
+  background: transparent !important;
+  background-color: transparent !important;
+  /* Fundo neutro */
+  border: 1px solid #cbd5e1 !important;
+  /* Borda discreta encapsulando todos os elementos */
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .ticket-badges,
+body[data-theme="dark"] .custom-css-ticket-item span.ticket-badges {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: none !important;
 }
 
 /* Oculta nós de badge internos vazios */
@@ -2188,64 +2392,111 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-time {
   display: none !important;
 }
 
-/* 1. Metadado Base Comum (Pílula Informativa Compacta & Perfeitamente Centralizada) */
+/* 1. Metadado Base Comum (Item Interno da Caixa Agrupada) */
 .custom-css-ticket-item .ticket-connection,
 .custom-css-ticket-item .ticket-user,
 .custom-css-ticket-item .ticket-queue {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 5px !important;
-  height: 22px !important;
-  min-height: 22px !important;
+  gap: 4px !important;
+  height: auto !important;
+  min-height: unset !important;
+  max-height: unset !important;
   padding: 0 8px !important;
-  border-radius: 5px !important;
-  font-size: 0.67rem !important;
-  font-weight: 600 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
   letter-spacing: 0.02em !important;
   text-transform: uppercase !important;
-  line-height: normal !important;
+  line-height: 1.2 !important;
   vertical-align: middle !important;
   box-shadow: none !important;
   white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  border: 1px solid var(--divider-subtle, #e2e8f0) !important;
-  background-color: var(--surface-hover, #f1f5f9) !important;
-  color: var(--text-secondary, #475569) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
   box-sizing: border-box !important;
 }
 
-/* 2. Conexão (.ticket-connection) — Padrão Cor Primária */
-.custom-css-ticket-item .ticket-connection {
-  background-color: var(--brand-subtle, #edf5ff) !important;
-  color: var(--brand-primary, #1f93ff) !important;
-  border: 1px solid rgba(31, 147, 255, 0.28) !important;
+.custom-css-ticket-item .ticket-badges>*:first-child {
+  padding-left: 0 !important;
 }
 
-.custom-css-ticket-item .ticket-connection::before {
+.custom-css-ticket-item .ticket-badges>*:last-child {
+  padding-right: 0 !important;
+}
+
+/* Divisória Vertical discreta entre cada elemento */
+.custom-css-ticket-item .ticket-badges>*:not(:last-child) {
+  border-right: 1px solid #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .ticket-badges>*:not(:last-child) {
+  border-right-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+/* 2. Conexão (.ticket-connection) — Ícone oficial do Canal + Cor do Canal/Conexão */
+.custom-css-ticket-item .ticket-connection {
+  --ch-color: var(--channel-color, var(--brand-primary, #1f93ff));
+  color: var(--ch-color) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* Ícone Padrão Conexão / WhatsApp */
+.custom-css-ticket-item .ticket-connection::before,
+.custom-css-ticket-item .ticket-connection[data-channel="whatsapp"]::before {
   content: '' !important;
-  width: 12px !important;
-  height: 12px !important;
+  width: 13px !important;
+  height: 13px !important;
   display: inline-block !important;
   vertical-align: middle !important;
   flex-shrink: 0 !important;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 3a9 9 0 0 0-9 9 9 9 0 0 0 2.64 6.36l1.41-1.41A7 7 0 0 1 5 12a7 7 0 0 1 14 0 7 7 0 0 1-2.05 4.95l1.41 1.41A9 9 0 0 0 21 12a9 9 0 0 0-9-9zm0 4a5 5 0 0 0-5 5 5 5 0 0 0 1.46 3.54l1.41-1.41A3 3 0 0 1 9 12a3 3 0 0 1 6 0 3 3 0 0 1-.88 2.12l1.41 1.41A5 5 0 0 0 17 12a5 5 0 0 0-5-5zm0 4a1 1 0 1 0 1 1 1 1 0 0 0-1-1z'/%3E%3C/svg%3E") no-repeat center / contain;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 3a9 9 0 0 0-9 9 9 9 0 0 0 2.64 6.36l1.41-1.41A7 7 0 0 1 5 12a7 7 0 0 1 14 0 7 7 0 0 1-2.05 4.95l1.41 1.41A9 9 0 0 0 21 12a9 9 0 0 0-9-9zm0 4a5 5 0 0 0-5 5 5 5 0 0 0 1.46 3.54l1.41-1.41A3 3 0 0 1 9 12a3 3 0 0 1 6 0 3 3 0 0 1-.88 2.12l1.41 1.41A5 5 0 0 0 17 12a5 5 0 0 0-5-5zm0 4a1 1 0 1 0 1 1 1 1 0 0 0-1-1z'/%3E%3C/svg%3E") no-repeat center / contain;
   background-color: currentColor !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.264 8.264 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.79.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.84-.86 2.05s.88 2.37 1 2.54c.12.17 1.73 2.64 4.2 3.7c.59.25 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.15-1.18c-.07-.1-.23-.17-.48-.29z'/%3E%3C/svg%3E") no-repeat center / contain !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.264 8.264 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.79.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.84-.86 2.05s.88 2.37 1 2.54c.12.17 1.73 2.64 4.2 3.7c.59.25 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.15-1.18c-.07-.1-.23-.17-.48-.29z'/%3E%3C/svg%3E") no-repeat center / contain !important;
 }
 
-/* 3. Atendente / Usuário (.ticket-user) — Padrão Cor Primária */
+/* Ícone Instagram */
+.custom-css-ticket-item .ticket-connection[data-channel="instagram"]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.771 1.691 4.919 4.919c.058 1.265.069 1.645.069 4.849c0 3.205-.012 3.584-.069 4.849c-.149 3.225-1.664 4.771-4.919 4.919c-1.266.058-1.644.07-4.85.07c-3.204 0-3.584-.012-4.849-.07c-3.26-.149-4.771-1.699-4.919-4.92c-.058-1.265-.07-1.644-.07-4.849c0-3.204.013-3.583.07-4.849c.149-3.227 1.664-4.771 4.919-4.919c1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072c-4.358.2-6.78 2.618-6.98 6.98c-.059 1.281-.073 1.689-.073 4.948c0 3.259.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98c1.281.058 1.689.072 4.948.072c3.259 0 3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98c.059-1.28.073-1.689.073-4.948c0-3.259-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98c-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324a6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998a3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881a1.44 1.44 0 0 0 0-2.881z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.771 1.691 4.919 4.919c.058 1.265.069 1.645.069 4.849c0 3.205-.012 3.584-.069 4.849c-.149 3.225-1.664 4.771-4.919 4.919c-1.266.058-1.644.07-4.85.07c-3.204 0-3.584-.012-4.849-.07c-3.26-.149-4.771-1.699-4.919-4.92c-.058-1.265-.07-1.644-.07-4.849c0-3.204.013-3.583.07-4.849c.149-3.227 1.664-4.771 4.919-4.919c1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072c-4.358.2-6.78 2.618-6.98 6.98c-.059 1.281-.073 1.689-.073 4.948c0 3.259.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98c1.281.058 1.689.072 4.948.072c3.259 0 3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98c.059-1.28.073-1.689.073-4.948c0-3.259-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98c-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324a6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998a3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881a1.44 1.44 0 0 0 0-2.881z'/%3E%3C/svg%3E") !important;
+}
+
+/* Ícone Facebook / Messenger */
+.custom-css-ticket-item .ticket-connection[data-channel="facebook"]::before,
+.custom-css-ticket-item .ticket-connection[data-channel="messenger"]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.518 3.735 7.205V22l3.39-1.862c.905.251 1.87.387 2.875.387c5.523 0 10-4.145 10-9.267C22 6.145 17.523 2 12 2zm1.066 12.443l-2.61-2.784l-5.093 2.784l5.602-5.948l2.673 2.784l5.03-2.784l-5.602 5.948z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.518 3.735 7.205V22l3.39-1.862c.905.251 1.87.387 2.875.387c5.523 0 10-4.145 10-9.267C22 6.145 17.523 2 12 2zm1.066 12.443l-2.61-2.784l-5.093 2.784l5.602-5.948l2.673 2.784l5.03-2.784l-5.602 5.948z'/%3E%3C/svg%3E") !important;
+}
+
+/* Ícone Telegram */
+.custom-css-ticket-item .ticket-connection[data-channel="telegram"]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19c-.14.75-.42 1-.68 1.03c-.58.05-1.02-.38-1.58-.75c-.88-.58-1.38-.94-2.23-1.5c-.99-.65-.35-1.01.22-1.59c.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02c-.09.02-1.49.95-4.22 2.79c-.4.27-.76.41-1.08.4c-.36-.01-1.04-.2-1.55-.37c-.63-.2-1.12-.31-1.08-.66c.02-.18.27-.36.74-.55c2.92-1.27 4.86-2.11 5.83-2.51c2.78-1.16 3.35-1.36 3.73-1.36c.08 0 .27.02.39.12c.1.08.13.19.14.27c-.01.06.01.24 0 .38z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19c-.14.75-.42 1-.68 1.03c-.58.05-1.02-.38-1.58-.75c-.88-.58-1.38-.94-2.23-1.5c-.99-.65-.35-1.01.22-1.59c.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02c-.09.02-1.49.95-4.22 2.79c-.4.27-.76.41-1.08.4c-.36-.01-1.04-.2-1.55-.37c-.63-.2-1.12-.31-1.08-.66c.02-.18.27-.36.74-.55c2.92-1.27 4.86-2.11 5.83-2.51c2.78-1.16 3.35-1.36 3.73-1.36c.08 0 .27.02.39.12c.1.08.13.19.14.27c-.01.06.01.24 0 .38z'/%3E%3C/svg%3E") !important;
+}
+
+/* Ícone Webchat */
+.custom-css-ticket-item .ticket-connection[data-channel="webchat"]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E") !important;
+}
+
+/* 3. Atendente / Usuário (.ticket-user) — Ícone Person & Cor Primária */
 .custom-css-ticket-item .ticket-user {
-  background-color: var(--brand-subtle, #edf5ff) !important;
+  background: transparent !important;
+  background-color: transparent !important;
   color: var(--brand-primary, #1f93ff) !important;
-  border: 1px solid rgba(31, 147, 255, 0.28) !important;
+  border: none !important;
 }
 
 .custom-css-ticket-item .ticket-user::before {
   content: '' !important;
-  width: 12px !important;
-  height: 12px !important;
+  width: 13px !important;
+  height: 13px !important;
   display: inline-block !important;
   vertical-align: middle !important;
   flex-shrink: 0 !important;
@@ -2254,22 +2505,22 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-time {
   background-color: currentColor !important;
 }
 
-/* 4. Fila (.ticket-queue) — Ícone Fa-Sitemap & Cor Dinâmica da Fila */
+/* 4. Fila (.ticket-queue) — Ícone Organograma/Sitemap & Cor da Fila */
 .custom-css-ticket-item .ticket-queue {
-  background-color: var(--surface-hover, #f8fafc) !important;
+  background: transparent !important;
+  background-color: transparent !important;
   color: var(--queue-color, #68bc00) !important;
-  border: 1px solid var(--queue-color, rgba(104, 188, 0, 0.38)) !important;
-  font-weight: 700 !important;
+  border: none !important;
 }
 
 .custom-css-ticket-item .ticket-queue::before {
   content: '' !important;
-  width: 12px !important;
-  height: 12px !important;
+  width: 13px !important;
+  height: 13px !important;
   display: inline-block !important;
   vertical-align: middle !important;
   flex-shrink: 0 !important;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='currentColor' d='M208 80c0-26.5 21.5-48 48-48l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-8 0 0 40 152 0c30.9 0 56 25.1 56 56l0 32 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-32c0-4.4-3.6-8-8-8l-152 0 0 40 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-40-152 0c-4.4 0-8 3.6-8 8l0 32 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-32c0-30.9 25.1-56 56-56l152 0 0-40-8 0c-26.5 0-48-21.5-48-48l0-64z'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='currentColor' d='M208 80c0-26.5 21.5-48 48-48l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-8 0 0 40 152 0c30.9 0 56 25.1 56 56l0 32 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-32c0-4.4-3.6-8-8-8l-152 0 0 40 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-32c0-30.9 25.1-56 56-56l152 0 0-40-8 0c-26.5 0-48-21.5-48-48l0-64z'/%3E%3C/svg%3E") no-repeat center / contain;
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='currentColor' d='M208 80c0-26.5 21.5-48 48-48l64 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-8 0 0 40 152 0c30.9 0 56 25.1 56 56l0 32 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-32c0-4.4-3.6-8-8-8l-152 0 0 40 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-40-152 0c-4.4 0-8 3.6-8 8l0 32 8 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-64 0c-26.5 0-48-21.5-48-48l0-64c0-26.5 21.5-48 48-48l8 0 0-32c0-30.9 25.1-56 56-56l152 0 0-40-8 0c-26.5 0-48-21.5-48-48l0-64z'/%3E%3C/svg%3E") no-repeat center / contain;
   background-color: currentColor !important;
 }
@@ -2299,7 +2550,8 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-queue {
   align-items: center !important;
   flex-wrap: wrap !important;
   gap: 4px 6px !important;
-  margin-top: 7px !important; /* Respiro harmônico entre a linha superior de metadados e as tags */
+  margin-top: 2px !important;
+  /* Respiro harmônico entre a linha superior de metadados e as tags */
   padding: 0 !important;
 }
 
@@ -2343,17 +2595,96 @@ body[data-theme="dark"] .custom-css-ticket-item .ticket-tags .custom-css-contact
 }
 
 /* ==========================================================================
+   ESTRATÉGIA ESTÁVEL: Limita a 3 tags na 1ª fileira quando recolhido (CSS Nativo)
+   ========================================================================== */
+
+/* Quando recolhido: oculta a partir da 4ª tag */
+.custom-css-ticket-item .ticket-tags:not(.is-expanded) .custom-css-contact-tag:nth-of-type(n+4) {
+  display: none !important;
+}
+
+/* Quando expandido: exibe todas as tags */
+.custom-css-ticket-item .ticket-tags.is-expanded .custom-css-contact-tag {
+  display: inline-flex !important;
+}
+
+/* Botão de Ver Mais Tags (+N ⌄) no Padrão do Sistema */
+.custom-css-ticket-item .custom-ticket-tags-more-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  padding: 0 7px !important;
+  margin: 1px 0 !important;
+  border-radius: 5px !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: var(--text-secondary, #475569) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.15s ease !important;
+  outline: none !important;
+  user-select: none !important;
+  position: relative !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+}
+
+.custom-css-ticket-item .custom-ticket-tags-more-btn * {
+  pointer-events: none !important;
+  /* Garante que cliques no ícone ou texto disparem o botão */
+}
+
+.custom-css-ticket-item .custom-ticket-tags-more-btn svg {
+  width: 12px !important;
+  height: 12px !important;
+  fill: currentColor !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+  vertical-align: middle !important;
+}
+
+.custom-css-ticket-item .custom-ticket-tags-more-btn:hover {
+  background-color: #edf5ff !important;
+  border-color: rgba(31, 147, 255, 0.4) !important;
+  color: var(--brand-primary, #1f93ff) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(31, 147, 255, 0.12) !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .custom-ticket-tags-more-btn {
+  background-color: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  color: #94a3b8 !important;
+  box-shadow: none !important;
+}
+
+body[data-theme="dark"] .custom-css-ticket-item .custom-ticket-tags-more-btn:hover {
+  background-color: rgba(31, 147, 255, 0.18) !important;
+  border-color: rgba(31, 147, 255, 0.4) !important;
+  color: #60a5fa !important;
+}
+
+/* ==========================================================================
    BLOCO 5: BOTÕES DE AÇÃO RÁPIDA DO CARD (SOMENTE ÍCONES COM TOOLTIP)
    Posicionamento logo abaixo do horário, estilo compacto com cores lavadas
    ========================================================================== */
 
-/* Container dos botões de ação dentro do card (Linha logo abaixo do horário) */
+/* Container dos botões de ação dentro do card (À esquerda do botão de espiar no topo direito) */
 .custom-css-ticket-item span:has(> button.MuiButton-sizeSmall),
 .custom-css-ticket-item div:has(> button.MuiButton-sizeSmall),
 .custom-css-ticket-item .MuiListItemSecondaryAction-root:has(> button.MuiButton-sizeSmall) {
   position: absolute !important;
-  top: 26px !important;
-  right: 12px !important;
+  top: 10px !important;
+  right: 39px !important;
   bottom: auto !important;
   left: auto !important;
   transform: none !important;
@@ -2520,11 +2851,12 @@ body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall:last-
    Controlado via variável CSS --wsw-tickets-width e manipulado via JS
    ========================================================================== */
 @media (min-width: 961px) {
+
   /* Coluna da Lista de Atendimentos (Mínimo: 460px / Máximo: 650px) */
   #custom-css-content .MuiGrid-item:has(.custom-css-tickets),
   .custom-css-page .MuiGrid-item:has(.custom-css-tickets),
-  #custom-css-content > div > .MuiGrid-container > .MuiGrid-grid-xs-4,
-  .custom-css-page .MuiGrid-container > .MuiGrid-grid-xs-4 {
+  #custom-css-content>div>.MuiGrid-container>.MuiGrid-grid-xs-4,
+  .custom-css-page .MuiGrid-container>.MuiGrid-grid-xs-4 {
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
     min-width: 460px !important;
@@ -2538,8 +2870,8 @@ body[data-theme="dark"] .custom-css-ticket-item button.MuiButton-sizeSmall:last-
   #custom-css-content .MuiGrid-item:has(.custom-css-ticket),
   #custom-css-content .MuiGrid-item:has(#drawer-container),
   .custom-css-page .MuiGrid-item:has(.custom-css-ticket),
-  #custom-css-content > div > .MuiGrid-container > .MuiGrid-grid-xs-8,
-  .custom-css-page .MuiGrid-container > .MuiGrid-grid-xs-8 {
+  #custom-css-content>div>.MuiGrid-container>.MuiGrid-grid-xs-8,
+  .custom-css-page .MuiGrid-container>.MuiGrid-grid-xs-8 {
     flex-grow: 1 !important;
     flex-shrink: 1 !important;
     min-width: calc(100% - 650px) !important;
