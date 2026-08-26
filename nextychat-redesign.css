@@ -4418,3 +4418,463 @@ body[data-theme="dark"] .custom-css-composer button[aria-label*="interna"][aria-
   }
 }
 
+/* --- [Módulo: 11-login.css] --- */
+/**
+ * ============================================================================
+ * NEXTYCHAT - REDESIGN SAAS (PÁGINA DE LOGIN)
+ * Centralização, Card SaaS moderno, Gradiente de fundo refinado,
+ * Inputs estilizados com anel de foco, Botão com gradiente da marca.
+ * ============================================================================
+ */
+
+/* ============================================================================
+ * 1. CONTAINER PRINCIPAL E BACKGROUND SAAS
+ * ============================================================================ */
+
+#custom-css-login {
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 24px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  overflow-x: hidden !important;
+  /* Gradiente moderno e profundo com iluminação radial suave */
+  background:
+    radial-gradient(circle at 50% 18%, rgba(31, 147, 255, 0.22) 0%, rgba(15, 23, 42, 0) 55%),
+    radial-gradient(circle at 85% 80%, rgba(14, 165, 233, 0.12) 0%, rgba(15, 23, 42, 0) 50%),
+    linear-gradient(145deg, #0b1329 0%, #0f172a 45%, #082f49 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* ============================================================================
+ * 2. CONTAINER CENTRALIZADO (MUI CONTAINER)
+ * ============================================================================ */
+
+#custom-css-login main.MuiContainer-root,
+#custom-css-login .MuiContainer-maxWidthXs {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ============================================================================
+ * 3. CARD DE LOGIN ELEGANTE
+ * ============================================================================ */
+
+#custom-css-login .custom-css-login-card,
+#custom-css-login .MuiPaper-root.custom-css-login-card {
+  background-color: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 25px 50px -12px rgba(0, 0, 0, 0.35) !important;
+  padding: 40px 32px 32px 32px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  position: relative !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* ============================================================================
+ * 4. LOGOTIPO
+ * ============================================================================ */
+
+#custom-css-login .custom-css-login-logo {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-bottom: 28px !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+#custom-css-login .custom-css-login-logo img {
+  max-height: 48px !important;
+  max-width: 220px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06)) !important;
+  transition: transform 0.2s ease !important;
+}
+
+#custom-css-login .custom-css-login-logo img:hover {
+  transform: scale(1.02) !important;
+}
+
+/* ============================================================================
+ * 5. FORMULÁRIO E CAMPOS DE ENTRADA
+ * ============================================================================ */
+
+#custom-css-login form {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+#custom-css-login .MuiFormControl-root,
+#custom-css-login .MuiTextField-root {
+  margin-top: 6px !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+}
+
+/* Labels */
+#custom-css-login .MuiInputLabel-root {
+  font-family: var(--font-family) !important;
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: color 0.2s ease !important;
+}
+
+#custom-css-login .MuiInputLabel-root.Mui-focused {
+  color: var(--brand-primary, #1f93ff) !important;
+  font-weight: 600 !important;
+}
+
+#custom-css-login .MuiInputLabel-asterisk {
+  color: #ef4444 !important;
+}
+
+/* Outlined Container */
+#custom-css-login .MuiOutlinedInput-root {
+  background-color: #f8fafc !important;
+  border-radius: 12px !important;
+  color: #0f172a !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+#custom-css-login .MuiOutlinedInput-notchedOutline {
+  border-color: #e2e8f0 !important;
+  border-width: 1.5px !important;
+  transition: border-color 0.2s ease, border-width 0.2s ease !important;
+}
+
+#custom-css-login .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #cbd5e1 !important;
+}
+
+#custom-css-login .MuiOutlinedInput-root.Mui-focused {
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(31, 147, 255, 0.14) !important;
+}
+
+#custom-css-login .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--brand-primary, #1f93ff) !important;
+  border-width: 1.5px !important;
+}
+
+/* Inputs internos */
+#custom-css-login .MuiOutlinedInput-input {
+  padding: 13.5px 14px 13.5px 6px !important;
+  font-size: 14.5px !important;
+  color: #0f172a !important;
+  font-weight: 450 !important;
+  font-family: var(--font-family) !important;
+}
+
+/* Fix para o Autofill do Navegador */
+#custom-css-login input:-webkit-autofill,
+#custom-css-login input:-webkit-autofill:hover,
+#custom-css-login input:-webkit-autofill:focus,
+#custom-css-login input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #f8fafc inset !important;
+  -webkit-text-fill-color: #0f172a !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+#custom-css-login .MuiOutlinedInput-root.Mui-focused input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+}
+
+/* Ícones nos Adornments */
+#custom-css-login .MuiInputAdornment-positionStart {
+  color: #64748b !important;
+  margin-right: 8px !important;
+  margin-left: 4px !important;
+  transition: color 0.2s ease !important;
+}
+
+#custom-css-login .MuiOutlinedInput-root.Mui-focused .MuiInputAdornment-positionStart {
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+#custom-css-login .MuiInputAdornment-positionStart svg {
+  font-size: 20px !important;
+}
+
+/* Botão Toggle Senha */
+#custom-css-login .MuiIconButton-edgeEnd {
+  color: #64748b !important;
+  padding: 8px !important;
+  transition: color 0.15s ease, background-color 0.15s ease !important;
+}
+
+#custom-css-login .MuiIconButton-edgeEnd:hover {
+  color: #0f172a !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ============================================================================
+ * 6. BOTÃO DE LOGIN ("ENTRAR")
+ * ============================================================================ */
+
+#custom-css-login button[type="submit"],
+#custom-css-login .MuiButton-containedPrimary {
+  background: var(--brand-gradient, linear-gradient(135deg, #1f93ff 0%, #177de0 100%)) !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0.3px !important;
+  box-shadow: 0 4px 14px rgba(31, 147, 255, 0.38) !important;
+  margin-top: 8px !important;
+  margin-bottom: 14px !important;
+  border: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  font-family: var(--font-family) !important;
+}
+
+#custom-css-login button[type="submit"]:hover,
+#custom-css-login .MuiButton-containedPrimary:hover {
+  background: linear-gradient(135deg, #1671c6 0%, #0e64b8 100%) !important;
+  box-shadow: 0 6px 20px rgba(31, 147, 255, 0.48) !important;
+  transform: translateY(-1px) !important;
+}
+
+#custom-css-login button[type="submit"]:active,
+#custom-css-login .MuiButton-containedPrimary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(31, 147, 255, 0.3) !important;
+}
+
+/* ============================================================================
+ * 7. LINK "RECUPERAR SENHA"
+ * ============================================================================ */
+
+#custom-css-login .MuiGrid-container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 4px 0 10px 0 !important;
+}
+
+#custom-css-login .MuiGrid-item {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+#custom-css-login a[href*="forgotpassword"],
+#custom-css-login .MuiLink-root {
+  color: var(--brand-primary, #1f93ff) !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  font-family: var(--font-family) !important;
+  transition: color 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+}
+
+#custom-css-login a[href*="forgotpassword"]:hover,
+#custom-css-login .MuiLink-root:hover {
+  color: var(--brand-hover, #1671c6) !important;
+  text-decoration: underline !important;
+  background-color: rgba(31, 147, 255, 0.06) !important;
+}
+
+/* ============================================================================
+ * 8. SELETOR DE IDIOMA
+ * ============================================================================ */
+
+#custom-css-login .MuiBox-root > div {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-top: 6px !important;
+}
+
+#custom-css-login button[data-appbar="lang"] {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 20px !important;
+  padding: 5px 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+#custom-css-login button[data-appbar="lang"]:hover {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  transform: scale(1.05) !important;
+}
+
+/* ============================================================================
+ * 9. RODAPÉ / COPYRIGHT
+ * ============================================================================ */
+
+#custom-css-login main > .MuiBox-root:last-child {
+  margin-top: 24px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+#custom-css-login main > .MuiBox-root:last-child p {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+  font-family: var(--font-family) !important;
+  margin: 0 !important;
+  text-align: center !important;
+  letter-spacing: 0.2px !important;
+}
+
+/* ============================================================================
+ * 10. TEMA ESCURO (DARK MODE)
+ * ============================================================================ */
+
+body[data-theme="dark"] #custom-css-login .custom-css-login-card,
+body[data-theme="dark"] #custom-css-login .MuiPaper-root.custom-css-login-card {
+  background-color: #111923 !important;
+  border: 1px solid #1e2c3d !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 20px 50px -10px rgba(0, 0, 0, 0.6) !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiInputLabel-root {
+  color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiInputLabel-root.Mui-focused {
+  color: var(--brand-primary, #1f93ff) !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiOutlinedInput-root {
+  background-color: #090e15 !important;
+  color: #f8fafc !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiOutlinedInput-notchedOutline {
+  border-color: #1e2c3d !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #334155 !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiOutlinedInput-root.Mui-focused {
+  background-color: #0c141f !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiOutlinedInput-input {
+  color: #f8fafc !important;
+}
+
+body[data-theme="dark"] #custom-css-login input:-webkit-autofill,
+body[data-theme="dark"] #custom-css-login input:-webkit-autofill:hover,
+body[data-theme="dark"] #custom-css-login input:-webkit-autofill:focus,
+body[data-theme="dark"] #custom-css-login input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #090e15 inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiInputAdornment-positionStart {
+  color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiIconButton-edgeEnd {
+  color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] #custom-css-login .MuiIconButton-edgeEnd:hover {
+  color: #f8fafc !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body[data-theme="dark"] #custom-css-login a[href*="forgotpassword"],
+body[data-theme="dark"] #custom-css-login .MuiLink-root {
+  color: #38a9ff !important;
+}
+
+body[data-theme="dark"] #custom-css-login button[data-appbar="lang"] {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body[data-theme="dark"] #custom-css-login button[data-appbar="lang"]:hover {
+  background: #334155 !important;
+}
+
+/* ============================================================================
+ * 11. RESPONSIVIDADE MOBILE
+ * ============================================================================ */
+
+@media (max-width: 480px) {
+  #custom-css-login {
+    padding: 16px 12px !important;
+  }
+
+  #custom-css-login .custom-css-login-card,
+  #custom-css-login .MuiPaper-root.custom-css-login-card {
+    padding: 28px 20px 24px 20px !important;
+    border-radius: 16px !important;
+  }
+
+  #custom-css-login .custom-css-login-logo {
+    margin-bottom: 22px !important;
+  }
+
+  #custom-css-login .custom-css-login-logo img {
+    max-height: 42px !important;
+  }
+
+  #custom-css-login main > .MuiBox-root:last-child {
+    margin-top: 18px !important;
+  }
+
+  #custom-css-login main > .MuiBox-root:last-child p {
+    font-size: 12px !important;
+  }
+}
+
