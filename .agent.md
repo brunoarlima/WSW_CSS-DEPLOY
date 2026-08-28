@@ -33,7 +33,7 @@ src/
   - Concatena os arquivos de `src/css/` gerando `wsw-redesign.css`.
   - Concatena os arquivos de `src/js/` gerando `wsw-redesign.js` dentro de uma IIFE segura e valida a sintaxe.
 - **Deploy Isolado por Empresa (Padrão)**: `npm run deploy` ou `./deploy.sh`
-  - Compila os módulos e lê o comando cURL em `bash.md`.
+  - Compila os módulos e lê o comando cURL em `bash.md` (ou utiliza as variáveis do `.env` como fallback).
   - Atualiza exclusivamente a empresa especificada com os novos `customCss`, `customJs` e `useCustomCss: true`.
 - **Deploy Global (Todas as Empresas)**: `npm run deploy:global` ou `node deploy.js --global`
   - Envia para os endpoints globais `/settings/customCssFrontend` e `/settings/customJsFrontend`.

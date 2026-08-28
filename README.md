@@ -129,15 +129,26 @@ Siga o passo a passo abaixo no seu navegador para capturar a requisição autent
 
 ### Opção A: Deploy Isolado por Empresa (Padrão e Recomendado)
 
-Injeta o CSS e JS compilados exclusivamente na empresa alvo indicada na URL do cURL (`PUT /companies/:id`), ativando `useCustomCss: true` sem impactar as demais instâncias:
+Injeta o CSS e JS compilados exclusivamente na empresa alvo (`PUT /api/companies`), ativando `useCustomCss: true` sem impactar as demais instâncias.
 
+O pipeline aceita **dois métodos de configuração** com fallback automático:
+
+1. **Via `bash.md` (Prioritário)**: Lê o comando cURL copiado do DevTools e salvo em `bash.md`.
+2. **Via `.env` (Fallback direto pela API)**: Caso o arquivo `bash.md` não exista ou esteja vazio, o deploy utiliza as credenciais configuradas no `.env` (veja [.env.example](./.env.example)):
+   ```env
+   API_URL=https://api.seudominio.com
+   API_TOKEN=seu_token_admin_aqui
+   COMPANY_ID=123
+   ```
+
+**Comando de Execução:**
 ```bash
 npm run deploy
 # ou
 ./deploy.sh
 ```
 
-*O script realiza o build automaticamente, lê o `bash.md`, substitui os campos `customCss`, `customJs` e `useCustomCss: true` no payload JSON e dispara a atualização para a empresa.*
+*O script realiza o build automaticamente, localiza a configuração (`bash.md` ou `.env`), injeta os campos `customCss`, `customJs` e `useCustomCss: true` e dispara a atualização para a empresa.*
 
 ---
 
@@ -151,9 +162,9 @@ npm run deploy:global
 node deploy.js --global
 ```
 
-*O script reutiliza automaticamente os headers de autenticação e a URL base já salvos em `bash.md`. Não é necessário digitar tokens ou URLs adicionais.*
+*O script reutiliza automaticamente os headers de autenticação e a URL base já salvos em `bash.md` ou configurados via variáveis de ambiente/`.env`.*
 
-> 💡 **Nota sobre expiração**: Se o token de sessão expirar (erro HTTP 401 ou 403), basta salvar novamente qualquer item no painel do navegador, copiar o novo cURL e colar no `bash.md`.
+> 💡 **Nota sobre expiração**: Se o token de sessão expirar (erro HTTP 401 ou 403), atualize o token no `.env` ou copie novamente o novo cURL para o `bash.md`.
 
 ---
 

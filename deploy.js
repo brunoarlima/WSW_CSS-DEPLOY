@@ -20,12 +20,45 @@ const http = require('http');
 const { buildCSS, buildJS } = require('./build.js');
 
 const BASH_MD_PATH = path.join(__dirname, 'bash.md');
+const ENV_PATH = path.join(__dirname, '.env');
 const CSS_PATH = path.join(__dirname, 'wsw-redesign.css');
 const JS_PATH = path.join(__dirname, 'wsw-redesign.js');
 
+/**
+ * Carrega variáveis do arquivo .env (se existir) sem dependências externas
+ */
+function loadEnv() {
+  if (!fs.existsSync(ENV_PATH)) return;
+  try {
+    const envContent = fs.readFileSync(ENV_PATH, 'utf8');
+    const lines = envContent.split(/\r?\n/);
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const cleanLine = trimmed.startsWith('export ') ? trimmed.slice(7).trim() : trimmed;
+      const eqIdx = cleanLine.indexOf('=');
+      if (eqIdx > 0) {
+        const key = cleanLine.slice(0, eqIdx).trim();
+        let val = cleanLine.slice(eqIdx + 1).trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        if (process.env[key] === undefined) {
+          process.env[key] = val;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn(`⚠️ Aviso ao carregar .env: ${err.message}`);
+  }
+}
+
+// Carrega variáveis do .env logo na inicialização
+loadEnv();
+
 // Configurações para Deploy Global (Fallback via variáveis de ambiente)
 const GLOBAL_CONFIG = {
-  baseUrl: process.env.API_BASE_URL || process.env.WSW_BASE_URL || 'https://api.seudominio.com',
+  baseUrl: process.env.API_BASE_URL || process.env.API_URL || process.env.WSW_BASE_URL || 'https://api.seudominio.com',
   bearerToken: process.env.API_TOKEN || process.env.WSW_TOKEN || '',
   cookie: process.env.API_COOKIE || process.env.WSW_COOKIE || ''
 };
@@ -222,26 +255,11 @@ function makeHttpRequest(targetUrl, method, headers, payload) {
 }
 
 /**
- * Deploy Isolado por Empresa (baseado no bash.md)
+ * Deploy Isolado por Empresa
+ * Prioridade 1: Comando cURL no `bash.md` (se existir)
+ * Prioridade 2 (Fallback): Chamada direta à API utilizando credenciais do `.env`
  */
 async function deployCompany() {
-  if (!fs.existsSync(BASH_MD_PATH)) {
-    console.error(`❌ Arquivo '${BASH_MD_PATH}' não encontrado!`);
-    console.log(`💡 Crie o arquivo 'bash.md' colando o comando cURL copiado do painel (veja o modelo em bash.example.md).`);
-    process.exit(1);
-  }
-
-  const rawBash = fs.readFileSync(BASH_MD_PATH, 'utf8').trim();
-  if (!rawBash) {
-    console.error(`❌ Arquivo '${BASH_MD_PATH}' está vazio! Cole o comando cURL nele.`);
-    process.exit(1);
-  }
-
-  console.log('🔍 Analisando chamada cURL em bash.md...');
-  const { url, method, headers, jsonData } = parseCurlCommand(rawBash);
-
-  const companyId = jsonData.id || 'Desconhecido';
-  const companyName = jsonData.name || jsonData.namecomplete || 'Empresa';
   // Lê os arquivos compilados
   const cssContent = fs.existsSync(CSS_PATH) ? fs.readFileSync(CSS_PATH, 'utf8') : '';
   const jsContent = fs.existsSync(JS_PATH) ? fs.readFileSync(JS_PATH, 'utf8') : '';
@@ -253,26 +271,110 @@ async function deployCompany() {
     console.warn(`⚠️ Aviso: ${JS_PATH} está vazio ou não foi encontrado.`);
   }
 
-  // Garante que o CSS customizado esteja sempre ATIVADO na empresa
-  jsonData.customCss = cssContent;
-  jsonData.customJs = jsContent;
-  jsonData.useCustomCss = true;
-  if ('use_custom_css' in jsonData) {
-    jsonData.use_custom_css = true;
+  // 1. Prioridade: Se bash.md existe e possui conteúdo
+  if (fs.existsSync(BASH_MD_PATH)) {
+    const rawBash = fs.readFileSync(BASH_MD_PATH, 'utf8').trim();
+    if (rawBash) {
+      console.log('🔍 Analisando chamada cURL em bash.md...');
+      const { url, method, headers, jsonData } = parseCurlCommand(rawBash);
+
+      const companyId = jsonData.id || 'Desconhecido';
+      const companyName = jsonData.name || jsonData.namecomplete || 'Empresa';
+
+      // Garante que o CSS customizado esteja sempre ATIVADO na empresa
+      jsonData.customCss = cssContent;
+      jsonData.customJs = jsContent;
+      jsonData.useCustomCss = true;
+      if ('use_custom_css' in jsonData) {
+        jsonData.use_custom_css = true;
+      }
+
+      console.log(`🎯 Alvo do Deploy (via bash.md):`);
+      console.log(`   - Empresa ID:   ${companyId}`);
+      console.log(`   - Nome:         ${companyName}`);
+      console.log(`   - Endpoint:     ${method} ${url}`);
+      console.log(`   - Estado CSS:   ATIVADO (useCustomCss: true)\n`);
+
+      const payload = JSON.stringify(jsonData);
+
+      process.stdout.write(`📦 Enviando atualização isolada para ${companyName} (ID: ${companyId})... `);
+      const result = await makeHttpRequest(url, method, headers, payload);
+      console.log(`✅ SUCESSO! (HTTP ${result.statusCode})`);
+      console.log(`\n✨ Redesign e useCustomCss: true aplicados com sucesso exclusivamente na empresa ${companyName}!`);
+      return;
+    }
   }
 
-  console.log(`🎯 Alvo do Deploy:`);
-  console.log(`   - Empresa ID:   ${companyId}`);
-  console.log(`   - Nome:         ${companyName}`);
-  console.log(`   - Endpoint:     ${method} ${url}`);
+  // 2. Fallback: Deploy via API utilizando variáveis do .env / ambiente
+  console.log('ℹ️  bash.md não encontrado ou vazio. Utilizando modo fallback via API (.env)...');
+
+  const apiUrl = process.env.API_URL || process.env.API_BASE_URL || process.env.WSW_BASE_URL;
+  const token = process.env.API_TOKEN || process.env.WSW_TOKEN || process.env.ADMIN_TOKEN;
+  const companyId = process.env.COMPANY_ID || process.env.WSW_COMPANY_ID;
+
+  if (!apiUrl || !token || !companyId) {
+    console.error(`\n❌ Não foi possível realizar o deploy individual!`);
+    console.error(`Nenhum 'bash.md' válido foi encontrado e as variáveis de ambiente necessárias não foram configuradas no '.env'.\n`);
+    console.log(`👉 Opção 1 (via bash.md):`);
+    console.log(`   Crie o arquivo 'bash.md' com o comando cURL copiado do painel (veja bash.example.md).\n`);
+    console.log(`👉 Opção 2 (via API .env):`);
+    console.log(`   Crie o arquivo '.env' (veja o modelo em .env.example) com:`);
+    console.log(`   API_URL=https://api.seudominio.com`);
+    console.log(`   API_TOKEN=seu_token_admin`);
+    console.log(`   COMPANY_ID=12`);
+    process.exit(1);
+  }
+
+  // Formata a URL de destino (suporta com/sem protocolo, com/sem barra no final)
+  let targetUrl = apiUrl.trim();
+  if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+    targetUrl = `https://${targetUrl}`;
+  }
+
+  // Remove qualquer barra no final do domínio/URL
+  targetUrl = targetUrl.replace(/\/+$/, '');
+
+  // Constrói o endpoint para /api/companies
+  if (targetUrl.endsWith('/api/companies')) {
+    // Já contém a rota completa
+  } else if (targetUrl.endsWith('/companies')) {
+    targetUrl = targetUrl.replace(/\/companies$/, '/api/companies');
+  } else if (targetUrl.endsWith('/api')) {
+    targetUrl = `${targetUrl}/companies`;
+  } else {
+    targetUrl = `${targetUrl}/api/companies`;
+  }
+
+  const authHeader = token.trim().startsWith('Bearer ') ? token.trim() : `Bearer ${token.trim()}`;
+  const headers = {
+    'accept': 'application/json, text/plain, */*',
+    'content-type': 'application/json',
+    'authorization': authHeader
+  };
+
+  if (process.env.API_COOKIE || process.env.WSW_COOKIE) {
+    headers['cookie'] = process.env.API_COOKIE || process.env.WSW_COOKIE;
+  }
+
+  const payloadData = {
+    id: String(companyId).trim(),
+    status: true,
+    useCustomCss: true,
+    customCss: cssContent,
+    customJs: jsContent
+  };
+
+  console.log(`🎯 Alvo do Deploy (via API .env):`);
+  console.log(`   - Empresa ID:   ${payloadData.id}`);
+  console.log(`   - Endpoint:     PUT ${targetUrl}`);
   console.log(`   - Estado CSS:   ATIVADO (useCustomCss: true)\n`);
 
-  const payload = JSON.stringify(jsonData);
+  const payload = JSON.stringify(payloadData);
 
-  process.stdout.write(`📦 Enviando atualização isolada para ${companyName} (ID: ${companyId})... `);
-  const result = await makeHttpRequest(url, method, headers, payload);
+  process.stdout.write(`📦 Enviando atualização isolada para empresa ID: ${payloadData.id}... `);
+  const result = await makeHttpRequest(targetUrl, 'PUT', headers, payload);
   console.log(`✅ SUCESSO! (HTTP ${result.statusCode})`);
-  console.log(`\n✨ Redesign e useCustomCss: true aplicados com sucesso exclusivamente na empresa ${companyName}!`);
+  console.log(`\n✨ Redesign e useCustomCss: true aplicados com sucesso exclusivamente na empresa ID ${payloadData.id}!`);
 }
 
 /**
@@ -354,7 +456,7 @@ async function main() {
   } catch (error) {
     console.error('\n❌ Erro durante o deploy:', error.message);
     if (error.message.includes('401') || error.message.includes('403')) {
-      console.log('\n💡 Dica: A autenticação expirou. Copie novamente o comando cURL do painel para o arquivo bash.md.');
+      console.log('\n💡 Dica: A autenticação expirou ou token inválido. Verifique o seu .env ou copie novamente o comando cURL para o bash.md.');
     }
     process.exit(1);
   }
